@@ -1,0 +1,27 @@
+version: "2.4"
+
+services:
+  api:
+    container_name: tiki_api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - ./api/src:/app/src
+    env_file: ./api/.env
+  db:
+    container_name: beer_alerts_db
+    image: postgres:12
+    ports:
+      - 5434:5432
+    volumes:
+      - ./db/init-local-db.sql:/docker-entrypoint-initdb.d/docker-postgres-init.sql
+      - ./db/tikidata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+volumes:
+  tikidata:
