@@ -9,8 +9,9 @@ const common = {
   },
   migrations: {
     tableName: 'knex_migrations',
-    directory: 'migrations/beer_alerts',
+    directory: 'migrations/tiki',
     stub: 'migrations/stub.ts',
+    extension: 'ts',
   },
 };
 
