@@ -1,0 +1,17 @@
+{
+  "name": "tiki-compendium-api",
+  "version": "1.0.0",
+  "description": "An api for reading and writing tiki recipes",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.9.2",
+    "graphql": "^16.8.0",
+    "knex": "^2.5.1"
+  }
+}
