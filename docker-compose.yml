@@ -14,10 +14,10 @@ services:
       - ./api/src:/app/src
     env_file: ./api/.env
   db:
-    container_name: beer_alerts_db
+    container_name: tiki_db
     image: postgres:12
     ports:
-      - 5434:5432
+      - 5432:5432
     volumes:
       - ./db/init-local-db.sql:/docker-entrypoint-initdb.d/docker-postgres-init.sql
       - ./db/tikidata:/var/lib/postgresql/data

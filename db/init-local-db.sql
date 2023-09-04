@@ -1,5 +1,5 @@
-CREATE USER beer_alerts WITH ENCRYPTED PASSWORD 'beer_alerts';
-CREATE DATABASE beer_alerts;
-\connect beer_alerts
+CREATE USER tiki_admin WITH ENCRYPTED PASSWORD 'tiki';
+CREATE DATABASE tiki;
+\connect tiki
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
-GRANT ALL PRIVILEGES ON DATABASE beer_alerts TO beer_alerts;
+GRANT ALL PRIVILEGES ON DATABASE tiki TO tiki_admin;
