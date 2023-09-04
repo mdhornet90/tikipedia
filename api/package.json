@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "knex": "ts-node ./node_modules/.bin/knex",
-    "dev": "ts-node-dev --files --respawn --inspect=9229 src/index.ts"
+    "dev": "sh ./package-scripts/dev.sh"
   },
   "dependencies": {
     "@apollo/server": "^4.9.2",

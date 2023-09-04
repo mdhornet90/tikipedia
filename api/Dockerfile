@@ -16,7 +16,7 @@ WORKDIR /app
 
 COPY --from=base-api /app/node_modules ./node_modules
 COPY .env* ./
-COPY nodemon.json .
 COPY package.json .
+COPY package-scripts ./package-scripts
 
 CMD ["yarn", "dev"]
