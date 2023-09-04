@@ -19,4 +19,4 @@ COPY .env* ./
 COPY nodemon.json .
 COPY package.json .
 
-CMD ["yarn", "nodemon"]
+CMD ["yarn", "dev"]

@@ -6,12 +6,16 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "knex": "ts-node ./node_modules/.bin/knex"
+    "knex": "ts-node ./node_modules/.bin/knex",
+    "dev": "ts-node-dev --files --respawn --inspect=9229 src/index.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.9.2",
+    "@graphql-tools/schema": "^10.0.0",
+    "dotenv": "^16.3.1",
     "graphql": "^16.8.0",
     "knex": "^2.5.1",
+    "knex-stringcase": "^1.4.6",
     "pg": "^8.11.3"
   },
   "devDependencies": {
@@ -22,9 +26,9 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-prettier": "^5.0.0",
-    "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
   }
 }
