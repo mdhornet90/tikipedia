@@ -13,17 +13,13 @@ export const typeDef = `#graphql
 
 export const resolvers = {
   Query: {
-    ingredients() {
-      return findAll();
-    },
+    ingredients: () => findAll(),
 
-    ingredient(id: string) {
-      return findOne(id);
-    },
+    ingredient: (id: string) => findOne(id),
   },
+
   Mutation: {
-    createIngredient(_: any, { ingredient }: { ingredient: Ingredient }) {
-      return insert(ingredient);
-    },
+    createIngredient: (_: any, { ingredient }: { ingredient: Ingredient }) =>
+      insert({ ...ingredient, name: ingredient.name.toLowerCase() }),
   },
 };
