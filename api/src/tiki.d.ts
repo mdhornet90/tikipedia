@@ -11,6 +11,15 @@ interface IngredientInput {
   abv: number?;
 }
 
+interface Glassware {
+  id: UUID;
+  name: string;
+}
+
+interface GlasswareInput {
+  name: string;
+}
+
 interface DatabaseError {
   code: string;
 }
