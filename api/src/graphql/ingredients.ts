@@ -5,15 +5,23 @@ import { findAll, findOne, insert } from '../core/queries/ingredients';
 import { isDatabaseError, isUUID } from '../utils';
 
 export const typeDef = `#graphql
-    type Ingredient {
-        id: ID!
-        name: String!
-        abv: Float!
-    }
-    input IngredientInput {
-        name: String!
-        abv: Float
-    }
+  type Ingredient {
+    id: ID!
+    name: String!
+    abv: Float!
+  }
+  input IngredientInput {
+    name: String!
+    abv: Float
+  }
+
+  type Query {
+    ingredients: [Ingredient!]!
+    ingredient(id: ID): Ingredient
+  }
+  type Mutation {
+    createIngredient(ingredient: IngredientInput!): Ingredient!
+  }
 `;
 
 export const resolvers = {

@@ -12,6 +12,15 @@ export const typeDef = `#graphql
     input GlasswareInput {
         name: String!
     }
+
+    type Query {
+      allGlassware: [Glassware!]!
+      glassware(id: ID): Glassware
+    }
+
+    type Mutation {
+      createGlassware(glassware: GlasswareInput!): Glassware!
+    }
 `;
 
 export const resolvers = {
