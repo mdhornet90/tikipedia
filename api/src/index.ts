@@ -1,7 +1,6 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import dotenv from 'dotenv';
-import Knex from 'knex';
 import { schema } from './graphql';
 
 const server = new ApolloServer({ schema });
