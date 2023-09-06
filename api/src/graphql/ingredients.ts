@@ -20,7 +20,7 @@ export const typeDef = `#graphql
     ingredient(id: ID): Ingredient
   }
   type Mutation {
-    createIngredient(ingredient: IngredientInput!): Ingredient!
+    createIngredient(input: IngredientInput!): Ingredient!
   }
 `;
 
@@ -45,9 +45,12 @@ export const resolvers = {
   },
 
   Mutation: {
-    createIngredient: async (_: any, { ingredient }: { ingredient: IngredientInput }) => {
+    createIngredient: async (_: any, { input }: { input: IngredientInput }) => {
       try {
-        return await insert({ ...ingredient, name: ingredient.name.toLowerCase() });
+        return await insert({
+          ...input,
+          mangledName: input.name.toLowerCase().replace(/\s+/g, ''),
+        });
       } catch (err) {
         if (isDatabaseError(err)) {
           handleDatabaseError(err, 'inserting');

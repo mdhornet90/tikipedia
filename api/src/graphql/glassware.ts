@@ -19,7 +19,7 @@ export const typeDef = `#graphql
     }
 
     type Mutation {
-      createGlassware(glassware: GlasswareInput!): Glassware!
+      createGlassware(input: GlasswareInput!): Glassware!
     }
 `;
 
@@ -44,9 +44,12 @@ export const resolvers = {
   },
 
   Mutation: {
-    createGlassware: async (_: any, { glassware }: { glassware: GlasswareInput }) => {
+    createGlassware: async (_: any, { input }: { input: GlasswareInput }) => {
       try {
-        return await insert({ ...glassware, name: glassware.name.toLowerCase() });
+        return await insert({
+          ...input,
+          mangledName: input.name.toLowerCase().replace(/\s+/g, ''),
+        });
       } catch (err) {
         if (isDatabaseError(err)) {
           handleDatabaseError(err, 'inserting');
