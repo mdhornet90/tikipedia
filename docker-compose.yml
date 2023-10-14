@@ -1,6 +1,19 @@
 version: "2.4"
 
 services:
+  website:
+    container_name: tiki_website
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - 3001:3000
+      - 9228:9229
+    volumes:
+      - ./website:/app
+      - /app/node_modules
+    # env_file: ./website/.env
   api:
     container_name: tiki_api
     build:
