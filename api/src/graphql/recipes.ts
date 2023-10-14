@@ -103,10 +103,10 @@ export const resolvers = {
 function handleDatabaseError(err: DatabaseError, action: string) {
   switch (err.code) {
     case '23505':
-      throw new GraphQLError('ingredient already exists!', {
+      throw new GraphQLError('recipe already exists!', {
         extensions: { code: ErrorCode.BAD_USER_INPUT },
       });
     default:
-      throw new GraphQLError(`Unexpected error ${action} ingredient`);
+      throw new GraphQLError(`Unexpected error ${action} recipe`);
   }
 }
