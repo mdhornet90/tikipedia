@@ -8,6 +8,9 @@
     },
     {
       "path": "./website"
+    },
+    {
+      "path": "website-poc"
     }
   ],
   "settings": {}
