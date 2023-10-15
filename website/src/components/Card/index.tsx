@@ -6,11 +6,12 @@ interface CardProps {
   title: string;
   imageUrl: string;
   tags: Tag[];
+  onTap: () => void;
 }
 
 export default function Card(props: CardProps) {
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={props.onTap}>
       <img
         className={styles.cardImage}
         src={props.imageUrl}
@@ -18,8 +19,8 @@ export default function Card(props: CardProps) {
       />
       <div className={styles.cardTitle}>{props.title}</div>
       <div className={styles.tagContainer}>
-        {props.tags.map((tag) => (
-          <Tag {...tag} />
+        {props.tags.map((tag, i) => (
+          <Tag {...tag} key={`card-${props.id}-tag-${i}`} />
         ))}
       </div>
     </div>

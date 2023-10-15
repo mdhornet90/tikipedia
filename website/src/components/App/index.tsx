@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
-import ExtraLargeTitle from "./ExtraLargeTitle";
-import CardArea from "./CardArea";
-import Loading from "./Loading";
-import Card from "./Card";
-import TikiHeader from "./TikiHeader";
+import styles from "./App.module.css";
+import Title from "../Title";
+import CardArea from "../CardArea";
+import Loading from "../Loading";
+import Card from "../Card";
+import TikiHeader from "../TikiHeader";
+import { getRecipeDetail } from "../../api";
+import RecipeDetail from "../RecipeDetail";
 
-function App() {
+export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState<RecipeCard[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [recipeDetail, setRecipeDetail] = useState<RecipeDetail | null>(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -16,21 +20,21 @@ function App() {
         setCards([
           {
             id: "0",
-            title: "Daiquiri",
+            title: "Daiquiri 1",
             imageUrl:
               "https://www.liquor.com/thmb/aLlM1JQiNiu0o2Mwx2n2AfOgoyw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Daiquiri_3000x3000_primary-206eb2330cb04852ab7d780dcf3d55ef.jpg",
             tags: [{ title: "Lime" }, { title: "Sugar" }, { title: "Simple" }],
           },
           {
             id: "1",
-            title: "Daiquiri",
+            title: "Daiquiri 2",
             imageUrl:
               "https://www.liquor.com/thmb/aLlM1JQiNiu0o2Mwx2n2AfOgoyw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Daiquiri_3000x3000_primary-206eb2330cb04852ab7d780dcf3d55ef.jpg",
             tags: [{ title: "Lime" }, { title: "Sugar" }, { title: "Simple" }],
           },
           {
             id: "2",
-            title: "Daiquiri",
+            title: "Daiquiri 3",
             imageUrl:
               "https://www.liquor.com/thmb/aLlM1JQiNiu0o2Mwx2n2AfOgoyw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Daiquiri_3000x3000_primary-206eb2330cb04852ab7d780dcf3d55ef.jpg",
             tags: [{ title: "Lime" }, { title: "Sugar" }, { title: "Simple" }],
@@ -42,24 +46,41 @@ function App() {
     }, 1000);
   }, [isLoading]);
 
+  useEffect(() => {
+    if (selectedId) {
+      setTimeout(() => {
+        setRecipeDetail(getRecipeDetail(selectedId));
+      }, 1000);
+    } else {
+      setRecipeDetail(null);
+    }
+  }, [selectedId]);
+
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <header className={styles["App-header"]}>
         <TikiHeader>
-          <ExtraLargeTitle title={"Tikipedia"} />
+          <Title title={"Tikipedia"} size="extraLarge" />
         </TikiHeader>
         {isLoading ? (
           <Loading />
         ) : (
           <CardArea>
-            {cards.map((card) => (
-              <Card {...card} key={card.id} />
-            ))}
+            {cards.map((card) => {
+              const id = card.id;
+              return (
+                <Card {...card} key={id} onTap={() => setSelectedId(id)} />
+              );
+            })}
           </CardArea>
+        )}
+        {recipeDetail && (
+          <RecipeDetail
+            recipe={recipeDetail}
+            onClose={() => setSelectedId(null)}
+          />
         )}
       </header>
     </div>
   );
 }
-
-export default App;

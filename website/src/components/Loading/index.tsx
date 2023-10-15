@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LargeTitle from "../LargeTitle";
+import Title from "../Title";
 import styles from "./index.module.css";
 
 export default function Loading() {
@@ -14,7 +14,7 @@ export default function Loading() {
 
   return (
     <div className={styles.loadingArea}>
-      <LargeTitle title={currentState(tick)} />
+      <Title title={currentState(tick)} size="large" />
     </div>
   );
 }

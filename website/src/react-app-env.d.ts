@@ -10,3 +10,19 @@ interface RecipeCard {
 interface Tag {
   title: string;
 }
+
+interface RecipeDetail {}
+
+interface RecipeDetail {
+  title: string;
+  ingredients: Ingredient[];
+  garnishes: string[];
+  glassware: string;
+  instructions: string;
+}
+
+interface Ingredient {
+  amount: string;
+  unit: string;
+  name: string;
+}
