@@ -1,7 +1,3 @@
 .extraLargeTitle {
   font-size: 36px;
-  position: sticky;
-  height: 50px;
-  background: inherit;
-  z-index: 1;
 }

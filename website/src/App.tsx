@@ -4,6 +4,7 @@ import ExtraLargeTitle from "./ExtraLargeTitle";
 import CardArea from "./CardArea";
 import Loading from "./Loading";
 import Card from "./Card";
+import TikiHeader from "./TikiHeader";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -44,13 +45,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <ExtraLargeTitle title="Tikipedia" />
+        <TikiHeader>
+          <ExtraLargeTitle title={"Tikipedia"} />
+        </TikiHeader>
         {isLoading ? (
           <Loading />
         ) : (
           <CardArea>
             {cards.map((card) => (
-              <Card {...card} />
+              <Card {...card} key={card.id} />
             ))}
           </CardArea>
         )}
