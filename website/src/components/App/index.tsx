@@ -74,7 +74,7 @@ export default function App() {
             })}
           </CardArea>
         )}
-        {recipeDetail && (
+        {selectedId && (
           <RecipeDetail
             recipe={recipeDetail}
             onClose={() => setSelectedId(null)}
