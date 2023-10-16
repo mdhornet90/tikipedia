@@ -63,7 +63,7 @@ export default function App() {
           <Title title={"Tikipedia"} size="extraLarge" />
         </TikiHeader>
         {isLoading ? (
-          <Loading />
+          <Loading indicatorStyle="dark" />
         ) : (
           <CardArea>
             {cards.map((card) => {

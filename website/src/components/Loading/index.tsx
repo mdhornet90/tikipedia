@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import Title from "../Title";
-import styles from "./index.module.css";
+import styles from "./Loading.module.css";
 
-export default function Loading() {
+type Style = "light" | "dark";
+
+interface LoadingProps {
+  indicatorStyle: Style;
+}
+
+export default function Loading({ indicatorStyle }: LoadingProps) {
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -13,7 +19,11 @@ export default function Loading() {
   }, [tick]);
 
   return (
-    <div className={styles.loadingArea}>
+    <div
+      className={`${styles.loadingArea} ${
+        indicatorStyle === "light" ? styles.light : styles.dark
+      }`}
+    >
       <Title title={currentState(tick)} size="large" />
     </div>
   );
