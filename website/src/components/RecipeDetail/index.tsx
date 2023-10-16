@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Title from "../Title";
 import styles from "./RecipeDetail.module.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,8 +10,23 @@ interface RecipeDetailProps {
 }
 
 export default function RecipeDetail({ recipe, onClose }: RecipeDetailProps) {
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [onClose]);
+
   return (
-    <div className={styles.recipeOverlay}>{RecipeSection(onClose, recipe)}</div>
+    <div className={styles.recipeOverlay} onClick={onClose}>
+      {RecipeSection(onClose, recipe)}
+    </div>
   );
 }
 
@@ -20,7 +35,7 @@ function RecipeSection(onClose: () => void, recipe?: RecipeDetail | null) {
     return <Loading indicatorStyle="light" />;
   }
   return (
-    <div className={styles.recipeDetail}>
+    <div className={styles.recipeDetail} onClick={(e) => e.stopPropagation()}>
       <CloseIcon className={styles.closeButton} onClick={onClose} />
       <Title title={recipe.title} size="large" />
       <Title title={"Ingredients"} size="medium" alignment="left" />
