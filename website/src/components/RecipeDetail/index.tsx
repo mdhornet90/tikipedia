@@ -83,7 +83,7 @@ function RecipeSection(
       onClick={(e) => e.stopPropagation()}
     >
       <CloseIcon className={styles.closeButton} onClick={onClose} />
-      <Title title={recipe.name} size="large" />
+      <Title title={recipe.title} size="large" />
       <Title title={"Ingredients"} size="medium" alignment="left" />
       <div className={styles.ingredients}>
         {recipe.ingredients.map((ingredient, i) => (

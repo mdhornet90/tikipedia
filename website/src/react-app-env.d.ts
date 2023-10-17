@@ -6,11 +6,13 @@ interface Tag {
 
 interface RecipeCard {
   id: string;
-  name: string;
+  title: string;
+  imageUrl?: string;
+  tags?: Tag[];
 }
 
 interface RecipeDetail {
-  name: string;
+  title: string;
   ingredients: Ingredient[];
   garnishes?: string[];
   glassware: { name: string };

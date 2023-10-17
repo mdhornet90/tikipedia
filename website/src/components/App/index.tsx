@@ -48,7 +48,7 @@ export default function App() {
             {cards.map((card) => {
               const id = card.id;
               return (
-                <Card {...card} key={id} onTap={() => setSelectedId(id)} />
+                <Card key={id} card={card} onTap={() => setSelectedId(id)} />
               );
             })}
           </CardArea>

@@ -8,7 +8,8 @@ export const getRecipeCards = async (): Promise<RecipeCard[]> =>
         query {
           recipes {
             id
-            name
+            title
+            imageUrl
           }
         }
       `,
@@ -21,7 +22,7 @@ export const getRecipeDetail = async (id: string): Promise<RecipeDetail> =>
       query: gql`
         query recipe($id: ID) {
           recipe(id: $id) {
-            name
+            title
             ingredients {
               quantity
               unit

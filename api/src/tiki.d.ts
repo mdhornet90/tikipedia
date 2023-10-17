@@ -29,13 +29,15 @@ type GlasswareDBInput = GlasswareInput & DBUniqueness;
 
 interface Recipe {
   id: UUID;
-  name: string;
+  imageUrl?: string;
+  title: string;
   instructions: string;
   glasswareId: UUID;
 }
 
 interface RecipeInput {
-  name: string;
+  title: string;
+  imageUrl?: string;
   instructions: string;
   glasswareId: UUID;
   ingredientInputs: RecipeIngredientInput[];

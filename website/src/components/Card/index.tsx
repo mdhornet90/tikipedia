@@ -2,23 +2,24 @@ import Tag from "../Tag";
 import styles from "./index.module.css";
 
 interface CardProps {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  tags?: Tag[];
+  card: RecipeCard;
   onTap: () => void;
 }
 
-export default function Card({ id, name, imageUrl, tags, onTap }: CardProps) {
+export default function Card({ card, onTap }: CardProps) {
   return (
     <div className={styles.card} onClick={onTap}>
-      {imageUrl && (
-        <img className={styles.cardImage} src={imageUrl} alt={imageUrl} />
+      {card.imageUrl && (
+        <img
+          className={styles.cardImage}
+          src={card.imageUrl}
+          alt={card.imageUrl}
+        />
       )}
-      <div className={styles.cardTitle}>{name}</div>
+      <div className={styles.cardTitle}>{card.title}</div>
       <div className={styles.tagContainer}>
-        {tags?.map((tag, i) => (
-          <Tag {...tag} key={`card-${id}-tag-${i}`} />
+        {card.tags?.map((tag, i) => (
+          <Tag {...tag} key={`card-${card.id}-tag-${i}`} />
         ))}
       </div>
     </div>

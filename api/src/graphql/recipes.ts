@@ -9,7 +9,8 @@ import { findAllForRecipe } from '../core/queries/ingredients';
 export const typeDef = `#graphql
     type Recipe {
         id: ID!
-        name: String!
+        title: String!
+        imageUrl: String
         instructions: String!
         glassware: Glassware!
         ingredients: [RecipeIngredient!]!
@@ -21,7 +22,8 @@ export const typeDef = `#graphql
       unit: String!
     }
     input RecipeInput {
-        name: String!
+        title: String!
+        imageUrl: String
         instructions: String!
         glasswareId: ID!
         ingredientInputs: [RecipeIngredientInput!]!
@@ -94,7 +96,7 @@ export const resolvers = {
       return insert({
         ...input,
         ingredientInputs,
-        mangledName: input.name.toLowerCase().replace(/\s+/g, ''),
+        mangledName: input.title.toLowerCase().replace(/\s+/g, ''),
       });
     },
   },
