@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import styles from "./App.module.css";
 import Title from "../Title";
 import CardArea from "../CardArea";
@@ -10,6 +11,7 @@ import RecipeDetail from "../RecipeDetail";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const ref = useRef(null);
   const [cards, setCards] = useState<RecipeCard[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [recipeDetail, setRecipeDetail] = useState<RecipeDetail | null>(null);
@@ -74,12 +76,20 @@ export default function App() {
             })}
           </CardArea>
         )}
-        {selectedId && (
+        <CSSTransition
+          nodeRef={ref}
+          in={selectedId !== null}
+          timeout={300}
+          classNames={"fade"}
+          mountOnEnter={true}
+          unmountOnExit={true}
+        >
           <RecipeDetail
+            ref={ref}
             recipe={recipeDetail}
             onClose={() => setSelectedId(null)}
           />
-        )}
+        </CSSTransition>
       </header>
     </div>
   );

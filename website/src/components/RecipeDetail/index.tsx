@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState, forwardRef, Ref } from "react";
+import { CSSTransition } from "react-transition-group";
 import Title from "../Title";
 import styles from "./RecipeDetail.module.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,7 +10,16 @@ interface RecipeDetailProps {
   onClose: () => void;
 }
 
-export default function RecipeDetail({ recipe, onClose }: RecipeDetailProps) {
+const ForwardedRecipeDetail = forwardRef(RecipeDetail);
+export default ForwardedRecipeDetail;
+
+function RecipeDetail(
+  { recipe, onClose }: RecipeDetailProps,
+  ref: Ref<HTMLDivElement>
+) {
+  const [showRecipe, setShowRecipe] = useState(false);
+  const innerRef = useRef(null);
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -23,19 +33,55 @@ export default function RecipeDetail({ recipe, onClose }: RecipeDetailProps) {
     };
   }, [onClose]);
 
+  useEffect(() => {
+    if (!showRecipe && recipe) {
+      setShowRecipe(true);
+    }
+  }, [showRecipe, recipe]);
+
   return (
-    <div className={styles.recipeOverlay} onClick={onClose}>
-      {RecipeSection(onClose, recipe)}
+    <div ref={ref} className={styles.recipeOverlay} onClick={onClose}>
+      {!showRecipe && <Loading indicatorStyle="light" />}
+      <CSSTransition
+        nodeRef={innerRef}
+        in={showRecipe}
+        timeout={300}
+        classNames={"fade"}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        {showRecipe ? (
+          <ForwardedRecipeSection
+            ref={innerRef}
+            onClose={onClose}
+            recipe={recipe}
+          />
+        ) : (
+          <></>
+        )}
+      </CSSTransition>
     </div>
   );
 }
 
-function RecipeSection(onClose: () => void, recipe?: RecipeDetail | null) {
-  if (!recipe) {
-    return <Loading indicatorStyle="light" />;
-  }
-  return (
-    <div className={styles.recipeDetail} onClick={(e) => e.stopPropagation()}>
+const ForwardedRecipeSection = forwardRef(RecipeSection);
+
+function RecipeSection(
+  {
+    onClose,
+    recipe,
+  }: {
+    onClose: () => void;
+    recipe?: RecipeDetail | null;
+  },
+  ref: Ref<HTMLDivElement>
+) {
+  return recipe ? (
+    <div
+      ref={ref}
+      className={styles.recipeDetail}
+      onClick={(e) => e.stopPropagation()}
+    >
       <CloseIcon className={styles.closeButton} onClick={onClose} />
       <Title title={recipe.title} size="large" />
       <Title title={"Ingredients"} size="medium" alignment="left" />
@@ -65,5 +111,7 @@ function RecipeSection(onClose: () => void, recipe?: RecipeDetail | null) {
       <Title title={"Preparation"} size="medium" alignment="left" />
       <div className={styles.instructions}>{recipe.instructions}</div>
     </div>
+  ) : (
+    <></>
   );
 }
