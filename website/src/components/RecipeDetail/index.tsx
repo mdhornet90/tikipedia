@@ -83,13 +83,13 @@ function RecipeSection(
       onClick={(e) => e.stopPropagation()}
     >
       <CloseIcon className={styles.closeButton} onClick={onClose} />
-      <Title title={recipe.title} size="large" />
+      <Title title={recipe.name} size="large" />
       <Title title={"Ingredients"} size="medium" alignment="left" />
       <div className={styles.ingredients}>
         {recipe.ingredients.map((ingredient, i) => (
           <React.Fragment key={i}>
             <span key={`amount-${i}`} className={styles.amount}>
-              {ingredient.amount}
+              {ingredient.quantity}
             </span>
             <span key={`unit-${i}`} className={styles.unit}>
               {ingredient.unit}
@@ -100,14 +100,18 @@ function RecipeSection(
           </React.Fragment>
         ))}
       </div>
-      <Title title={"Garnishes"} size="medium" alignment="left" />
-      <div className={styles.garnishes}>
-        {recipe.garnishes.map((g, i) => (
-          <div key={i}>{g}</div>
-        ))}
-      </div>
+      {recipe.garnishes && recipe.garnishes.length > 0 && (
+        <>
+          <Title title={"Garnishes"} size="medium" alignment="left" />
+          <div className={styles.garnishes}>
+            {recipe.garnishes.map((g, i) => (
+              <div key={i}>{g}</div>
+            ))}
+          </div>
+        </>
+      )}
       <Title title={"Glassware"} size="medium" alignment="left" />
-      <div className={styles.glassware}>{recipe.glassware}</div>
+      <div className={styles.glassware}>{recipe.glassware.name}</div>
       <Title title={"Preparation"} size="medium" alignment="left" />
       <div className={styles.instructions}>{recipe.instructions}</div>
     </div>

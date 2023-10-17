@@ -6,7 +6,7 @@ import CardArea from "../CardArea";
 import Loading from "../Loading";
 import Card from "../Card";
 import TikiHeader from "../TikiHeader";
-import { getRecipeDetail } from "../../api";
+import { getRecipeCards, getRecipeDetail } from "../../api";
 import RecipeDetail from "../RecipeDetail";
 
 export default function App() {
@@ -17,42 +17,19 @@ export default function App() {
   const [recipeDetail, setRecipeDetail] = useState<RecipeDetail | null>(null);
 
   useEffect(() => {
-    setTimeout(() => {
+    (async function () {
       if (isLoading) {
-        setCards([
-          {
-            id: "0",
-            title: "Daiquiri 1",
-            imageUrl:
-              "https://www.liquor.com/thmb/aLlM1JQiNiu0o2Mwx2n2AfOgoyw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Daiquiri_3000x3000_primary-206eb2330cb04852ab7d780dcf3d55ef.jpg",
-            tags: [{ title: "Lime" }, { title: "Sugar" }, { title: "Simple" }],
-          },
-          {
-            id: "1",
-            title: "Daiquiri 2",
-            imageUrl:
-              "https://www.liquor.com/thmb/aLlM1JQiNiu0o2Mwx2n2AfOgoyw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Daiquiri_3000x3000_primary-206eb2330cb04852ab7d780dcf3d55ef.jpg",
-            tags: [{ title: "Lime" }, { title: "Sugar" }, { title: "Simple" }],
-          },
-          {
-            id: "2",
-            title: "Daiquiri 3",
-            imageUrl:
-              "https://www.liquor.com/thmb/aLlM1JQiNiu0o2Mwx2n2AfOgoyw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Daiquiri_3000x3000_primary-206eb2330cb04852ab7d780dcf3d55ef.jpg",
-            tags: [{ title: "Lime" }, { title: "Sugar" }, { title: "Simple" }],
-          },
-        ]);
-
+        setCards(await getRecipeCards());
         setIsLoading(false);
       }
-    }, 1000);
+    })();
   }, [isLoading]);
 
   useEffect(() => {
     if (selectedId) {
-      setTimeout(() => {
-        setRecipeDetail(getRecipeDetail(selectedId));
-      }, 1000);
+      (async () => {
+        setRecipeDetail(await getRecipeDetail(selectedId));
+      })();
     } else {
       setRecipeDetail(null);
     }

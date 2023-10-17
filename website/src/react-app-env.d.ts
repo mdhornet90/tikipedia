@@ -1,28 +1,24 @@
 /// <reference types="react-scripts" />
 
-interface RecipeCard {
-  id: string;
-  title: string;
-  imageUrl: string;
-  tags: Tag[];
-}
-
 interface Tag {
   title: string;
 }
 
-interface RecipeDetail {}
+interface RecipeCard {
+  id: string;
+  name: string;
+}
 
 interface RecipeDetail {
-  title: string;
+  name: string;
   ingredients: Ingredient[];
-  garnishes: string[];
-  glassware: string;
+  garnishes?: string[];
+  glassware: { name: string };
   instructions: string;
 }
 
 interface Ingredient {
-  amount: string;
+  quantity: string;
   unit: string;
   name: string;
 }

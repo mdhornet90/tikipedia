@@ -1,16 +1,39 @@
-export const getRecipeDetail = (id: string) => getDummyRecipe(id);
+import { gql } from "@apollo/client";
+import { client } from "./ApolloClient";
 
-function getDummyRecipe(id: string): RecipeDetail {
-  return {
-    title: `Daiquiri ${parseInt(id) + 1}`,
-    ingredients: [
-      { amount: ".75", unit: "oz", name: "Demerara Rich Syrup" },
-      { amount: ".75", unit: "oz", name: "Lime Juice" },
-      { amount: "2", unit: "oz", name: "Rum Blend" },
-    ],
-    garnishes: ["dehydrated lime wheel"],
-    glassware: "Coupe",
-    instructions:
-      "Combine all ingredients in a shaker with ice. Shake vigorously and double strain into glass. Garnish by floating lime wheel on top.",
-  };
-}
+export const getRecipeCards = async (): Promise<RecipeCard[]> =>
+  client
+    .query({
+      query: gql`
+        query {
+          recipes {
+            id
+            name
+          }
+        }
+      `,
+    })
+    .then(({ data }) => data.recipes);
+
+export const getRecipeDetail = async (id: string): Promise<RecipeDetail> =>
+  client
+    .query({
+      query: gql`
+        query recipe($id: ID) {
+          recipe(id: $id) {
+            name
+            ingredients {
+              quantity
+              unit
+              name
+            }
+            glassware {
+              name
+            }
+            instructions
+          }
+        }
+      `,
+      variables: { id },
+    })
+    .then(({ data }) => data.recipe);
