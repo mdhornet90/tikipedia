@@ -1,14 +1,12 @@
-import TikiHeader from "../TikiHeader";
-import Title from "../Title";
+import TikiHeader from "../common/TikiHeader";
+import Title from "../common/Title";
 import styles from "./NoMatch.module.css";
 import notFound from "./not-found.png";
 export default function NoMatch() {
   return (
     <div>
       <header className={styles.header}>
-        <TikiHeader>
-          <Title title={"Tikipedia"} size="extraLarge" />
-        </TikiHeader>
+        <TikiHeader />
         <img
           className={styles.image}
           src={notFound}

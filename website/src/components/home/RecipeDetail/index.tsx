@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, forwardRef, Ref } from "react";
 import { CSSTransition } from "react-transition-group";
-import Title from "../Title";
+import Title from "../../common/Title";
 import styles from "./RecipeDetail.module.css";
 import CloseIcon from "@mui/icons-material/Close";
-import Loading from "../Loading";
+import Loading from "../../common/Loading";
 
 interface RecipeDetailProps {
   recipe?: RecipeDetail | null;

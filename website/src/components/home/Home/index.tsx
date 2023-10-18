@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./Home.module.css";
-import Title from "../Title";
 import CardArea from "../CardArea";
-import Loading from "../Loading";
+import Loading from "../../common/Loading";
 import Card from "../Card";
-import TikiHeader from "../TikiHeader";
-import { getRecipeCards, getRecipeDetail } from "../../api";
+import TikiHeader from "../../common/TikiHeader";
+import { getRecipeCards, getRecipeDetail } from "../../../api";
 import RecipeDetail from "../RecipeDetail";
 
 export default function Home() {
@@ -38,9 +37,7 @@ export default function Home() {
   return (
     <div>
       <header className={styles.header}>
-        <TikiHeader>
-          <Title title={"Tikipedia"} size="extraLarge" />
-        </TikiHeader>
+        <TikiHeader />
         {isLoading ? (
           <Loading indicatorStyle="dark" />
         ) : (

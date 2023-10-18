@@ -1,0 +1,51 @@
+.content {
+  background-image: linear-gradient(#009c85, white);
+  background-attachment: fixed;
+  /* font-size: calc(10px + 2vmin); */
+  color: #333;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 24px;
+  min-height: 100vh;
+}
+
+.adminArea {
+  width: 90%;
+  background: #eee;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.categories {
+  display: flex;
+  gap: 8px;
+  overflow-x: scroll;
+}
+
+.spreadsheetContainer {
+  height: calc(100vh - 220px);
+  overflow: scroll;
+  border: 1px solid #f3b85f;
+}
+
+.spreadsheet {
+  width: 100%;
+  padding: 8px;
+  border-collapse: collapse;
+}
+
+.spreadsheet thead tr th {
+  position: sticky;
+  top: 0;
+  background-color: #eee;
+  background-clip: padding-box;
+}
+
+.spreadsheetHeader > *:last-child {
+  border-right: none;
+}
+
+.spreadsheetBody > *:last-child * {
+  border-bottom: none;
+}

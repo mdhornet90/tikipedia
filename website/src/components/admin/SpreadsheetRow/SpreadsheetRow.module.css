@@ -1,0 +1,3 @@
+.spreadsheetRow > *:last-child {
+  border-right: none;
+}

@@ -1,0 +1,22 @@
+.categoryButton {
+  padding: 12px 24px;
+  display: flex;
+  font-size: 18px;
+  font-weight: 500;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: #f1ca8f;
+}
+
+.categoryButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.selected {
+  background: #f3b85f;
+}
+
+.selected:hover {
+  opacity: 1;
+}
