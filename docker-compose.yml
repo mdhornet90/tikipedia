@@ -13,7 +13,9 @@ services:
     volumes:
       - ./website:/app
       - /app/node_modules
-    # env_file: ./website/.env
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      WDS_SOCKET_PORT: 3001
   api:
     container_name: tiki_api
     build:
