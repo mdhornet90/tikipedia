@@ -20,8 +20,10 @@ export default function Admin() {
   return (
     <div className={styles.content}>
       <TikiHeader />
-      <Title title="Admin Page" size="large" />
       <div className={styles.adminArea}>
+        <div className={styles.adminAreaHeader}>
+          <Title title="Content Management" size="large" />
+        </div>
         <span className={styles.categories}>
           {categoryNames.map((title) => (
             <CategoryButton

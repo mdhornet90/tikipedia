@@ -1,7 +1,6 @@
 .header {
-  background-image: linear-gradient(#009c85, white);
+  background-image: linear-gradient(#009c85, #eee);
   background-attachment: fixed;
-  /* font-size: calc(10px + 2vmin); */
   color: #333;
   min-height: 100vh;
   display: flex;

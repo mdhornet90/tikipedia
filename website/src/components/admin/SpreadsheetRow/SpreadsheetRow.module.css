@@ -1,3 +1,11 @@
+.spreadsheetRow {
+  cursor: pointer;
+}
+
+.spreadsheetRow:hover {
+  background: #ddd;
+}
+
 .spreadsheetRow > *:last-child {
   border-right: none;
 }
