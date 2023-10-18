@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
 import TikiHeader from "../../common/TikiHeader";
 import Title from "../../common/Title";
 import CategoryButton from "../CategoryButton";
@@ -45,116 +46,19 @@ export default function Admin() {
               </SpreadsheetRow>
             </thead>
             <tbody className={styles.spreadsheetBody}>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
-              <SpreadsheetRow>
-                <SpreadsheetItem text="The Daiquiri" />
-                <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
-                <SpreadsheetItem text="Coupe" />
-                <SpreadsheetItem text="dehydrated lime wheel" />
-              </SpreadsheetRow>
+              {[...Array(20).keys()].map((i) => (
+                <SpreadsheetRow key={i}>
+                  <SpreadsheetItem text="The Daiquiri" />
+                  <SpreadsheetItem text="Demerara syrup, lime juice, rum" />
+                  <SpreadsheetItem text="Coupe" />
+                  <SpreadsheetItem text="dehydrated lime wheel" />
+                </SpreadsheetRow>
+              ))}
             </tbody>
           </table>
+          <div className={styles.addButton}>
+            <AddIcon className={styles.addIcon} />
+          </div>
         </div>
       </div>
     </div>

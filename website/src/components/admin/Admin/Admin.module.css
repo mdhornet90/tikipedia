@@ -14,6 +14,7 @@
   background: #eee;
   border-radius: 4px;
   padding: 12px;
+  position: relative;
 }
 
 .adminAreaHeader {
@@ -50,4 +51,33 @@
 
 .spreadsheetHeader > *:last-child {
   border-right: none;
+}
+
+.addButton {
+  position: absolute;
+  bottom: 5%;
+  right: 3%;
+  height: 60px;
+  width: 60px;
+  border-radius: 60px;
+  background: #f3b85f;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.addButton:hover {
+  cursor: pointer;
+  background: #f49d1b;
+}
+
+.addButton:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.addIcon {
+  color: #eee;
+  font-size: 48px;
 }
