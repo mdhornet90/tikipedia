@@ -5,6 +5,7 @@ import TikiHeader from "../../common/TikiHeader";
 import Title from "../../common/Title";
 import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
+import EditingModal from "../EditingModal";
 
 export default function Admin() {
   const categoryNames = [
@@ -14,6 +15,7 @@ export default function Admin() {
     "Garnishes",
     "Tags",
   ];
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div className={styles.content}>
@@ -23,8 +25,9 @@ export default function Admin() {
           <Title title="Content Management" size="large" />
         </div>
         <CategorySwitcher categoryNames={categoryNames} onSelect={() => {}} />
-        <Spreadsheet />
+        <Spreadsheet onAdd={() => setModalOpen(true)} />
       </div>
+      <EditingModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }

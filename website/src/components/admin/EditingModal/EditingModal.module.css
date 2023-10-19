@@ -1,0 +1,16 @@
+.editingModal {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  right: -50%;
+  background-color: #eeeeee9f;
+  backdrop-filter: blur(20px);
+  box-shadow: -0.5px 0px 12px #aaa;
+  width: 50%;
+  transition: right 0.3s ease-in-out;
+  z-index: 2;
+}
+
+.show {
+  right: 0;
+}

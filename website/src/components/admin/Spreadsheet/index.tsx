@@ -4,7 +4,11 @@ import SpreadsheetItem from "./SpreadsheetItem";
 import SpreadsheetRow from "./SpreadsheetRow";
 import SpreadsheetTitle from "./SpreadsheetTitle";
 
-export default function Spreadsheet() {
+interface SpreadsheetProps {
+  onAdd: () => void;
+}
+
+export default function Spreadsheet({ onAdd }: SpreadsheetProps) {
   return (
     <div className={styles.spreadsheet}>
       <table className={styles.spreadsheetGrid}>
@@ -27,7 +31,7 @@ export default function Spreadsheet() {
           ))}
         </tbody>
       </table>
-      <div className={styles.addButton}>
+      <div className={styles.addButton} onClick={onAdd}>
         <AddIcon className={styles.addIcon} />
       </div>
     </div>

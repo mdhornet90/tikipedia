@@ -10,10 +10,7 @@ interface RecipeDetailProps {
   onClose: () => void;
 }
 
-const ForwardedRecipeDetail = forwardRef(RecipeDetail);
-export default ForwardedRecipeDetail;
-
-function RecipeDetail(
+export default forwardRef(function (
   { recipe, onClose }: RecipeDetailProps,
   ref: Ref<HTMLDivElement>
 ) {
@@ -51,22 +48,16 @@ function RecipeDetail(
         unmountOnExit={true}
       >
         {showRecipe ? (
-          <ForwardedRecipeSection
-            ref={innerRef}
-            onClose={onClose}
-            recipe={recipe}
-          />
+          <RecipeSection ref={innerRef} onClose={onClose} recipe={recipe} />
         ) : (
           <></>
         )}
       </CSSTransition>
     </div>
   );
-}
+});
 
-const ForwardedRecipeSection = forwardRef(RecipeSection);
-
-function RecipeSection(
+const RecipeSection = forwardRef(function (
   {
     onClose,
     recipe,
@@ -118,4 +109,4 @@ function RecipeSection(
   ) : (
     <></>
   );
-}
+});
