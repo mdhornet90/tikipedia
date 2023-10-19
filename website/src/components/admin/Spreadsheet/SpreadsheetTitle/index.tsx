@@ -1,4 +1,4 @@
-import Title from "../../common/Title";
+import Title from "../../../common/Title";
 import styles from "./SpreadsheetTitle.module.css";
 
 export default function SpreadsheetTitle({ title }: { title: string }) {
