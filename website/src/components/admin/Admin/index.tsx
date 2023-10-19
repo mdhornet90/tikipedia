@@ -1,8 +1,9 @@
 import { useState } from "react";
+import styles from "./Admin.module.css";
+
 import TikiHeader from "../../common/TikiHeader";
 import Title from "../../common/Title";
-import CategoryButton from "../CategoryButton";
-import styles from "./Admin.module.css";
+import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
 
 export default function Admin() {
@@ -13,7 +14,6 @@ export default function Admin() {
     "Garnishes",
     "Tags",
   ];
-  const [selectedId, setSelectedId] = useState("recipes");
 
   return (
     <div className={styles.content}>
@@ -22,16 +22,7 @@ export default function Admin() {
         <div className={styles.adminAreaHeader}>
           <Title title="Content Management" size="large" />
         </div>
-        <span className={styles.categories}>
-          {categoryNames.map((title) => (
-            <CategoryButton
-              key={title.toLowerCase()}
-              title={title}
-              selected={title.toLowerCase() === selectedId}
-              onClick={() => setSelectedId(title.toLowerCase())}
-            />
-          ))}
-        </span>
+        <CategorySwitcher categoryNames={categoryNames} onSelect={() => {}} />
         <Spreadsheet />
       </div>
     </div>

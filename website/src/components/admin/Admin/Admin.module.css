@@ -23,9 +23,3 @@
   flex-flow: column;
   margin-bottom: 24px;
 }
-
-.categories {
-  display: flex;
-  gap: 8px;
-  overflow-x: scroll;
-}
