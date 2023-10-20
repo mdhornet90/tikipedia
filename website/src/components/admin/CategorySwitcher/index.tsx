@@ -4,14 +4,16 @@ import styles from "./CategorySwitcher.module.css";
 
 interface CategorySwitcherProps {
   categoryNames: string[];
+  defaultTab?: number;
   onSelect: (id: number) => void;
 }
 
 export default function CategorySwitcher({
   categoryNames,
+  defaultTab = 0,
   onSelect,
 }: CategorySwitcherProps) {
-  const [selectedId, setSelectedId] = useState(0);
+  const [selectedId, setSelectedId] = useState(defaultTab);
 
   return (
     <span className={styles.categories}>

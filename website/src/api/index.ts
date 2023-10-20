@@ -38,3 +38,21 @@ export const getRecipeDetail = async (id: string): Promise<RecipeDetail> =>
       variables: { id },
     })
     .then(({ data }) => data.recipe);
+
+export const GetAllIngredients = gql`
+  query ingredients {
+    ingredients {
+      name
+      abv
+    }
+  }
+`;
+
+export const CreateIngredient = gql`
+  mutation createIngredient($input: IngredientInput) {
+    createIngredient(input: $input) {
+      name
+      abv
+    }
+  }
+`;

@@ -7,17 +7,20 @@ import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
 import EditingModal from "../EditingModal";
 import { SingleFieldModificationPanel } from "../ModificationPanel";
+import { useQuery } from "@apollo/client";
+import { GetAllIngredients } from "../../../api";
 
 export default function Admin() {
   const categoryNames = [
-    "Recipes",
+    // "Recipes",
     "Ingredients",
-    "Glassware",
-    "Garnishes",
-    "Tags",
+    // "Glassware",
+    // "Garnishes",
+    // "Tags",
   ];
+  const { data: ingredientsData } =
+    useQuery<ApiData.AllIngredients>(GetAllIngredients);
   const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <div className={styles.content}>
       <TikiHeader />
@@ -26,15 +29,20 @@ export default function Admin() {
           <Title title="Content Management" size="large" />
         </div>
         <CategorySwitcher categoryNames={categoryNames} onSelect={() => {}} />
-        <Spreadsheet onAdd={() => setModalOpen(true)} />
+        <Spreadsheet
+          data={ingredientsData?.ingredients ?? []}
+          onAdd={() => setModalOpen(true)}
+        />
       </div>
       <EditingModal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <SingleFieldModificationPanel
-          panelTitle="Add Ingredient"
-          fieldName="Ingredient Name"
-          validationRule={(value) => value.length > 0}
-          onSave={() => {}}
-        />
+        {modalOpen && (
+          <SingleFieldModificationPanel
+            panelTitle="Add Ingredient"
+            fieldName="Ingredient Name"
+            validationRule={(value) => value.length > 0}
+            onSave={() => {}}
+          />
+        )}
       </EditingModal>
     </div>
   );

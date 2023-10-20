@@ -13,14 +13,25 @@ interface RecipeCard {
 
 interface RecipeDetail {
   title: string;
-  ingredients: Ingredient[];
+  ingredients: RecipeIngredient[];
   garnishes?: string[];
   glassware: { name: string };
   instructions: string;
 }
 
-interface Ingredient {
+interface RecipeIngredient {
   quantity: string;
   unit: string;
   name: string;
+}
+
+interface Ingredient {
+  name: string;
+  abv?: number;
+}
+
+declare module ApiData {
+  interface AllIngredients {
+    ingredients: Ingredient[];
+  }
 }
