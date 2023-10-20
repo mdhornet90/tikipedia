@@ -8,6 +8,14 @@
 
 .inputArea {
   width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.formField {
+  width: 100%;
 }
 
 .input {

@@ -9,7 +9,7 @@ import EditingModal from "../EditingModal";
 import { SingleFieldModificationPanel } from "../ModificationPanel";
 import { useQuery } from "@apollo/client";
 import { GetAllIngredients } from "../../../api";
-
+import { GenericFormFieldConfiguration } from "../../../data/formConfiguration";
 export default function Admin() {
   const categoryNames = [
     // "Recipes",
@@ -38,8 +38,16 @@ export default function Admin() {
         {modalOpen && (
           <SingleFieldModificationPanel
             panelTitle="Add Ingredient"
-            fieldName="Ingredient Name"
-            validationRule={(value) => value.length > 0}
+            fields={[
+              {
+                name: "Name",
+                initialValue: "",
+                validationRule: (value) => value.length > 0,
+              } as GenericFormFieldConfiguration<string>,
+              {
+                name: "ABV",
+              } as GenericFormFieldConfiguration<number>,
+            ]}
             onSave={() => {}}
           />
         )}
