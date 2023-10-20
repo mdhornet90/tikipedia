@@ -6,6 +6,7 @@ import Title from "../../common/Title";
 import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
 import EditingModal from "../EditingModal";
+import { SingleFieldModificationPanel } from "../ModificationPanel";
 
 export default function Admin() {
   const categoryNames = [
@@ -27,7 +28,14 @@ export default function Admin() {
         <CategorySwitcher categoryNames={categoryNames} onSelect={() => {}} />
         <Spreadsheet onAdd={() => setModalOpen(true)} />
       </div>
-      <EditingModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <EditingModal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <SingleFieldModificationPanel
+          panelTitle="Add Ingredient"
+          fieldName="Ingredient Name"
+          validationRule={(value) => value.length > 0}
+          onSave={() => {}}
+        />
+      </EditingModal>
     </div>
   );
 }

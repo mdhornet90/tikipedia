@@ -2,15 +2,24 @@
   position: fixed;
   height: 100vh;
   top: 0;
-  right: -50%;
+  right: -75%;
   background-color: #eeeeee9f;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
   box-shadow: 13px 0px 18px #333;
   width: 50%;
   transition: right 0.3s ease-in-out;
   z-index: 2;
+  padding: 16px;
 }
 
 .show {
   right: 0;
+}
+
+.closeButton {
+  width: 100%;
+}
+
+.closeButton:hover {
+  cursor: pointer;
 }
