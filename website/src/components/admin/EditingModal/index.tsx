@@ -26,19 +26,17 @@ export default function EditingModal({
         fontSize="large"
         onClick={onClose}
       />
-      <form
-        className={styles.content}
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSave();
-        }}
-      >
+      <div className={styles.content}>
         <Title title={title} size="large" />
         <div className={styles.inputArea}>{children}</div>
-        <button className={styles.saveButton} disabled={!formValid}>
+        <button
+          className={styles.saveButton}
+          disabled={!formValid}
+          onClick={onSave}
+        >
           Save
         </button>
-      </form>
+      </div>
     </div>
   );
 }

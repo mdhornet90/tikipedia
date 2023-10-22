@@ -49,7 +49,7 @@ export const GetAllIngredients = gql`
 `;
 
 export const CreateIngredient = gql`
-  mutation createIngredient($input: IngredientInput) {
+  mutation createIngredient($input: IngredientInput!) {
     createIngredient(input: $input) {
       name
       abv

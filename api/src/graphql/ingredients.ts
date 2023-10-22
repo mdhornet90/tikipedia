@@ -8,7 +8,7 @@ export const typeDef = `#graphql
   type Ingredient {
     id: ID!
     name: String!
-    abv: Float!
+    abv: Float
   }
   input IngredientInput {
     name: String!
