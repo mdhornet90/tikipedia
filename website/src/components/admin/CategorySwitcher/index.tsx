@@ -3,28 +3,31 @@ import CategoryButton from "./CategoryButton";
 import styles from "./CategorySwitcher.module.css";
 
 interface CategorySwitcherProps {
-  categoryNames: string[];
-  defaultTab?: number;
-  onSelect: (id: number) => void;
+  defaultTab?: Admin.CategoryId;
+  onSelect: (id: Admin.CategoryId) => void;
 }
 
 export default function CategorySwitcher({
-  categoryNames,
-  defaultTab = 0,
+  defaultTab = "ingredients",
   onSelect,
 }: CategorySwitcherProps) {
+  const categories: { id: Admin.CategoryId; name: string }[] = [
+    { id: "ingredients", name: "Ingredients" },
+    { id: "glassware", name: "Glassware" },
+  ];
+
   const [selectedId, setSelectedId] = useState(defaultTab);
 
   return (
     <span className={styles.categories}>
-      {categoryNames.map((title, i) => (
+      {categories.map(({ id, name }, i) => (
         <CategoryButton
           key={i}
-          title={title}
-          selected={i === selectedId}
+          title={name}
+          selected={id === selectedId}
           onClick={() => {
-            setSelectedId(i);
-            onSelect(i);
+            setSelectedId(id);
+            onSelect(id);
           }}
         />
       ))}

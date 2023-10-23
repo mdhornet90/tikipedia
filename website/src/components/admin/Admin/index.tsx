@@ -6,25 +6,20 @@ import Title from "../../common/Title";
 import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
 import EditingModal from "../EditingModal";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { CreateIngredient, GetAllIngredients } from "../../../api";
 import { FormField } from "../FormField";
+import useAdminState from "../../../hooks/useAdminState";
 
 interface IngredientForm {
   name: string;
   abv: string | null;
 }
 export default function Admin() {
-  const categoryNames = [
-    // "Recipes",
-    "Ingredients",
-    // "Glassware",
-    // "Garnishes",
-    // "Tags",
-  ];
-  const { data: ingredientsData } =
-    useQuery<ApiData.AllIngredients>(GetAllIngredients);
-  const [addIngredient] = useMutation(CreateIngredient);
+  const { form, updateCategoryId } = useAdminState("ingredients");
+  const [addIngredient] = useMutation(CreateIngredient, {
+    refetchQueries: [GetAllIngredients],
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [formData, setFormData] = useState<IngredientForm>({
@@ -43,9 +38,10 @@ export default function Admin() {
         <div className={styles.adminAreaHeader}>
           <Title title="Content Management" size="large" />
         </div>
-        <CategorySwitcher categoryNames={categoryNames} onSelect={() => {}} />
+        <CategorySwitcher onSelect={updateCategoryId} />
         <Spreadsheet
-          data={ingredientsData?.ingredients ?? []}
+          headers={form?.spreadsheetHeaders ?? []}
+          data={form?.spreadsheetData ?? []}
           onAdd={() => setModalOpen(true)}
         />
       </div>
@@ -53,7 +49,13 @@ export default function Admin() {
         open={modalOpen}
         title="Add Ingredient"
         formValid={formValid}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setFormData({
+            name: "",
+            abv: null,
+          });
+          setModalOpen(false);
+        }}
         onSave={async () => {
           const input = {
             ...formData,

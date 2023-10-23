@@ -5,25 +5,32 @@ import SpreadsheetRow from "./SpreadsheetRow";
 import SpreadsheetTitle from "./SpreadsheetTitle";
 
 interface SpreadsheetProps {
-  data: Ingredient[];
+  headers: string[];
+  data: Admin.SpreadsheetRowData[];
   onAdd: () => void;
 }
 
-export default function Spreadsheet({ data, onAdd }: SpreadsheetProps) {
+export default function Spreadsheet({
+  headers,
+  data,
+  onAdd,
+}: SpreadsheetProps) {
   return (
     <div className={styles.spreadsheet}>
       <table className={styles.spreadsheetGrid}>
         <thead>
           <SpreadsheetRow>
-            <SpreadsheetTitle title="Name" />
-            <SpreadsheetTitle title="ABV" />
+            {headers.map((header, i) => (
+              <SpreadsheetTitle key={i} title={header} />
+            ))}
           </SpreadsheetRow>
         </thead>
         <tbody className={styles.spreadsheetBody}>
-          {data.map((ingredient, i) => (
+          {data.map((item, i) => (
             <SpreadsheetRow key={i}>
-              <SpreadsheetItem text={ingredient.name} />
-              <SpreadsheetItem text={ingredient.abv?.toString() ?? ""} />
+              {item.data.map((name, i) => (
+                <SpreadsheetItem key={i} text={name?.toString() ?? ""} />
+              ))}
             </SpreadsheetRow>
           ))}
         </tbody>

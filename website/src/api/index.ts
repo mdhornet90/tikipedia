@@ -42,6 +42,7 @@ export const getRecipeDetail = async (id: string): Promise<RecipeDetail> =>
 export const GetAllIngredients = gql`
   query ingredients {
     ingredients {
+      id
       name
       abv
     }
@@ -53,6 +54,15 @@ export const CreateIngredient = gql`
     createIngredient(input: $input) {
       name
       abv
+    }
+  }
+`;
+
+export const GetAllGlassware = gql`
+  query glassware {
+    allGlassware {
+      id
+      name
     }
   }
 `;
