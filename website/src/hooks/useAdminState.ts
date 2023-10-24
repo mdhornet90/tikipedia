@@ -10,19 +10,29 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
         id,
         data: [name, abv],
       })) ?? [],
+    emptyFormState: {
+      name: "",
+      abv: "",
+    },
   },
   glassware: {
     displayTransform: (data: ApiData.AllGlassware) =>
       data.allGlassware.map(({ id, name }) => ({ id, data: [name] })) ?? [],
+    emptyFormState: {
+      name: "",
+    },
   },
 };
 
 export default function useAdminState(
   initialId: Admin.CategoryId
-): Admin.FormInteraction {
+): Admin.Interaction {
   const [currentId, updateCategoryId] = useState<Admin.CategoryId>(initialId);
   const { loading, data: currentData } = useAdminQuery(currentId);
-  const [formState, setFormState] = useState<Admin.FormState | null>(null);
+  const [spreadsheet, setSpreadsheet] = useState<Admin.SpreadsheetState | null>(
+    null
+  );
+  const [form, setForm] = useState<Admin.FormState | null>(null);
 
   useEffect(() => {
     if (loading || !currentData) {
@@ -39,13 +49,61 @@ export default function useAdminState(
         break;
     }
 
-    setFormState({
+    setSpreadsheet({
       spreadsheetHeaders,
       spreadsheetData: dataInteraction[currentId].displayTransform(currentData),
     });
   }, [loading, currentId, currentData]);
 
-  return { form: formState, updateCategoryId };
+  const initializeForm = (id?: string) => {
+    let title: string;
+    let formFields: Admin.FormField[];
+    switch (currentId) {
+      case "ingredients":
+        title = "Add Ingredient";
+        formFields = [
+          { key: "name", name: "Name" },
+          { key: "abv", name: "Abv (%)" },
+        ];
+        break;
+      case "glassware":
+        title = "Add Glassware";
+        formFields = [{ key: "name", name: "Name" }];
+        break;
+    }
+
+    setForm({
+      title,
+      formFields,
+      formValues: dataInteraction[currentId].emptyFormState,
+      valid: false,
+    });
+  };
+  const clearForm = () => {
+    setForm(null);
+  };
+  const updateForm = (key: string, value: string | null) => {
+    setForm(
+      form && {
+        ...form,
+        formValues: {
+          ...form.formValues,
+          [key]: value,
+        },
+      }
+    );
+  };
+
+  return {
+    spreadsheet,
+    form,
+    actions: {
+      updateCategoryId,
+      initializeForm,
+      updateForm,
+      clearForm,
+    },
+  };
 }
 
 function useAdminQuery(id: Admin.CategoryId): QueryResult {

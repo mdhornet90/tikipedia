@@ -11,25 +11,25 @@ import { CreateIngredient, GetAllIngredients } from "../../../api";
 import { FormField } from "../FormField";
 import useAdminState from "../../../hooks/useAdminState";
 
-interface IngredientForm {
-  name: string;
-  abv: string | null;
-}
+type ModalState = "closed" | "opening" | "open" | "closing";
+
 export default function Admin() {
-  const { form, updateCategoryId } = useAdminState("ingredients");
-  const [addIngredient] = useMutation(CreateIngredient, {
-    refetchQueries: [GetAllIngredients],
-  });
-  const [modalOpen, setModalOpen] = useState(false);
-  const [formValid, setFormValid] = useState(false);
-  const [formData, setFormData] = useState<IngredientForm>({
-    name: "",
-    abv: null,
-  });
+  const {
+    spreadsheet,
+    form,
+    actions: { updateCategoryId, initializeForm, updateForm, clearForm },
+  } = useAdminState("ingredients");
+  const [modalState, setModalState] = useState<ModalState>("closed");
 
   useEffect(() => {
-    setFormValid(validateForm(formData));
-  }, [formData, setFormValid]);
+    if (modalState === "opening") {
+      initializeForm();
+      setModalState("open");
+    } else if (modalState === "closing") {
+      clearForm();
+      setModalState("closed");
+    }
+  }, [modalState, initializeForm, clearForm]);
 
   return (
     <div className={styles.content}>
@@ -40,67 +40,60 @@ export default function Admin() {
         </div>
         <CategorySwitcher onSelect={updateCategoryId} />
         <Spreadsheet
-          headers={form?.spreadsheetHeaders ?? []}
-          data={form?.spreadsheetData ?? []}
-          onAdd={() => setModalOpen(true)}
+          headers={spreadsheet?.spreadsheetHeaders ?? []}
+          data={spreadsheet?.spreadsheetData ?? []}
+          onAdd={() => setModalState("opening")}
         />
       </div>
       <EditingModal
-        open={modalOpen}
-        title="Add Ingredient"
-        formValid={formValid}
+        open={modalState === "open"}
+        title={form?.title ?? ""}
+        formValid={form?.valid ?? false}
         onClose={() => {
-          setFormData({
-            name: "",
-            abv: null,
-          });
-          setModalOpen(false);
+          setModalState("closing");
         }}
         onSave={async () => {
-          const input = {
-            ...formData,
-            abv: formData.abv && parseFloat(formData.abv) / 100,
-          };
-          addIngredient({ variables: { input } });
-          setFormData({
-            name: "",
-            abv: null,
-          });
-          setModalOpen(false);
+          // const input = {
+          //   ...formData,
+          //   abv: formData.abv && parseFloat(formData.abv) / 100,
+          // };
+          // addIngredient({ variables: { input } });
+          // setFormData({
+          //   name: "",
+          //   abv: null,
+          // });
+          // setModalOpen(false);
         }}
       >
-        <FormField
-          name="Name"
-          value={formData.name}
-          onUpdate={(newName) => {
-            setFormData({ ...formData, name: newName });
-          }}
-        />
-        <FormField
-          name="Abv (%)"
-          value={formData.abv ?? ""}
-          onUpdate={(newAbv) => {
-            setFormData({ ...formData, abv: newAbv });
-          }}
-        />
+        {form &&
+          form.formFields.map(({ key, name }) => (
+            <FormField
+              key={key}
+              name={name}
+              value={form.formValues[key] ?? ""}
+              onUpdate={(newValue) => {
+                updateForm(key, newValue);
+              }}
+            />
+          ))}
       </EditingModal>
     </div>
   );
 }
 
-function validateForm(form: IngredientForm): boolean {
-  if (form.name.length <= 0) {
-    return false;
-  }
+// function validateForm(form: IngredientForm): boolean {
+//   if (form.name.length <= 0) {
+//     return false;
+//   }
 
-  try {
-    const normalizedNumber = Number(form.abv);
-    return (
-      !isNaN(normalizedNumber) &&
-      normalizedNumber >= 0 &&
-      normalizedNumber <= 100
-    );
-  } catch {
-    return false;
-  }
-}
+//   try {
+//     const normalizedNumber = Number(form.abv);
+//     return (
+//       !isNaN(normalizedNumber) &&
+//       normalizedNumber >= 0 &&
+//       normalizedNumber <= 100
+//     );
+//   } catch {
+//     return false;
+//   }
+// }

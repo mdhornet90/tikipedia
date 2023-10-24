@@ -48,20 +48,46 @@ declare module ApiData {
 declare module Admin {
   type CategoryId = "ingredients" | "glassware";
 
-  interface SpreadsheetRowData {
-    id: string;
-    data: Array<string | number | undefined>;
-  }
   interface DataInteraction {
     displayTransform: (data: T) => Admin.SpreadsheetRowData[];
+    emptyFormState: Record<string, string>;
   }
-  interface FormState {
+
+  interface SpreadsheetRowData {
+    id: string;
+    data: (string | number | undefined)[];
+  }
+
+  interface SpreadsheetState {
     spreadsheetHeaders: string[];
     spreadsheetData: SpreadsheetRowData[];
   }
 
-  interface FormInteraction {
+  interface FormField {
+    key: string;
+    name: string;
+  }
+
+  interface FormState {
+    title: string;
+    valid: boolean;
+    formValues: Record<string, string | null>;
+    formFields: FormField[];
+  }
+
+  interface FormActions {
     updateCategoryId: (categoryId: Admin.CategoryId) => void;
+    initializeForm: (id?: string) => void;
+    clearForm: () => void;
+    updateForm(
+      key: keyof FormState.formValues,
+      value: (typeof FormState.formValues)[keyof FormState.formValues]
+    );
+  }
+
+  interface Interaction {
+    spreadsheet: SpreadsheetState | null;
     form: FormState | null;
+    actions: FormActions;
   }
 }
