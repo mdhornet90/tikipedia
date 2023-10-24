@@ -40,15 +40,15 @@ export default function Admin() {
         </div>
         <CategorySwitcher onSelect={updateCategoryId} />
         <Spreadsheet
-          headers={spreadsheet?.spreadsheetHeaders ?? []}
-          data={spreadsheet?.spreadsheetData ?? []}
+          headers={spreadsheet.spreadsheetHeaders}
+          data={spreadsheet.spreadsheetData}
           onAdd={() => setModalState("opening")}
         />
       </div>
       <EditingModal
         open={modalState === "open"}
-        title={form?.title ?? ""}
-        formValid={form?.valid ?? false}
+        title={form.title}
+        formValid={form.valid}
         onClose={() => {
           setModalState("closing");
         }}
@@ -65,17 +65,16 @@ export default function Admin() {
           // setModalOpen(false);
         }}
       >
-        {form &&
-          form.formFields.map(({ key, name }) => (
-            <FormField
-              key={key}
-              name={name}
-              value={form.formValues[key] ?? ""}
-              onUpdate={(newValue) => {
-                updateForm(key, newValue);
-              }}
-            />
-          ))}
+        {form.formFields.map(({ key, name }) => (
+          <FormField
+            key={key}
+            name={name}
+            value={form.formValues[key] ?? ""}
+            onUpdate={(newValue) => {
+              updateForm(key, newValue);
+            }}
+          />
+        ))}
       </EditingModal>
     </div>
   );

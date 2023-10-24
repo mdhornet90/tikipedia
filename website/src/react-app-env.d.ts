@@ -71,7 +71,7 @@ declare module Admin {
   interface FormState {
     title: string;
     valid: boolean;
-    formValues: Record<string, string | null>;
+    formValues: Record<string, string>;
     formFields: FormField[];
   }
 
@@ -86,8 +86,8 @@ declare module Admin {
   }
 
   interface Interaction {
-    spreadsheet: SpreadsheetState | null;
-    form: FormState | null;
+    spreadsheet: SpreadsheetState;
+    form: FormState;
     actions: FormActions;
   }
 }

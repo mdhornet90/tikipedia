@@ -3,13 +3,20 @@ import { useState, useEffect } from "react";
 import { GetAllGlassware, GetAllIngredients } from "../api";
 import { useQuery } from "@apollo/client";
 
+const EMPTY_FORM: Admin.FormState = {
+  title: "",
+  valid: false,
+  formFields: [],
+  formValues: {},
+};
+
 const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
   ingredients: {
     displayTransform: (data: ApiData.AllIngredients) =>
       data.ingredients.map(({ id, name, abv }) => ({
         id,
         data: [name, abv],
-      })) ?? [],
+      })),
     emptyFormState: {
       name: "",
       abv: "",
@@ -17,7 +24,7 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
   },
   glassware: {
     displayTransform: (data: ApiData.AllGlassware) =>
-      data.allGlassware.map(({ id, name }) => ({ id, data: [name] })) ?? [],
+      data.allGlassware.map(({ id, name }) => ({ id, data: [name] })),
     emptyFormState: {
       name: "",
     },
@@ -29,10 +36,11 @@ export default function useAdminState(
 ): Admin.Interaction {
   const [currentId, updateCategoryId] = useState<Admin.CategoryId>(initialId);
   const { loading, data: currentData } = useAdminQuery(currentId);
-  const [spreadsheet, setSpreadsheet] = useState<Admin.SpreadsheetState | null>(
-    null
-  );
-  const [form, setForm] = useState<Admin.FormState | null>(null);
+  const [spreadsheet, setSpreadsheet] = useState<Admin.SpreadsheetState>({
+    spreadsheetHeaders: [],
+    spreadsheetData: [],
+  });
+  const [form, setForm] = useState<Admin.FormState>(EMPTY_FORM);
 
   useEffect(() => {
     if (loading || !currentData) {
@@ -80,18 +88,16 @@ export default function useAdminState(
     });
   };
   const clearForm = () => {
-    setForm(null);
+    setForm(EMPTY_FORM);
   };
-  const updateForm = (key: string, value: string | null) => {
-    setForm(
-      form && {
-        ...form,
-        formValues: {
-          ...form.formValues,
-          [key]: value,
-        },
-      }
-    );
+  const updateForm = (key: string, value: string) => {
+    setForm({
+      ...form,
+      formValues: {
+        ...form.formValues,
+        [key]: value,
+      },
+    });
   };
 
   return {
