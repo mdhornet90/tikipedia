@@ -51,6 +51,7 @@ declare module Admin {
   interface DataInteraction {
     displayTransform: (data: T) => Admin.SpreadsheetRowData[];
     emptyFormState: Record<string, string>;
+    validateForm: (values: Record<string, string>) => boolean;
   }
 
   interface SpreadsheetRowData {

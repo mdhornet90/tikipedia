@@ -21,6 +21,22 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
       name: "",
       abv: "",
     },
+    validateForm: ({ name, abv }) => {
+      if (name.length <= 0) {
+        return false;
+      }
+
+      try {
+        const normalizedNumber = Number(abv);
+        return (
+          !isNaN(normalizedNumber) &&
+          normalizedNumber >= 0 &&
+          normalizedNumber <= 100
+        );
+      } catch {
+        return false;
+      }
+    },
   },
   glassware: {
     displayTransform: (data: ApiData.AllGlassware) =>
@@ -28,6 +44,7 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
     emptyFormState: {
       name: "",
     },
+    validateForm: ({ name }) => name.length > 0,
   },
 };
 
@@ -91,12 +108,15 @@ export default function useAdminState(
     setForm(EMPTY_FORM);
   };
   const updateForm = (key: string, value: string) => {
+    const updatedFormValues = {
+      ...form.formValues,
+      [key]: value,
+    };
+
     setForm({
       ...form,
-      formValues: {
-        ...form.formValues,
-        [key]: value,
-      },
+      formValues: updatedFormValues,
+      valid: dataInteraction[currentId].validateForm(updatedFormValues),
     });
   };
 
