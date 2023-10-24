@@ -6,8 +6,6 @@ import Title from "../../common/Title";
 import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
 import EditingModal from "../EditingModal";
-import { useMutation } from "@apollo/client";
-import { CreateIngredient, GetAllIngredients } from "../../../api";
 import { FormField } from "../FormField";
 import useAdminState from "../../../hooks/useAdminState";
 
@@ -17,7 +15,13 @@ export default function Admin() {
   const {
     spreadsheet,
     form,
-    actions: { updateCategoryId, initializeForm, updateForm, clearForm },
+    actions: {
+      updateCategoryId,
+      initializeForm,
+      updateForm,
+      saveForm,
+      clearForm,
+    },
   } = useAdminState("ingredients");
   const [modalState, setModalState] = useState<ModalState>("closed");
 
@@ -53,16 +57,8 @@ export default function Admin() {
           setModalState("closing");
         }}
         onSave={async () => {
-          // const input = {
-          //   ...formData,
-          //   abv: formData.abv && parseFloat(formData.abv) / 100,
-          // };
-          // addIngredient({ variables: { input } });
-          // setFormData({
-          //   name: "",
-          //   abv: null,
-          // });
-          // setModalOpen(false);
+          saveForm();
+          setModalState("closing");
         }}
       >
         {form.formFields.map(({ key, name }) => (
@@ -79,20 +75,3 @@ export default function Admin() {
     </div>
   );
 }
-
-// function validateForm(form: IngredientForm): boolean {
-//   if (form.name.length <= 0) {
-//     return false;
-//   }
-
-//   try {
-//     const normalizedNumber = Number(form.abv);
-//     return (
-//       !isNaN(normalizedNumber) &&
-//       normalizedNumber >= 0 &&
-//       normalizedNumber <= 100
-//     );
-//   } catch {
-//     return false;
-//   }
-// }

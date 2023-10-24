@@ -52,6 +52,9 @@ declare module Admin {
     displayTransform: (data: T) => Admin.SpreadsheetRowData[];
     emptyFormState: Record<string, string>;
     validateForm: (values: Record<string, string>) => boolean;
+    createMutationInput: (
+      values: Record<string, string>
+    ) => Record<string, any>;
   }
 
   interface SpreadsheetRowData {
@@ -80,10 +83,8 @@ declare module Admin {
     updateCategoryId: (categoryId: Admin.CategoryId) => void;
     initializeForm: (id?: string) => void;
     clearForm: () => void;
-    updateForm(
-      key: keyof FormState.formValues,
-      value: (typeof FormState.formValues)[keyof FormState.formValues]
-    );
+    updateForm: (key: string, value: string) => void;
+    saveForm: () => void;
   }
 
   interface Interaction {

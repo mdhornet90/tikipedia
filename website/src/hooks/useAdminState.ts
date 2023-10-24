@@ -1,6 +1,11 @@
-import { QueryResult } from "@apollo/client";
+import { MutationTuple, QueryResult, useMutation } from "@apollo/client";
 import { useState, useEffect } from "react";
-import { GetAllGlassware, GetAllIngredients } from "../api";
+import {
+  CreateGlassware,
+  CreateIngredient,
+  GetAllGlassware,
+  GetAllIngredients,
+} from "../api";
 import { useQuery } from "@apollo/client";
 
 const EMPTY_FORM: Admin.FormState = {
@@ -15,7 +20,7 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
     displayTransform: (data: ApiData.AllIngredients) =>
       data.ingredients.map(({ id, name, abv }) => ({
         id,
-        data: [name, abv],
+        data: [name, abv && (abv * 100).toPrecision(2)],
       })),
     emptyFormState: {
       name: "",
@@ -37,6 +42,10 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
         return false;
       }
     },
+    createMutationInput: ({ name, abv }) => ({
+      name,
+      abv: abv && parseFloat(abv) / 100,
+    }),
   },
   glassware: {
     displayTransform: (data: ApiData.AllGlassware) =>
@@ -45,6 +54,7 @@ const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
       name: "",
     },
     validateForm: ({ name }) => name.length > 0,
+    createMutationInput: (form) => form,
   },
 };
 
@@ -53,6 +63,7 @@ export default function useAdminState(
 ): Admin.Interaction {
   const [currentId, updateCategoryId] = useState<Admin.CategoryId>(initialId);
   const { loading, data: currentData } = useAdminQuery(currentId);
+  const [mutation] = useAdminMutation(currentId);
   const [spreadsheet, setSpreadsheet] = useState<Admin.SpreadsheetState>({
     spreadsheetHeaders: [],
     spreadsheetData: [],
@@ -119,6 +130,17 @@ export default function useAdminState(
       valid: dataInteraction[currentId].validateForm(updatedFormValues),
     });
   };
+  const saveForm = () => {
+    if (!form.valid) {
+      return;
+    }
+
+    mutation({
+      variables: {
+        input: dataInteraction[currentId].createMutationInput(form.formValues),
+      },
+    });
+  };
 
   return {
     spreadsheet,
@@ -127,6 +149,7 @@ export default function useAdminState(
       updateCategoryId,
       initializeForm,
       updateForm,
+      saveForm,
       clearForm,
     },
   };
@@ -145,5 +168,21 @@ function useAdminQuery(id: Admin.CategoryId): QueryResult {
       return ingredientsQuery;
     case "glassware":
       return glasswareQuery;
+  }
+}
+
+function useAdminMutation(id: Admin.CategoryId): MutationTuple<any, any> {
+  const ingredientMutation = useMutation(CreateIngredient, {
+    refetchQueries: [GetAllIngredients],
+  });
+  const glasswareMutation = useMutation(CreateGlassware, {
+    refetchQueries: [GetAllGlassware],
+  });
+
+  switch (id) {
+    case "ingredients":
+      return ingredientMutation;
+    case "glassware":
+      return glasswareMutation;
   }
 }

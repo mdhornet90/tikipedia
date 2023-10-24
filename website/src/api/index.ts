@@ -66,3 +66,11 @@ export const GetAllGlassware = gql`
     }
   }
 `;
+
+export const CreateGlassware = gql`
+  mutation createGlassware($input: GlasswareInput!) {
+    createGlassware(input: $input) {
+      name
+    }
+  }
+`;
