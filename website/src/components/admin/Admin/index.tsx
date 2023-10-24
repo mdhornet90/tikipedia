@@ -22,7 +22,7 @@ export default function Admin() {
       saveForm,
       clearForm,
     },
-  } = useAdminState("ingredients");
+  } = useAdminState("recipes");
   const [modalState, setModalState] = useState<ModalState>("closed");
 
   useEffect(() => {

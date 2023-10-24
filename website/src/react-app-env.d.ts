@@ -37,6 +37,15 @@ interface Glassware {
 }
 
 declare module ApiData {
+  interface RecipeEntry {
+    id: string;
+    title: string;
+    ingredients: { name: string }[];
+    glassware: { name: string };
+  }
+  interface AllRecipes {
+    recipes: RecipeEntry[];
+  }
   interface AllIngredients {
     ingredients: Ingredient[];
   }
@@ -46,7 +55,7 @@ declare module ApiData {
   }
 }
 declare module Admin {
-  type CategoryId = "ingredients" | "glassware";
+  type CategoryId = "recipes" | "ingredients" | "glassware";
 
   interface DataInteraction {
     displayTransform: (data: T) => Admin.SpreadsheetRowData[];

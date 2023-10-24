@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import {
   CreateGlassware,
   CreateIngredient,
+  CreateRecipe,
   GetAllGlassware,
   GetAllIngredients,
+  GetAllRecipes,
 } from "../api";
 import { useQuery } from "@apollo/client";
 
@@ -16,6 +18,20 @@ const EMPTY_FORM: Admin.FormState = {
 };
 
 const dataInteraction: Record<Admin.CategoryId, Admin.DataInteraction> = {
+  recipes: {
+    displayTransform: (data: ApiData.AllRecipes) =>
+      data.recipes.map(({ id, title, ingredients, glassware }) => ({
+        id,
+        data: [
+          title,
+          ingredients.map(({ name }) => name).join(", "),
+          glassware.name,
+        ],
+      })),
+    emptyFormState: {},
+    validateForm: () => false,
+    createMutationInput: () => ({}),
+  },
   ingredients: {
     displayTransform: (data: ApiData.AllIngredients) =>
       data.ingredients.map(({ id, name, abv }) => ({
@@ -77,6 +93,9 @@ export default function useAdminState(
 
     let spreadsheetHeaders: string[];
     switch (currentId) {
+      case "recipes":
+        spreadsheetHeaders = ["Title", "Ingredients", "Glassware"];
+        break;
       case "ingredients":
         spreadsheetHeaders = ["Name", "Abv (%)"];
         break;
@@ -95,6 +114,10 @@ export default function useAdminState(
     let title: string;
     let formFields: Admin.FormField[];
     switch (currentId) {
+      case "recipes":
+        title = "Add Recipe";
+        formFields = [];
+        break;
       case "ingredients":
         title = "Add Ingredient";
         formFields = [
@@ -156,6 +179,9 @@ export default function useAdminState(
 }
 
 function useAdminQuery(id: Admin.CategoryId): QueryResult {
+  const recipesQuery = useQuery(GetAllRecipes, {
+    skip: id !== "recipes",
+  });
   const ingredientsQuery = useQuery(GetAllIngredients, {
     skip: id !== "ingredients",
   });
@@ -164,6 +190,8 @@ function useAdminQuery(id: Admin.CategoryId): QueryResult {
   });
 
   switch (id) {
+    case "recipes":
+      return recipesQuery;
     case "ingredients":
       return ingredientsQuery;
     case "glassware":
@@ -172,6 +200,9 @@ function useAdminQuery(id: Admin.CategoryId): QueryResult {
 }
 
 function useAdminMutation(id: Admin.CategoryId): MutationTuple<any, any> {
+  const recipeMutation = useMutation(CreateRecipe, {
+    refetchQueries: [GetAllRecipes],
+  });
   const ingredientMutation = useMutation(CreateIngredient, {
     refetchQueries: [GetAllIngredients],
   });
@@ -180,6 +211,8 @@ function useAdminMutation(id: Admin.CategoryId): MutationTuple<any, any> {
   });
 
   switch (id) {
+    case "recipes":
+      return recipeMutation;
     case "ingredients":
       return ingredientMutation;
     case "glassware":

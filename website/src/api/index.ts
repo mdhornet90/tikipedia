@@ -39,6 +39,29 @@ export const getRecipeDetail = async (id: string): Promise<RecipeDetail> =>
     })
     .then(({ data }) => data.recipe);
 
+export const GetAllRecipes = gql`
+  query recipes {
+    recipes {
+      id
+      title
+      ingredients {
+        name
+      }
+      glassware {
+        name
+      }
+    }
+  }
+`;
+
+export const CreateRecipe = gql`
+  mutation createRecipe($input: RecipeInput!) {
+    createRecipe(input: $input) {
+      id
+    }
+  }
+`;
+
 export const GetAllIngredients = gql`
   query ingredients {
     ingredients {
@@ -52,8 +75,7 @@ export const GetAllIngredients = gql`
 export const CreateIngredient = gql`
   mutation createIngredient($input: IngredientInput!) {
     createIngredient(input: $input) {
-      name
-      abv
+      id
     }
   }
 `;
@@ -70,7 +92,7 @@ export const GetAllGlassware = gql`
 export const CreateGlassware = gql`
   mutation createGlassware($input: GlasswareInput!) {
     createGlassware(input: $input) {
-      name
+      id
     }
   }
 `;

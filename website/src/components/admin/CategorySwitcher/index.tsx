@@ -8,10 +8,11 @@ interface CategorySwitcherProps {
 }
 
 export default function CategorySwitcher({
-  defaultTab = "ingredients",
+  defaultTab = "recipes",
   onSelect,
 }: CategorySwitcherProps) {
   const categories: { id: Admin.CategoryId; name: string }[] = [
+    { id: "recipes", name: "Recipes" },
     { id: "ingredients", name: "Ingredients" },
     { id: "glassware", name: "Glassware" },
   ];
