@@ -1,0 +1,64 @@
+.container {
+  position: relative;
+}
+
+.inputContainer {
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid #333;
+  border-radius: 4px;
+  width: 100%;
+  background: #eee;
+  display: flex;
+}
+
+.searchIcon {
+  color: #333;
+}
+
+.searchIcon.searching {
+  color: #ffa113;
+}
+
+.input {
+  font-size: 18px;
+  border: none;
+  background: inherit;
+  color: inherit;
+  outline: none;
+  flex-grow: 1;
+}
+
+.displayedText {
+  font-size: 18px;
+}
+
+.options {
+  position: absolute;
+  width: 100%;
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 4px;
+  box-sizing: border-box;
+  max-height: 120px;
+  overflow-y: scroll;
+}
+
+.options > *:last-child {
+  border-bottom: none;
+}
+
+.searchOption {
+  padding: 8px 4px;
+  border-bottom: 1px solid #666;
+}
+
+.searchOption:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.match {
+  color: #ffa113;
+  font-weight: bold;
+}
