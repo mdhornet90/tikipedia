@@ -1,20 +1,20 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useRef, useState } from "react";
-import styles from "./SearchableOptions.module.css";
+import styles from "./OptionSearchField.module.css";
 
 interface ListItem {
   id: string;
   text: string;
 }
-interface SearchableOptionsProps {
+interface OptionSearchFieldProps {
   list: ListItem[];
   onSelect: (id: string) => void;
 }
 
-export default function SearchableOptions({
+export default function OptionSearchField({
   list,
   onSelect,
-}: SearchableOptionsProps) {
+}: OptionSearchFieldProps) {
   const [searching, setSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,7 +53,6 @@ export default function SearchableOptions({
         {searching ? (
           <input
             ref={inputRef}
-            disabled={!searching}
             className={styles.input}
             onChange={(e) => setSearchTerm(e.target.value)}
             onBlur={() => setSearching(false)}

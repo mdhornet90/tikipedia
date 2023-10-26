@@ -1,25 +1,25 @@
 import { HTMLInputTypeAttribute } from "react";
 import Title from "../../common/Title";
-import styles from "./FormField.module.css";
+import styles from "./FormTextField.module.css";
 
-interface FormFieldProps {
-  name: string;
+interface FormTextFieldProps {
+  name?: string;
   type?: HTMLInputTypeAttribute;
   inputMode?: "text" | "numeric" | "decimal";
   value: string | number | string[] | undefined;
   onUpdate: (value: any) => void;
 }
 
-export function FormField({
+export default function FormTextField({
   name,
   type = "text",
   inputMode = "text",
   value,
   onUpdate,
-}: FormFieldProps) {
+}: FormTextFieldProps) {
   return (
     <div className={styles.formField}>
-      <Title title={name} size="medium" />
+      {name && <Title title={name} size="medium" />}
       <input
         type={type}
         inputMode={inputMode}
