@@ -1,8 +1,8 @@
 import { HTMLInputTypeAttribute } from "react";
 import Title from "../../common/Title";
-import styles from "./FormTextField.module.css";
+import styles from "./TextField.module.css";
 
-interface FormTextFieldProps {
+interface TextFieldProps {
   name?: string;
   type?: HTMLInputTypeAttribute;
   inputMode?: "text" | "numeric" | "decimal";
@@ -10,13 +10,13 @@ interface FormTextFieldProps {
   onUpdate: (value: any) => void;
 }
 
-export default function FormTextField({
+export default function TextField({
   name,
   type = "text",
   inputMode = "text",
   value,
   onUpdate,
-}: FormTextFieldProps) {
+}: TextFieldProps) {
   return (
     <div className={styles.formField}>
       {name && <Title title={name} size="medium" />}
