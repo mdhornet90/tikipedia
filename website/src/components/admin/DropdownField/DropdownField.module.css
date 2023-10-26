@@ -1,0 +1,28 @@
+.container {
+  box-sizing: border-box;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding-left: 12px;
+  background: #eee;
+  display: flex;
+  position: relative;
+  align-items: center;
+  height: 40px;
+}
+
+.dropdown {
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+  height: 100%;
+  width: 100%;
+  font-size: 18px;
+}
+
+.icon {
+  color: #ffa113;
+  position: absolute;
+  right: 0;
+  pointer-events: none;
+}
