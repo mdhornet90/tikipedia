@@ -1,12 +1,19 @@
-.container {
+.outerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inputContainer {
   box-sizing: border-box;
   border: 1px solid #333;
   border-radius: 4px;
   padding-left: 12px;
   background: #eee;
   display: flex;
+  flex-direction: row;
   position: relative;
-  align-items: center;
+  justify-content: center;
   height: 40px;
 }
 

@@ -1,17 +1,20 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useRef, useState } from "react";
 import styles from "./OptionSearchField.module.css";
+import Title from "../../common/Title";
 
 interface ListItem {
   id: string;
   text: string;
 }
 interface OptionSearchFieldProps {
+  title: string;
   list: ListItem[];
   onSelect: (id: string) => void;
 }
 
 export default function OptionSearchField({
+  title,
   list,
   onSelect,
 }: OptionSearchFieldProps) {
@@ -37,6 +40,7 @@ export default function OptionSearchField({
 
   return (
     <div className={styles.container}>
+      <Title size="medium" title={title} />
       <div
         className={styles.inputContainer}
         onClick={() => {
