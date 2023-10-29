@@ -102,3 +102,7 @@ declare module Admin {
     actions: FormActions;
   }
 }
+interface ListItem {
+  id: string;
+  text: string;
+}
