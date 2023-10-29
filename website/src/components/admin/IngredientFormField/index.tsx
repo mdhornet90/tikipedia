@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./IngredientFormField.module.css";
 
 interface ListItem {
@@ -13,11 +13,26 @@ interface IngredientFormFieldProps {
 export default function IngredientFormField({
   ingredients,
 }: IngredientFormFieldProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredList, setFilteredList] = useState<
-    { id: string; text: string }[]
-  >([]);
+  return (
+    <div className={styles.container}>
+      <IngredientField ingredients={ingredients} />
+      <div className={styles.spacer} />
+      <input size={1} placeholder="Amount"></input>
+      <div className={styles.spacer} />
+      <input size={1} placeholder="Unit"></input>
+    </div>
+  );
+}
+
+interface IngredientFieldProps {
+  ingredients: ListItem[];
+}
+
+function IngredientField({ ingredients }: IngredientFieldProps) {
+  const [searching, setSearching] = useState(false);
   const [selectedText, setSelectedText] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredList, setFilteredList] = useState<ListItem[]>([]);
 
   useEffect(() => {
     if (searchTerm.length > 1) {
@@ -28,61 +43,44 @@ export default function IngredientFormField({
       setFilteredList([]);
     }
   }, [searchTerm, ingredients]);
-  return (
-    <div className={styles.outerContainer}>
-      <div className={styles.container}>
-        <IngredientField
-          filteredList={filteredList}
-          onUpdate={setSearchTerm}
-          searchTerm={searchTerm}
-          onSelect={() => {}}
-        />
-        <div className={styles.spacer} />
-        <input size={1} placeholder="Amount"></input>
-        <div className={styles.spacer} />
-        <input size={1} placeholder="Unit"></input>
 
-        {filteredList.length > 0 && (
-          <div className={styles.options}>
-            {filteredList.map(({ id, text }) => (
-              <SearchOption
-                key={id}
-                text={text}
-                matchingText={searchTerm}
-                onSelect={() => {
-                  // setSelectedText(text);
-                  // setSearchTerm("");
-                  // onSelect(id);
-                }}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+  useEffect(() => {
+    if (!searching) {
+      setSearchTerm("");
+    }
+  }, [searching]);
 
-interface IngredientFieldProps {
-  filteredList: ListItem[];
-  onSelect: (id: string) => void;
-  onUpdate: (text: string) => void;
-  searchTerm: string;
-}
-
-function IngredientField({
-  filteredList,
-  onUpdate,
-  searchTerm,
-}: IngredientFieldProps) {
   return (
     <div className={styles.ingredientContainer}>
       <input
+        onFocus={() => {
+          setSearching(true);
+        }}
         size={1}
         className={styles.input}
-        onChange={(e) => onUpdate(e.target.value)}
+        onChange={(e) => setSearchTerm(e.target.value ?? "")}
         placeholder="Ingredient"
+        onBlur={() => {
+          setSearching(false);
+        }}
+        value={searching ? searchTerm : selectedText}
       />
+
+      {filteredList.length > 0 && (
+        <div className={styles.options}>
+          {filteredList.map(({ id, text }) => (
+            <SearchOption
+              key={id}
+              text={text}
+              matchingText={searchTerm}
+              onSelect={() => {
+                setSelectedText(text);
+                setSearching(false);
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -105,7 +103,7 @@ function SearchOption({ text, matchingText, onSelect }: SearchOptionProps) {
   const after = text.substring(last);
 
   return (
-    <div className={styles.searchOption} onClick={onSelect}>
+    <div className={styles.searchOption} onMouseDown={onSelect}>
       <span>{before}</span>
       <span className={styles.match}>{matchingText}</span>
       <span>{after}</span>

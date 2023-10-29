@@ -1,10 +1,6 @@
-.outerContainer {
+.container {
   background: #eee;
   width: 100%;
-}
-
-.container {
-  position: relative;
   box-sizing: border-box;
   border: 1px solid #333;
   border-radius: 4px;
@@ -28,6 +24,10 @@
   font-size: 18px;
 }
 
+.ingredientContainer {
+  position: relative;
+}
+
 .ingredientContainer > input {
   width: 100%;
 }
@@ -38,7 +38,7 @@
 
 .options {
   position: absolute;
-  width: 59%;
+  width: 100%;
   top: 100%;
   border: 1px solid #666;
   background: #eee;
