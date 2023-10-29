@@ -6,7 +6,7 @@
   border-radius: 4px;
 
   display: grid;
-  gap: 4px;
+  gap: 8px;
   grid-template-columns: 3fr 1px 1fr 1px 1fr;
 }
 
@@ -16,10 +16,14 @@
   margin-bottom: 3px;
 }
 
-.container input {
-  padding: 12px 8px;
+.amountInput {
   outline: none;
   background: none;
   border: none;
   font-size: 18px;
+}
+
+.amountInput::placeholder {
+  color: #666;
+  opacity: 1;
 }

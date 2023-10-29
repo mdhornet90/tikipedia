@@ -62,7 +62,19 @@ export default function Admin() {
           setModalState("closing");
         }}
       >
-        <IngredientFormField ingredients={mockIngredients()} units={[]} />
+        <IngredientFormField
+          ingredients={mockIngredients()}
+          units={[
+            {
+              id: "0",
+              text: "oz",
+            },
+            {
+              id: "1",
+              text: "gram",
+            },
+          ]}
+        />
         {/* {form.formFields.map(({ key, name }) => (
           <TextField
             key={key}

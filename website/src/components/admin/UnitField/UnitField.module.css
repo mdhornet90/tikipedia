@@ -1,0 +1,27 @@
+.inputContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.dropdown {
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+  height: 100%;
+  width: 100%;
+  font-size: 18px;
+}
+
+.dropdown.disabled {
+  color: #666;
+}
+
+.icon {
+  position: absolute;
+  color: #ffa113;
+  top: auto;
+  right: 0;
+  pointer-events: none;
+}

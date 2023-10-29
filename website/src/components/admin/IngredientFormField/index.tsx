@@ -7,14 +7,19 @@ interface IngredientFormFieldProps {
 }
 export default function IngredientFormField({
   ingredients,
+  units,
 }: IngredientFormFieldProps) {
   return (
     <div className={styles.container}>
       <IngredientField ingredients={ingredients} />
       <div className={styles.spacer} />
-      <input size={1} placeholder="Amount"></input>
+      <input
+        size={1}
+        placeholder="Amount"
+        className={styles.amountInput}
+      ></input>
       <div className={styles.spacer} />
-      <input size={1} placeholder="Unit"></input>
+      <UnitField units={units} />
     </div>
   );
 }

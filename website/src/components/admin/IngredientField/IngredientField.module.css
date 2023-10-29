@@ -1,9 +1,19 @@
 .ingredientContainer {
   position: relative;
+  padding: 12px 8px;
 }
 
 .ingredientContainer > input {
   width: 100%;
+  outline: none;
+  background: none;
+  border: none;
+  font-size: 18px;
+}
+
+.ingredientContainer > input::placeholder {
+  color: #666;
+  opacity: 1;
 }
 
 .options {
