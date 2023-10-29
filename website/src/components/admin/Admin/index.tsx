@@ -6,8 +6,9 @@ import Title from "../../common/Title";
 import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
 import EditingModal from "../EditingModal";
-import { FormField } from "../FormField";
+import TextField from "../TextField";
 import useAdminState from "../../../hooks/useAdminState";
+import IngredientFormField from "../IngredientFormField";
 
 type ModalState = "closed" | "opening" | "open" | "closing";
 
@@ -61,8 +62,9 @@ export default function Admin() {
           setModalState("closing");
         }}
       >
-        {form.formFields.map(({ key, name }) => (
-          <FormField
+        <IngredientFormField ingredients={mockIngredients()} units={[]} />
+        {/* {form.formFields.map(({ key, name }) => (
+          <TextField
             key={key}
             name={name}
             value={form.formValues[key] ?? ""}
@@ -70,8 +72,37 @@ export default function Admin() {
               updateForm(key, newValue);
             }}
           />
-        ))}
+        ))} */}
       </EditingModal>
     </div>
   );
+}
+
+function mockIngredients() {
+  return [
+    {
+      id: "0",
+      text: "lime juice",
+    },
+    {
+      id: "2",
+      text: "orange juice",
+    },
+    {
+      id: "3",
+      text: "pineapple juice",
+    },
+    {
+      id: "5",
+      text: "lemon juice",
+    },
+    {
+      id: "15",
+      text: "grenadine",
+    },
+    {
+      id: "25",
+      text: "rum",
+    },
+  ];
 }
