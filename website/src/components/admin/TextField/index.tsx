@@ -24,7 +24,7 @@ export default function TextField({
         type={type}
         inputMode={inputMode}
         className={styles.input}
-        defaultValue={value}
+        value={value}
         onChange={(e) => {
           onUpdate(e.target.value);
         }}

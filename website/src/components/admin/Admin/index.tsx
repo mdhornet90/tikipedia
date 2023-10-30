@@ -9,32 +9,25 @@ import EditingModal from "../EditingModal";
 import TextField from "../TextField";
 import useAdminState from "../../../hooks/useAdminState";
 import IngredientFormField from "../IngredientFormField";
+import IngredientFormModal from "../IngredientForm";
 
 type ModalState = "closed" | "opening" | "open" | "closing";
 
 export default function Admin() {
   const {
+    currentId,
     spreadsheet,
-    form,
-    actions: {
-      updateCategoryId,
-      initializeForm,
-      updateForm,
-      saveForm,
-      clearForm,
-    },
+    actions: { updateCategoryId },
   } = useAdminState("recipes");
   const [modalState, setModalState] = useState<ModalState>("closed");
 
   useEffect(() => {
     if (modalState === "opening") {
-      initializeForm();
       setModalState("open");
     } else if (modalState === "closing") {
-      clearForm();
       setModalState("closed");
     }
-  }, [modalState, initializeForm, clearForm]);
+  }, [modalState]);
 
   return (
     <div className={styles.content}>
@@ -50,42 +43,23 @@ export default function Admin() {
           onAdd={() => setModalState("opening")}
         />
       </div>
-      <EditingModal
-        open={modalState === "open"}
-        title={form.title}
-        formValid={form.valid}
-        onClose={() => {
-          setModalState("closing");
-        }}
-        onSave={async () => {
-          saveForm();
-          setModalState("closing");
-        }}
-      >
-        <IngredientFormField
-          ingredients={mockIngredients()}
-          units={[
-            {
-              id: "0",
-              text: "oz",
-            },
-            {
-              id: "1",
-              text: "gram",
-            },
-          ]}
-        />
-        {/* {form.formFields.map(({ key, name }) => (
-          <TextField
-            key={key}
-            name={name}
-            value={form.formValues[key] ?? ""}
-            onUpdate={(newValue) => {
-              updateForm(key, newValue);
-            }}
-          />
-        ))} */}
-      </EditingModal>
+      {(() => {
+        switch (currentId) {
+          case "ingredients":
+            return (
+              <IngredientFormModal
+                open={modalState === "open"}
+                onClose={() => {
+                  setModalState("closing");
+                }}
+                onSave={async () => {
+                  // saveForm();
+                  setModalState("closing");
+                }}
+              />
+            );
+        }
+      })()}
     </div>
   );
 }

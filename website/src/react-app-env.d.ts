@@ -59,11 +59,6 @@ declare module Admin {
 
   interface DataInteraction {
     displayTransform: (data: T) => Admin.SpreadsheetRowData[];
-    emptyFormState: Record<string, string>;
-    validateForm: (values: Record<string, string>) => boolean;
-    createMutationInput: (
-      values: Record<string, string>
-    ) => Record<string, any>;
   }
 
   interface SpreadsheetRowData {
@@ -75,34 +70,24 @@ declare module Admin {
     spreadsheetHeaders: string[];
     spreadsheetData: SpreadsheetRowData[];
   }
-
-  interface FormField {
-    key: string;
-    name: string;
-  }
-
-  interface FormState {
-    title: string;
-    valid: boolean;
-    formValues: Record<string, string>;
-    formFields: FormField[];
-  }
-
   interface FormActions {
     updateCategoryId: (categoryId: Admin.CategoryId) => void;
-    initializeForm: (id?: string) => void;
-    clearForm: () => void;
-    updateForm: (key: string, value: string) => void;
-    saveForm: () => void;
   }
 
   interface Interaction {
+    currentId: CategoryId;
     spreadsheet: SpreadsheetState;
-    form: FormState;
     actions: FormActions;
   }
 }
 interface ListItem {
   id: string;
   text: string;
+}
+
+declare module Form {
+  interface Ingredient {
+    name: string;
+    abv: string;
+  }
 }
