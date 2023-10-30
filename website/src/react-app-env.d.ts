@@ -90,4 +90,8 @@ declare module Form {
     name: string;
     abv: string;
   }
+
+  interface Glassware {
+    name: string;
+  }
 }

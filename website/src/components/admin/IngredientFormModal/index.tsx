@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextField from "../TextField";
-import styles from "./IngredientForm.module.css";
 import EditingModal from "../EditingModal";
 import { useMutation } from "@apollo/client";
 import { CreateIngredient, GetAllIngredients } from "../../../api";
