@@ -52,10 +52,6 @@ export default function Admin() {
                 onClose={() => {
                   setModalState("closing");
                 }}
-                onSave={async () => {
-                  // saveForm();
-                  setModalState("closing");
-                }}
               />
             );
         }

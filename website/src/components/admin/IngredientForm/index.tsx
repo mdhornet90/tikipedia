@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import TextField from "../TextField";
 import styles from "./IngredientForm.module.css";
 import EditingModal from "../EditingModal";
+import { useMutation } from "@apollo/client";
+import { CreateIngredient, GetAllIngredients } from "../../../api";
 
 interface IngredientFormModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (form: Form.Ingredient) => void;
 }
 
 const INITIAL_STATE: Form.Ingredient = { name: "", abv: "" };
@@ -14,9 +15,11 @@ const INITIAL_STATE: Form.Ingredient = { name: "", abv: "" };
 export default function IngredientFormModal({
   open,
   onClose,
-  onSave,
 }: IngredientFormModalProps) {
   const [form, setForm] = useState<Form.Ingredient>(INITIAL_STATE);
+  const [mutation] = useMutation(CreateIngredient, {
+    refetchQueries: [GetAllIngredients],
+  });
 
   return (
     <EditingModal
@@ -28,8 +31,17 @@ export default function IngredientFormModal({
       title="Add Ingredient"
       formValid={validateForm(form)}
       onSave={() => {
+        const abv = form.abv.length > 0 ? parseFloat(form.abv) / 100 : null;
+        mutation({
+          variables: {
+            input: {
+              name: form.name,
+              abv: abv,
+            },
+          },
+        });
         setForm(INITIAL_STATE);
-        onSave(form);
+        onClose();
       }}
     >
       <TextField
