@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import styles from "./IngredientField.module.css";
+import styles from "./IngredientNameField.module.css";
 
-interface IngredientFieldProps {
+interface IngredientNameFieldProps {
   ingredients: ListItem[];
   text: string;
   onSelect: (name: string) => void;
 }
 
-export default function IngredientField({
+export default function IngredientNameFieldmodule({
   text,
   ingredients,
   onSelect,
-}: IngredientFieldProps) {
+}: IngredientNameFieldProps) {
   const [searching, setSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredList, setFilteredList] = useState<ListItem[]>([]);

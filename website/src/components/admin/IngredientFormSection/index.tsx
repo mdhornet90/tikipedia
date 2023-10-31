@@ -4,6 +4,7 @@ import styles from "./IngredientFormSection.module.css";
 
 interface IngredientFormSectionProps {
   allIngredients: Ingredient[];
+  allUnits: string[];
   ingredientInputs: Form.RecipeIngredient[];
   valid: boolean;
   onAdd: () => void;
@@ -11,9 +12,9 @@ interface IngredientFormSectionProps {
   onRemove: (index: number) => void;
 }
 
-const allUnits = ["dash", "drop", "each", "oz", "tbsp", "tsp"];
 export default function IngredientFormSection({
   allIngredients,
+  allUnits,
   ingredientInputs,
   valid,
   onAdd,
@@ -25,20 +26,23 @@ export default function IngredientFormSection({
   return (
     <div className={styles.container}>
       <Title size="medium" title="Ingredients" alignment="left" />
-      {ingredientInputs.map((ingredient, i) => (
-        <IngredientFormField
-          key={i}
-          selectedIngredient={ingredient.name}
-          onUpdate={(key, value) => {
-            onUpdate(i, { ...ingredient, [key]: value });
-          }}
-          ingredients={ingredientList}
-          units={allUnits.map((u, i) => ({ id: `${i}`, text: u }))}
-        />
-      ))}
-      <button className={styles.addButton} disabled={!valid} onClick={onAdd}>
-        Add Ingredient
-      </button>
+      <div className={styles.inputContainer}>
+        {ingredientInputs.map((ingredient, i) => (
+          <IngredientFormField
+            key={i}
+            selectedIngredient={ingredient.name}
+            selectedUnit={ingredient.unit}
+            onUpdate={(key, value) => {
+              onUpdate(i, { ...ingredient, [key]: value });
+            }}
+            ingredients={ingredientList}
+            units={allUnits.map((u, i) => ({ id: `${i}`, text: u }))}
+          />
+        ))}
+        <button className={styles.addButton} disabled={!valid} onClick={onAdd}>
+          Add Ingredient
+        </button>
+      </div>
     </div>
   );
 }

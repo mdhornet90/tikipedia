@@ -9,6 +9,7 @@ interface RecipeFormModalProps {
   onClose: () => void;
 }
 
+const allUnits = ["dash", "drop", "each", "oz", "tbsp", "tsp"];
 const INITIAL_STATE: Form.Recipe = {
   title: "",
   glasswareId: "",
@@ -30,13 +31,13 @@ export default function RecipeFormModal({
     setIngredientsValid(
       form.ingredients.every(({ name, quantity, unit }) => {
         console.log(name, unit, quantity);
-        if (name.length <= 0 || unit.length <= 0) {
+        if (name.length <= 0 || !allUnits.includes(unit)) {
           return false;
         }
 
         try {
           const normalizedNumber = Number(quantity);
-          return !isNaN(normalizedNumber) && normalizedNumber >= 0;
+          return !isNaN(normalizedNumber) && normalizedNumber > 0;
         } catch {
           return false;
         }
@@ -59,6 +60,7 @@ export default function RecipeFormModal({
     >
       <IngredientFormSection
         allIngredients={ingredients}
+        allUnits={allUnits}
         ingredientInputs={form.ingredients}
         valid={ingredientsValid}
         onAdd={() => {
@@ -66,7 +68,7 @@ export default function RecipeFormModal({
             ...form,
             ingredients: [
               ...form.ingredients,
-              { name: "", quantity: "", unit: "" },
+              { name: "", quantity: "", unit: "Unit" },
             ],
           });
         }}
@@ -75,7 +77,11 @@ export default function RecipeFormModal({
           updatedIngredients[i] = updatedIngredient;
           setForm({ ...form, ingredients: updatedIngredients });
         }}
-        onRemove={() => {}}
+        onRemove={(i) => {
+          const updatedIngredients = [...form.ingredients];
+          updatedIngredients.splice(i);
+          setForm({ ...form, ingredients: updatedIngredients });
+        }}
       />
     </EditingModal>
   );

@@ -1,23 +1,24 @@
 import styles from "./IngredientFormField.module.css";
-import IngredientField from "../IngredientField";
+import IngredientNameField from "../IngredientNameField";
 import UnitField from "../UnitField";
 
 interface IngredientFormFieldProps {
   ingredients: ListItem[];
   units: ListItem[];
   selectedIngredient: string;
+  selectedUnit: string;
   onUpdate: (key: keyof Form.RecipeIngredient, value: string) => void;
 }
 export default function IngredientFormField({
   ingredients,
   units,
   selectedIngredient,
+  selectedUnit,
   onUpdate,
 }: IngredientFormFieldProps) {
-  console.log(selectedIngredient);
   return (
     <div className={styles.container}>
-      <IngredientField
+      <IngredientNameField
         ingredients={ingredients}
         text={selectedIngredient}
         onSelect={(newIngredient) => onUpdate("name", newIngredient)}
@@ -27,9 +28,14 @@ export default function IngredientFormField({
         size={1}
         placeholder="Amount"
         className={styles.amountInput}
+        onChange={(e) => onUpdate("quantity", e.target.value)}
       ></input>
       <div className={styles.spacer} />
-      <UnitField units={units} />
+      <UnitField
+        units={units}
+        text={selectedUnit}
+        onSelect={(value) => onUpdate("unit", value)}
+      />
     </div>
   );
 }
