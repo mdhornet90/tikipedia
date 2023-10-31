@@ -6,6 +6,7 @@ interface IngredientFormFieldProps {
   ingredients: ListItem[];
   units: ListItem[];
   selectedIngredient: string;
+  selectedAmount: string;
   selectedUnit: string;
   onUpdate: (key: keyof Form.RecipeIngredient, value: string) => void;
 }
@@ -13,6 +14,7 @@ export default function IngredientFormField({
   ingredients,
   units,
   selectedIngredient,
+  selectedAmount,
   selectedUnit,
   onUpdate,
 }: IngredientFormFieldProps) {
@@ -28,6 +30,7 @@ export default function IngredientFormField({
         size={1}
         placeholder="Amount"
         className={styles.amountInput}
+        value={selectedAmount}
         onChange={(e) => onUpdate("quantity", e.target.value)}
       ></input>
       <div className={styles.spacer} />

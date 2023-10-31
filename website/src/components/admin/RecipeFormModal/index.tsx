@@ -30,7 +30,6 @@ export default function RecipeFormModal({
   useEffect(() => {
     setIngredientsValid(
       form.ingredients.every(({ name, quantity, unit }) => {
-        console.log(name, unit, quantity);
         if (name.length <= 0 || !allUnits.includes(unit)) {
           return false;
         }
@@ -79,7 +78,7 @@ export default function RecipeFormModal({
         }}
         onRemove={(i) => {
           const updatedIngredients = [...form.ingredients];
-          updatedIngredients.splice(i);
+          updatedIngredients.splice(i, 1);
           setForm({ ...form, ingredients: updatedIngredients });
         }}
       />

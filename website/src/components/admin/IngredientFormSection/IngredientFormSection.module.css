@@ -14,6 +14,18 @@
   gap: 8px;
 }
 
+.ingredientContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteButton {
+  color: #ef1a1a;
+  cursor: pointer;
+}
+
 .addButton {
   background: inherit;
   font: inherit;
