@@ -53,8 +53,21 @@ declare module ApiData {
   interface AllGlassware {
     allGlassware: Glassware[];
   }
+}
 
-  type RecipeFormData = AllGlassware & AllIngredients;
+declare module AdminData {
+  interface Ingredient {
+    id: string;
+    name: string;
+  }
+  interface Glassware {
+    id: string;
+    name: string;
+  }
+  interface RecipeFormData {
+    ingredients: Ingredient[];
+    allGlassware: Glassware[];
+  }
 }
 declare module Admin {
   type CategoryId = "recipes" | "ingredients" | "glassware";
@@ -89,8 +102,8 @@ interface ListItem {
 
 declare module Form {
   interface Ingredient {
-    name: string;
     abv: string;
+    name: string;
   }
 
   interface Glassware {
@@ -101,7 +114,7 @@ declare module Form {
     title: string;
     imageUrl?: string | null;
     instructions: String;
-    glasswareId: string;
+    glassware: string;
     ingredients: RecipeIngredient[];
   }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TextField from "../TextField";
+import TextField from "../../form/TextField";
 import EditingModal from "../EditingModal";
 import { useMutation } from "@apollo/client";
 import { CreateIngredient, GetAllIngredients } from "../../../api";

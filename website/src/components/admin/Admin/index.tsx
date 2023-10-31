@@ -5,10 +5,7 @@ import TikiHeader from "../../common/TikiHeader";
 import Title from "../../common/Title";
 import CategorySwitcher from "../CategorySwitcher";
 import Spreadsheet from "../Spreadsheet";
-import EditingModal from "../EditingModal";
-import TextField from "../TextField";
 import useAdminState from "../../../hooks/useAdminState";
-import IngredientFormField from "../IngredientFormField";
 import IngredientFormModal from "../IngredientFormModal";
 import GlasswareFormModal from "../GlasswareFormModal";
 import RecipeFormModal from "../RecipeFormModal";
@@ -78,33 +75,4 @@ export default function Admin() {
       })()}
     </div>
   );
-}
-
-function mockIngredients() {
-  return [
-    {
-      id: "0",
-      text: "lime juice",
-    },
-    {
-      id: "2",
-      text: "orange juice",
-    },
-    {
-      id: "3",
-      text: "pineapple juice",
-    },
-    {
-      id: "5",
-      text: "lemon juice",
-    },
-    {
-      id: "15",
-      text: "grenadine",
-    },
-    {
-      id: "25",
-      text: "rum",
-    },
-  ];
 }

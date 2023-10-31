@@ -1,6 +1,6 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import Title from "../../common/Title";
-import IngredientFormField from "../IngredientFormField";
+import IngredientFormField from "../../form/IngredientFormField";
 import styles from "./IngredientFormSection.module.css";
 
 interface IngredientFormSectionProps {

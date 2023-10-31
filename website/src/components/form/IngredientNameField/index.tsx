@@ -24,7 +24,7 @@ export default function IngredientNameFieldmodule({
     } else {
       setFilteredList([]);
     }
-  }, [searchTerm, ingredients]);
+  }, [searchTerm, ingredients, setFilteredList]);
 
   useEffect(() => {
     if (!searching) {
