@@ -96,3 +96,16 @@ export const CreateGlassware = gql`
     }
   }
 `;
+
+export const RecipeFormData = gql`
+  query recipeFormData {
+    allGlassware {
+      id
+      name
+    }
+    ingredients {
+      id
+      name
+    }
+  }
+`;

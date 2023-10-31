@@ -11,6 +11,7 @@ import useAdminState from "../../../hooks/useAdminState";
 import IngredientFormField from "../IngredientFormField";
 import IngredientFormModal from "../IngredientFormModal";
 import GlasswareFormModal from "../GlasswareFormModal";
+import RecipeFormModal from "../RecipeFormModal";
 
 type ModalState = "closed" | "opening" | "open" | "closing";
 
@@ -58,6 +59,15 @@ export default function Admin() {
           case "glassware":
             return (
               <GlasswareFormModal
+                open={modalState === "open"}
+                onClose={() => {
+                  setModalState("closing");
+                }}
+              />
+            );
+          case "recipes":
+            return (
+              <RecipeFormModal
                 open={modalState === "open"}
                 onClose={() => {
                   setModalState("closing");

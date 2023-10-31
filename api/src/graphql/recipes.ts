@@ -22,11 +22,11 @@ export const typeDef = `#graphql
       unit: String!
     }
     input RecipeInput {
-        title: String!
-        imageUrl: String
-        instructions: String!
-        glasswareId: ID!
-        ingredientInputs: [RecipeIngredientInput!]!
+      title: String!
+      imageUrl: String
+      instructions: String!
+      glasswareId: ID!
+      ingredientInputs: [RecipeIngredientInput!]!
     }
     input RecipeIngredientInput {
       ingredientId: ID!
