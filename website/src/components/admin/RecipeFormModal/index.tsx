@@ -25,8 +25,18 @@ export default function RecipeFormModal({
   const {
     data: { ingredients, allGlassware } = { ingredients: [], allGlassware: [] },
   } = useQuery<ApiData.RecipeFormData>(RecipeFormData);
+  const [ingredientList, setIngredientList] = useState<ListItem[]>([]);
   const [form, setForm] = useState<Form.Recipe>(INITIAL_STATE);
   const [ingredientsValid, setIngredientsValid] = useState(true);
+
+  useEffect(() => {
+    setIngredientList(
+      ingredients
+        .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
+        .map(({ id, name }) => ({ id, text: name }))
+    );
+  }, [ingredients]);
+
   useEffect(() => {
     setIngredientsValid(
       form.ingredients.every(({ name, quantity, unit }) => {
@@ -58,7 +68,7 @@ export default function RecipeFormModal({
       }}
     >
       <IngredientFormSection
-        allIngredients={ingredients}
+        allIngredients={ingredientList}
         allUnits={allUnits}
         ingredientInputs={form.ingredients}
         valid={ingredientsValid}

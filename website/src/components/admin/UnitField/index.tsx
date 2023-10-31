@@ -3,7 +3,7 @@ import styles from "./UnitField.module.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface UnitFieldProps {
-  units: ListItem[];
+  units: string[];
   text: string;
   onSelect: (value: string) => void;
 }
@@ -21,7 +21,7 @@ export default function UnitField({ units, text, onSelect }: UnitFieldProps) {
         <option disabled className={styles.placeholder}>
           Unit
         </option>
-        {units.map(({ text }, i) => (
+        {units.map((text, i) => (
           <option key={i} value={text} onClick={() => setDisabled(false)}>
             {text}
           </option>

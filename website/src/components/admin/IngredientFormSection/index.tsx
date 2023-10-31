@@ -4,7 +4,7 @@ import IngredientFormField from "../IngredientFormField";
 import styles from "./IngredientFormSection.module.css";
 
 interface IngredientFormSectionProps {
-  allIngredients: Ingredient[];
+  allIngredients: ListItem[];
   allUnits: string[];
   ingredientInputs: Form.RecipeIngredient[];
   valid: boolean;
@@ -22,9 +22,6 @@ export default function IngredientFormSection({
   onRemove,
   onUpdate,
 }: IngredientFormSectionProps) {
-  const ingredientList: ListItem[] = allIngredients
-    .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
-    .map(({ id, name }) => ({ id, text: name }));
   return (
     <div className={styles.container}>
       <Title size="medium" title="Ingredients" alignment="left" />
@@ -38,8 +35,8 @@ export default function IngredientFormSection({
               onUpdate={(key, value) => {
                 onUpdate(i, { ...ingredient, [key]: value });
               }}
-              ingredients={ingredientList}
-              units={allUnits.map((u, i) => ({ id: `${i}`, text: u }))}
+              ingredients={allIngredients}
+              units={allUnits}
             />
             <div onClick={() => onRemove(i)}>
               <ClearIcon className={styles.deleteButton} />

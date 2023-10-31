@@ -4,7 +4,7 @@ import UnitField from "../UnitField";
 
 interface IngredientFormFieldProps {
   ingredients: ListItem[];
-  units: ListItem[];
+  units: string[];
   selectedIngredient: string;
   selectedAmount: string;
   selectedUnit: string;
