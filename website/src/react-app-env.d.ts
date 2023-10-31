@@ -108,6 +108,6 @@ declare module Form {
   interface RecipeIngredient {
     name: string;
     quantity: string;
-    unit: Unit;
+    unit: string;
   }
 }

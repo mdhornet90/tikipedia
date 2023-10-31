@@ -3,11 +3,16 @@ import styles from "./IngredientField.module.css";
 
 interface IngredientFieldProps {
   ingredients: ListItem[];
+  text: string;
+  onSelect: (name: string) => void;
 }
 
-export default function IngredientField({ ingredients }: IngredientFieldProps) {
+export default function IngredientField({
+  text,
+  ingredients,
+  onSelect,
+}: IngredientFieldProps) {
   const [searching, setSearching] = useState(false);
-  const [selectedText, setSelectedText] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredList, setFilteredList] = useState<ListItem[]>([]);
 
@@ -40,7 +45,7 @@ export default function IngredientField({ ingredients }: IngredientFieldProps) {
         onBlur={() => {
           setSearching(false);
         }}
-        value={searching ? searchTerm : selectedText}
+        value={searching ? searchTerm : text}
       />
 
       {filteredList.length > 0 && (
@@ -51,7 +56,7 @@ export default function IngredientField({ ingredients }: IngredientFieldProps) {
               text={text}
               matchingText={searchTerm}
               onSelect={() => {
-                setSelectedText(text);
+                onSelect(text);
                 setSearching(false);
               }}
             />
