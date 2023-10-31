@@ -25,9 +25,8 @@ export default function RecipeFormModal({
   open,
   onClose,
 }: RecipeFormModalProps) {
-  const {
-    data: { ingredients, allGlassware } = { ingredients: [], allGlassware: [] },
-  } = useQuery<AdminData.RecipeFormData>(RecipeFormData);
+  const { data } = useQuery<AdminData.RecipeFormData>(RecipeFormData);
+
   const [ingredientLookup, setIngredientLookup] = useState<
     Record<string, AdminData.Ingredient>
   >({});
@@ -35,11 +34,17 @@ export default function RecipeFormModal({
     Record<string, AdminData.Glassware>
   >({});
   const [ingredientList, setIngredientList] = useState<ListItem[]>([]);
+
   const [form, setForm] = useState<Form.Recipe>(INITIAL_STATE);
   const [formValid, setFormValid] = useState(false);
   const [ingredientsValid, setIngredientsValid] = useState(true);
 
   useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const { ingredients, allGlassware } = data;
+
     setIngredientLookup(
       ingredients.reduce((acc, ingredient) => {
         acc[ingredient.name] = ingredient;
@@ -58,7 +63,7 @@ export default function RecipeFormModal({
         .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
         .map(({ id, name }) => ({ id, text: name }))
     );
-  }, [ingredients, allGlassware]);
+  }, [data]);
 
   useEffect(() => {
     setFormValid(checkFormValid(form, glasswareLookup));
@@ -116,7 +121,7 @@ export default function RecipeFormModal({
       <FormFieldWrapper title="Glassware">
         <DropdownField
           defaultValue="Glassware"
-          values={allGlassware.map(({ name }) => name)}
+          values={Object.keys(glasswareLookup)}
           text={form.glassware}
           onSelect={(glassware) => setForm({ ...form, glassware })}
         />
