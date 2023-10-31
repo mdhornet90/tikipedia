@@ -80,7 +80,7 @@ export default function RecipeFormModal({
         setForm(INITIAL_STATE);
         onClose();
       }}
-      title="Add Ingredient"
+      title="Add Recipe"
       formValid={formValid}
       onSave={() => {
         mutation({
