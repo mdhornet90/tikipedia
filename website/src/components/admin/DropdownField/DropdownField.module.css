@@ -1,20 +1,7 @@
-.outerContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .inputContainer {
-  box-sizing: border-box;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding-left: 12px;
-  background: #eee;
   display: flex;
-  flex-direction: row;
+  align-items: center;
   position: relative;
-  justify-content: center;
-  height: 40px;
 }
 
 .dropdown {
@@ -27,9 +14,14 @@
   font-size: 18px;
 }
 
+.dropdown.disabled {
+  color: #666;
+}
+
 .icon {
-  color: #ffa113;
   position: absolute;
+  color: #ffa113;
+  top: auto;
   right: 0;
   pointer-events: none;
 }

@@ -1,6 +1,6 @@
 import styles from "./IngredientFormField.module.css";
 import IngredientNameField from "../IngredientNameField";
-import UnitField from "../UnitField";
+import DropdownField from "../DropdownField";
 
 interface IngredientFormFieldProps {
   ingredients: ListItem[];
@@ -34,8 +34,9 @@ export default function IngredientFormField({
         onChange={(e) => onUpdate("quantity", e.target.value)}
       ></input>
       <div className={styles.spacer} />
-      <UnitField
-        units={units}
+      <DropdownField
+        defaultValue="Unit"
+        values={units}
         text={selectedUnit}
         onSelect={(value) => onUpdate("unit", value)}
       />

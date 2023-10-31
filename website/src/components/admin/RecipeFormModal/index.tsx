@@ -15,7 +15,7 @@ const INITIAL_STATE: Form.Recipe = {
   glasswareId: "",
   imageUrl: null,
   instructions: "",
-  ingredients: [],
+  ingredients: [{ name: "", quantity: "", unit: "Unit" }],
 };
 
 export default function RecipeFormModal({
