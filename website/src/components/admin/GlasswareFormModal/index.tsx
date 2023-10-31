@@ -2,7 +2,7 @@ import { useState } from "react";
 import TextField from "../../form/TextField";
 import EditingModal from "../EditingModal";
 import { useMutation } from "@apollo/client";
-import { CreateGlassware, GetAllGlassware } from "../../../api";
+import { CreateGlassware, GetAllGlassware, RecipeFormData } from "../../../api";
 
 interface GlasswareFormModalProps {
   open: boolean;
@@ -17,7 +17,7 @@ export default function GlasswareFormModal({
 }: GlasswareFormModalProps) {
   const [form, setForm] = useState<Form.Glassware>(INITIAL_STATE);
   const [mutation] = useMutation(CreateGlassware, {
-    refetchQueries: [GetAllGlassware],
+    refetchQueries: [GetAllGlassware, RecipeFormData],
   });
 
   return (

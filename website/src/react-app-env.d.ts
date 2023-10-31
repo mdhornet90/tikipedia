@@ -124,3 +124,19 @@ declare module Form {
     unit: string;
   }
 }
+
+declare module Submit {
+  interface Recipe {
+    title: string;
+    imageUrl?: string;
+    instructions: string;
+    glasswareId: string;
+    ingredientInputs: RecipeIngredient[];
+  }
+
+  interface RecipeIngredient {
+    ingredientId: string;
+    quantity: number;
+    unit: string;
+  }
+}

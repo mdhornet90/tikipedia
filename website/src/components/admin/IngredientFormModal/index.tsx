@@ -2,7 +2,11 @@ import { useState } from "react";
 import TextField from "../../form/TextField";
 import EditingModal from "../EditingModal";
 import { useMutation } from "@apollo/client";
-import { CreateIngredient, GetAllIngredients } from "../../../api";
+import {
+  CreateIngredient,
+  GetAllIngredients,
+  RecipeFormData,
+} from "../../../api";
 
 interface IngredientFormModalProps {
   open: boolean;
@@ -17,7 +21,7 @@ export default function IngredientFormModal({
 }: IngredientFormModalProps) {
   const [form, setForm] = useState<Form.Ingredient>(INITIAL_STATE);
   const [mutation] = useMutation(CreateIngredient, {
-    refetchQueries: [GetAllIngredients],
+    refetchQueries: [GetAllIngredients, RecipeFormData],
   });
 
   return (

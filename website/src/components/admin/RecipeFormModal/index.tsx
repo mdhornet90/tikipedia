@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import EditingModal from "../EditingModal";
 import IngredientFormSection from "../IngredientFormSection";
-import { useQuery } from "@apollo/client";
-import { RecipeFormData } from "../../../api";
+import { useMutation, useQuery } from "@apollo/client";
+import { CreateRecipe, GetAllRecipes, RecipeFormData } from "../../../api";
 import TextField from "../../form/TextField";
 import FormFieldWrapper from "../../form/FormFieldWrapper";
 import DropdownField from "../../form/DropdownField";
@@ -27,6 +27,9 @@ export default function RecipeFormModal({
   onClose,
 }: RecipeFormModalProps) {
   const { data } = useQuery<AdminData.RecipeFormData>(RecipeFormData);
+  const [mutation] = useMutation<Submit.Recipe>(CreateRecipe, {
+    refetchQueries: [GetAllRecipes],
+  });
 
   const [ingredientLookup, setIngredientLookup] = useState<
     Record<string, AdminData.Ingredient>
@@ -80,6 +83,15 @@ export default function RecipeFormModal({
       title="Add Ingredient"
       formValid={formValid}
       onSave={() => {
+        mutation({
+          variables: {
+            input: transformForSubmission(
+              form,
+              ingredientLookup,
+              glasswareLookup
+            ),
+          },
+        });
         setForm(INITIAL_STATE);
         onClose();
       }}
@@ -199,4 +211,22 @@ function recipeIngredientValid({
   } catch {
     return false;
   }
+}
+
+function transformForSubmission(
+  form: Form.Recipe,
+  ingredientLookup: Record<string, AdminData.Ingredient>,
+  glasswareLookup: Record<string, AdminData.Glassware>
+): Submit.Recipe {
+  return {
+    title: form.title,
+    glasswareId: glasswareLookup[form.glassware].id,
+    imageUrl: !!form.imageUrl ? form.imageUrl : undefined,
+    instructions: form.instructions,
+    ingredientInputs: form.ingredients.map(({ name, quantity, unit }) => ({
+      ingredientId: ingredientLookup[name].id,
+      quantity: Number(quantity),
+      unit,
+    })),
+  };
 }

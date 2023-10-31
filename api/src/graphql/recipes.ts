@@ -35,12 +35,12 @@ export const typeDef = `#graphql
     }
 
     enum Unit {
-      OZ,
-      TSP
-      TBSP
-      DASH
-      DROP
-      EACH
+      oz
+      tsp
+      tbsp
+      dash
+      drop
+      each
     }
 
     type Query {
