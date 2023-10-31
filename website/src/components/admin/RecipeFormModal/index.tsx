@@ -6,6 +6,7 @@ import { RecipeFormData } from "../../../api";
 import TextField from "../../form/TextField";
 import FormFieldWrapper from "../../form/FormFieldWrapper";
 import DropdownField from "../../form/DropdownField";
+import TextAreaField from "../../form/TextAreaField";
 
 interface RecipeFormModalProps {
   open: boolean;
@@ -126,6 +127,12 @@ export default function RecipeFormModal({
           onSelect={(glassware) => setForm({ ...form, glassware })}
         />
       </FormFieldWrapper>
+      <FormFieldWrapper title="Instructions">
+        <TextAreaField
+          text={form.instructions}
+          onUpdate={(instructions) => setForm({ ...form, instructions })}
+        />
+      </FormFieldWrapper>
     </EditingModal>
   );
 }
@@ -135,11 +142,46 @@ function checkFormValid(
   glasswareLookup: Record<string, AdminData.Glassware>
 ): boolean {
   return (
-    form.title.length > 0 &&
-    form.glassware in glasswareLookup &&
-    form.ingredients.length > 0 &&
-    form.ingredients.every(recipeIngredientValid)
+    titleValid(form.title) &&
+    imageUrlValid(form.imageUrl) &&
+    ingredientsValidForSubmission(form.ingredients) &&
+    glasswareValid(form.glassware, glasswareLookup) &&
+    instructionsValid(form.instructions)
   );
+}
+
+function titleValid(title: string): boolean {
+  return title.length > 0;
+}
+
+function imageUrlValid(imageUrl?: string | null): boolean {
+  if (!imageUrl) {
+    return true;
+  }
+
+  try {
+    new URL(imageUrl);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function ingredientsValidForSubmission(
+  ingredients: Form.RecipeIngredient[]
+): boolean {
+  return ingredients.length > 0 && ingredients.every(recipeIngredientValid);
+}
+
+function glasswareValid(
+  glasswareName: string,
+  glasswareLookup: Record<string, AdminData.Glassware>
+): boolean {
+  return glasswareName in glasswareLookup;
+}
+
+function instructionsValid(instructions: string): boolean {
+  return instructions.length > 0;
 }
 
 function recipeIngredientValid({

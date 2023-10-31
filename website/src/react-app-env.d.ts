@@ -113,7 +113,7 @@ declare module Form {
   interface Recipe {
     title: string;
     imageUrl?: string | null;
-    instructions: String;
+    instructions: string;
     glassware: string;
     ingredients: RecipeIngredient[];
   }
