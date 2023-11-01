@@ -3,15 +3,15 @@ import CategoryButton from "./CategoryButton";
 import styles from "./CategorySwitcher.module.css";
 
 interface CategorySwitcherProps {
-  defaultTab?: Admin.CategoryId;
-  onSelect: (id: Admin.CategoryId) => void;
+  defaultTab?: Category;
+  onSelect: (id: Category) => void;
 }
 
 export default function CategorySwitcher({
   defaultTab = "recipes",
   onSelect,
 }: CategorySwitcherProps) {
-  const categories: { id: Admin.CategoryId; name: string }[] = [
+  const categories: { id: Category; name: string }[] = [
     { id: "recipes", name: "Recipes" },
     { id: "ingredients", name: "Ingredients" },
     { id: "glassware", name: "Glassware" },

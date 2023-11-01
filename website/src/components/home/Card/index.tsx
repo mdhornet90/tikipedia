@@ -2,7 +2,7 @@ import Tag from "../Tag";
 import styles from "./index.module.css";
 
 interface CardProps {
-  card: RecipeCard;
+  card: Main.RecipeCard;
   onTap: () => void;
 }
 

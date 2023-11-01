@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./IngredientNameField.module.css";
 
 interface IngredientNameFieldProps {
-  ingredients: ListItem[];
+  ingredients: string[];
   text: string;
   onSelect: (name: string) => void;
 }
@@ -14,13 +14,11 @@ export default function IngredientNameFieldmodule({
 }: IngredientNameFieldProps) {
   const [searching, setSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredList, setFilteredList] = useState<ListItem[]>([]);
+  const [filteredList, setFilteredList] = useState<string[]>([]);
 
   useEffect(() => {
     if (searchTerm.length > 1) {
-      setFilteredList(
-        ingredients.filter(({ text }) => text.includes(searchTerm))
-      );
+      setFilteredList(ingredients.filter((text) => text.includes(searchTerm)));
     } else {
       setFilteredList([]);
     }
@@ -50,9 +48,9 @@ export default function IngredientNameFieldmodule({
 
       {filteredList.length > 0 && (
         <div className={styles.options}>
-          {filteredList.map(({ id, text }) => (
+          {filteredList.map((text, i) => (
             <SearchOption
-              key={id}
+              key={i}
               text={text}
               matchingText={searchTerm}
               onSelect={() => {

@@ -4,13 +4,13 @@ import IngredientFormField from "../../form/IngredientFormField";
 import styles from "./IngredientFormSection.module.css";
 
 interface IngredientFormSectionProps {
-  allIngredients: ListItem[];
+  allIngredients: string[];
   allUnits: string[];
-  ingredientInputs: Form.RecipeIngredient[];
+  ingredientInputs: Input.RecipeIngredient[];
   valid: boolean;
   onAdd: () => void;
   onRemove: (index: number) => void;
-  onUpdate: (index: number, updatedValue: Form.RecipeIngredient) => void;
+  onUpdate: (index: number, updatedValue: Input.RecipeIngredient) => void;
 }
 
 export default function IngredientFormSection({

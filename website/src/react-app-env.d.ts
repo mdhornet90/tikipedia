@@ -1,106 +1,84 @@
 /// <reference types="react-scripts" />
 
-interface Tag {
-  title: string;
-}
+type Category = "recipes" | "ingredients" | "glassware";
 
-interface RecipeCard {
-  id: string;
-  title: string;
-  imageUrl?: string;
-  tags?: Tag[];
-}
-
-interface RecipeDetail {
-  title: string;
-  ingredients: RecipeIngredient[];
-  garnishes?: string[];
-  glassware: { name: string };
-  instructions: string;
-}
-
-interface RecipeIngredient {
-  quantity: string;
-  unit: string;
-  name: string;
-}
-
-interface Ingredient {
-  id: string;
-  name: string;
-  abv?: number;
-}
-
-interface Glassware {
-  id: string;
-  name: string;
-}
-
-declare module ApiData {
-  interface RecipeEntry {
+// Data types that define the shape of API objects used in populating the cards and detail views on the home page
+declare module Main {
+  interface RecipeCard {
     id: string;
     title: string;
-    ingredients: { name: string }[];
+    imageUrl?: string;
+    tags?: Tag[];
+  }
+
+  interface RecipeDetail {
+    title: string;
+    ingredients: RecipeIngredient[];
+    garnishes?: string[];
     glassware: { name: string };
-  }
-  interface AllRecipes {
-    recipes: RecipeEntry[];
-  }
-  interface AllIngredients {
-    ingredients: Ingredient[];
+    instructions: string;
   }
 
-  interface AllGlassware {
-    allGlassware: Glassware[];
+  interface RecipeIngredient {
+    quantity: string;
+    unit: string;
+    name: string;
   }
-}
 
-declare module AdminData {
-  interface Ingredient {
-    id: string;
-    name: string;
-  }
-  interface Glassware {
-    id: string;
-    name: string;
-  }
-  interface RecipeFormData {
-    ingredients: Ingredient[];
-    allGlassware: Glassware[];
+  interface Tag {
+    title: string;
   }
 }
 declare module Admin {
-  type CategoryId = "recipes" | "ingredients" | "glassware";
+  interface Interaction {
+    category: Category;
+    spreadsheet: Spreadsheet.State;
+    updateCategory: (category: Category) => void;
+  }
+}
 
-  interface DataInteraction {
-    displayTransform: (data: T) => Admin.SpreadsheetRowData[];
+// Data types that define the interaction and state of the spreadsheet
+declare module Spreadsheet {
+  type DataTransformFn = (data: T) => RowData[];
+
+  interface State {
+    headers: string[];
+    data: RowData[];
   }
 
-  interface SpreadsheetRowData {
+  interface RowData {
     id: string;
     data: (string | number | undefined)[];
   }
 
-  interface SpreadsheetState {
-    spreadsheetHeaders: string[];
-    spreadsheetData: SpreadsheetRowData[];
-  }
-  interface FormActions {
-    updateCategoryId: (categoryId: Admin.CategoryId) => void;
-  }
-
-  interface Interaction {
-    currentId: CategoryId;
-    spreadsheet: SpreadsheetState;
-    actions: FormActions;
+  // Data types that define the shape of API objects used in populating the spreadsheet
+  declare module Data {
+    interface Recipes {
+      recipes: {
+        id: string;
+        title: string;
+        ingredients: { name: string }[];
+        glassware: { name: string };
+      }[];
+    }
+    interface Ingredients {
+      ingredients: {
+        id: string;
+        name: string;
+        abv?: number;
+      }[];
+    }
+    interface Glassware {
+      allGlassware: {
+        id: string;
+        name: string;
+      }[];
+    }
   }
 }
-interface ListItem {
-  id: string;
-  text: string;
-}
 
-declare module Form {
+// Data types that define the shape of data the user enters when populating a form
+declare module Input {
   interface Ingredient {
     abv: string;
     name: string;
@@ -123,8 +101,25 @@ declare module Form {
     quantity: string;
     unit: string;
   }
+
+  // Data types that define the shape of API objects used in form interaction
+  declare module Data {
+    interface Ingredient {
+      id: string;
+      name: string;
+    }
+    interface Glassware {
+      id: string;
+      name: string;
+    }
+    interface RecipeForm {
+      ingredients: Ingredient[];
+      allGlassware: Glassware[];
+    }
+  }
 }
 
+// Data types that define the shape of data submitted to the API (mutations)
 declare module Submit {
   interface Recipe {
     title: string;

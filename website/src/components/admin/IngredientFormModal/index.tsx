@@ -13,13 +13,13 @@ interface IngredientFormModalProps {
   onClose: () => void;
 }
 
-const INITIAL_STATE: Form.Ingredient = { name: "", abv: "" };
+const INITIAL_STATE: Input.Ingredient = { name: "", abv: "" };
 
 export default function IngredientFormModal({
   open,
   onClose,
 }: IngredientFormModalProps) {
-  const [form, setForm] = useState<Form.Ingredient>(INITIAL_STATE);
+  const [form, setForm] = useState<Input.Ingredient>(INITIAL_STATE);
   const [mutation] = useMutation(CreateIngredient, {
     refetchQueries: [GetAllIngredients, RecipeFormData],
   });
@@ -65,7 +65,7 @@ export default function IngredientFormModal({
   );
 }
 
-function validateForm({ name, abv }: Form.Ingredient) {
+function validateForm({ name, abv }: Input.Ingredient) {
   if (name.length <= 0) {
     return false;
   }

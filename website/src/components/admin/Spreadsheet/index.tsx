@@ -6,7 +6,7 @@ import SpreadsheetTitle from "./SpreadsheetTitle";
 
 interface SpreadsheetProps {
   headers: string[];
-  data: Admin.SpreadsheetRowData[];
+  data: Spreadsheet.RowData[];
   onAdd: () => void;
 }
 

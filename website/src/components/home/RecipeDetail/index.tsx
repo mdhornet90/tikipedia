@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Loading from "../../common/Loading";
 
 interface RecipeDetailProps {
-  recipe?: RecipeDetail | null;
+  recipe?: Main.RecipeDetail | null;
   onClose: () => void;
 }
 
@@ -63,7 +63,7 @@ const RecipeSection = forwardRef(function (
     recipe,
   }: {
     onClose: () => void;
-    recipe?: RecipeDetail | null;
+    recipe?: Main.RecipeDetail | null;
   },
   ref: Ref<HTMLDivElement>
 ) {

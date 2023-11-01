@@ -3,12 +3,12 @@ import IngredientNameField from "../IngredientNameField";
 import DropdownField from "../DropdownField";
 
 interface IngredientFormFieldProps {
-  ingredients: ListItem[];
+  ingredients: string[];
   units: string[];
   selectedIngredient: string;
   selectedAmount: string;
   selectedUnit: string;
-  onUpdate: (key: keyof Form.RecipeIngredient, value: string) => void;
+  onUpdate: (key: keyof Input.RecipeIngredient, value: string) => void;
 }
 export default function IngredientFormField({
   ingredients,

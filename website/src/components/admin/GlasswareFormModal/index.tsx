@@ -9,13 +9,13 @@ interface GlasswareFormModalProps {
   onClose: () => void;
 }
 
-const INITIAL_STATE: Form.Glassware = { name: "" };
+const INITIAL_STATE: Input.Glassware = { name: "" };
 
 export default function GlasswareFormModal({
   open,
   onClose,
 }: GlasswareFormModalProps) {
-  const [form, setForm] = useState<Form.Glassware>(INITIAL_STATE);
+  const [form, setForm] = useState<Input.Glassware>(INITIAL_STATE);
   const [mutation] = useMutation(CreateGlassware, {
     refetchQueries: [GetAllGlassware, RecipeFormData],
   });

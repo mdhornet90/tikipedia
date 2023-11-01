@@ -13,11 +13,7 @@ import RecipeFormModal from "../RecipeFormModal";
 type ModalState = "closed" | "opening" | "open" | "closing";
 
 export default function Admin() {
-  const {
-    currentId,
-    spreadsheet,
-    actions: { updateCategoryId },
-  } = useAdminState("recipes");
+  const { category, spreadsheet, updateCategory } = useAdminState("recipes");
   const [modalState, setModalState] = useState<ModalState>("closed");
 
   useEffect(() => {
@@ -35,15 +31,15 @@ export default function Admin() {
         <div className={styles.adminAreaHeader}>
           <Title title="Content Management" size="large" />
         </div>
-        <CategorySwitcher onSelect={updateCategoryId} />
+        <CategorySwitcher onSelect={updateCategory} />
         <Spreadsheet
-          headers={spreadsheet.spreadsheetHeaders}
-          data={spreadsheet.spreadsheetData}
+          headers={spreadsheet.headers}
+          data={spreadsheet.data}
           onAdd={() => setModalState("opening")}
         />
       </div>
       {(() => {
-        switch (currentId) {
+        switch (category) {
           case "ingredients":
             return (
               <IngredientFormModal

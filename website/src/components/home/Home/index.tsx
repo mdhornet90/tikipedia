@@ -11,9 +11,11 @@ import RecipeDetail from "../RecipeDetail";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const ref = useRef(null);
-  const [cards, setCards] = useState<RecipeCard[]>([]);
+  const [cards, setCards] = useState<Main.RecipeCard[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [recipeDetail, setRecipeDetail] = useState<RecipeDetail | null>(null);
+  const [recipeDetail, setRecipeDetail] = useState<Main.RecipeDetail | null>(
+    null
+  );
 
   useEffect(() => {
     (async function () {

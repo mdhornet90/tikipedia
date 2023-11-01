@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { client } from "./ApolloClient";
 
-export const getRecipeCards = async (): Promise<RecipeCard[]> =>
+export const getRecipeCards = async (): Promise<Main.RecipeCard[]> =>
   client
     .query({
       query: gql`
@@ -16,7 +16,7 @@ export const getRecipeCards = async (): Promise<RecipeCard[]> =>
     })
     .then(({ data }) => data.recipes);
 
-export const getRecipeDetail = async (id: string): Promise<RecipeDetail> =>
+export const getRecipeDetail = async (id: string): Promise<Main.RecipeDetail> =>
   client
     .query({
       query: gql`

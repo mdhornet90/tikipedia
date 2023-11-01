@@ -39,7 +39,7 @@
 .ingredients {
   display: grid;
   grid-template-columns: auto auto auto;
-  justify-content: start;
+  justify-content: flex-start;
   width: 100%;
 }
 
@@ -54,7 +54,7 @@
 
 .ingredientName {
   margin-left: 2px;
-  justify-self: start;
+  justify-self: flex-start;
 }
 
 .garnishes,

@@ -14,7 +14,7 @@ interface RecipeFormModalProps {
 }
 
 const allUnits = ["dash", "drop", "each", "oz", "tbsp", "tsp"];
-const INITIAL_STATE: Form.Recipe = {
+const INITIAL_STATE: Input.Recipe = {
   title: "",
   glassware: "Glassware",
   imageUrl: null,
@@ -26,20 +26,19 @@ export default function RecipeFormModal({
   open,
   onClose,
 }: RecipeFormModalProps) {
-  const { data } = useQuery<AdminData.RecipeFormData>(RecipeFormData);
+  const { data } = useQuery<Input.Data.RecipeForm>(RecipeFormData);
   const [mutation] = useMutation<Submit.Recipe>(CreateRecipe, {
     refetchQueries: [GetAllRecipes],
   });
 
   const [ingredientLookup, setIngredientLookup] = useState<
-    Record<string, AdminData.Ingredient>
+    Record<string, Input.Data.Ingredient>
   >({});
   const [glasswareLookup, setGlasswareLookup] = useState<
-    Record<string, AdminData.Glassware>
+    Record<string, Input.Data.Glassware>
   >({});
-  const [ingredientList, setIngredientList] = useState<ListItem[]>([]);
 
-  const [form, setForm] = useState<Form.Recipe>(INITIAL_STATE);
+  const [form, setForm] = useState<Input.Recipe>(INITIAL_STATE);
   const [formValid, setFormValid] = useState(false);
   const [ingredientsValid, setIngredientsValid] = useState(true);
 
@@ -50,22 +49,18 @@ export default function RecipeFormModal({
     const { ingredients, allGlassware } = data;
 
     setIngredientLookup(
-      ingredients.reduce((acc, ingredient) => {
-        acc[ingredient.name] = ingredient;
-        return acc;
-      }, {} as Record<string, AdminData.Ingredient>)
+      ingredients
+        .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
+        .reduce((acc, ingredient) => {
+          acc[ingredient.name] = ingredient;
+          return acc;
+        }, {} as Record<string, Input.Data.Ingredient>)
     );
     setGlasswareLookup(
       allGlassware.reduce((acc, glassware) => {
         acc[glassware.name] = glassware;
         return acc;
-      }, {} as Record<string, AdminData.Glassware>)
-    );
-
-    setIngredientList(
-      ingredients
-        .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
-        .map(({ id, name }) => ({ id, text: name }))
+      }, {} as Record<string, Input.Data.Glassware>)
     );
   }, [data]);
 
@@ -73,6 +68,7 @@ export default function RecipeFormModal({
     setFormValid(checkFormValid(form, glasswareLookup));
     setIngredientsValid(form.ingredients.every(recipeIngredientValid));
   }, [form, glasswareLookup]);
+
   return (
     <EditingModal
       open={open}
@@ -107,7 +103,7 @@ export default function RecipeFormModal({
         onUpdate={(imageUrl) => setForm({ ...form, imageUrl })}
       />
       <IngredientFormSection
-        allIngredients={ingredientList}
+        allIngredients={Object.keys(ingredientLookup)}
         allUnits={allUnits}
         ingredientInputs={form.ingredients}
         valid={ingredientsValid}
@@ -150,8 +146,8 @@ export default function RecipeFormModal({
 }
 
 function checkFormValid(
-  form: Form.Recipe,
-  glasswareLookup: Record<string, AdminData.Glassware>
+  form: Input.Recipe,
+  glasswareLookup: Record<string, Input.Data.Glassware>
 ): boolean {
   return (
     titleValid(form.title) &&
@@ -180,14 +176,14 @@ function imageUrlValid(imageUrl?: string | null): boolean {
 }
 
 function ingredientsValidForSubmission(
-  ingredients: Form.RecipeIngredient[]
+  ingredients: Input.RecipeIngredient[]
 ): boolean {
   return ingredients.length > 0 && ingredients.every(recipeIngredientValid);
 }
 
 function glasswareValid(
   glasswareName: string,
-  glasswareLookup: Record<string, AdminData.Glassware>
+  glasswareLookup: Record<string, Input.Data.Glassware>
 ): boolean {
   return glasswareName in glasswareLookup;
 }
@@ -200,7 +196,7 @@ function recipeIngredientValid({
   name,
   quantity,
   unit,
-}: Form.RecipeIngredient): boolean {
+}: Input.RecipeIngredient): boolean {
   if (name.length <= 0 || !allUnits.includes(unit)) {
     return false;
   }
@@ -214,9 +210,9 @@ function recipeIngredientValid({
 }
 
 function transformForSubmission(
-  form: Form.Recipe,
-  ingredientLookup: Record<string, AdminData.Ingredient>,
-  glasswareLookup: Record<string, AdminData.Glassware>
+  form: Input.Recipe,
+  ingredientLookup: Record<string, Input.Data.Ingredient>,
+  glasswareLookup: Record<string, Input.Data.Glassware>
 ): Submit.Recipe {
   return {
     title: form.title,
