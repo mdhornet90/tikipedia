@@ -9,3 +9,8 @@ export async function insert(glassware: CreateGlasswareDBInput) {
   let [result] = await knex('glassware').insert(glassware).returning('*');
   return result;
 }
+
+export async function update(id: UUID, glassware: EditGlasswareDBInput) {
+  let [result] = await knex('glassware').where({ id }).update(glassware).returning('*');
+  return result;
+}

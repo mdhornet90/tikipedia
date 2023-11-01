@@ -33,7 +33,7 @@ interface Glassware {
 interface CreateGlasswareInput {
   name: string;
 }
-type EditGlasswareInput = DeepPartial<CreateGlasswareInput>;
+type EditGlasswareInput = CreateGlasswareInput;
 
 type CreateGlasswareDBInput = CreateGlasswareInput & DBUniqueness;
 type EditGlasswareDBInput = EditGlasswareInput & DBUniqueness;
