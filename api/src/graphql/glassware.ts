@@ -44,7 +44,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    createGlassware: async (_: any, { input }: { input: GlasswareInput }) => {
+    createGlassware: async (_: any, { input }: { input: CreateGlasswareInput }) => {
       try {
         return await insert({
           ...input,

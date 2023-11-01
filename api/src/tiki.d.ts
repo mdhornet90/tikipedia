@@ -1,5 +1,11 @@
 const { UUID } = require('crypto');
 
+type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
+
 interface DBUniqueness {
   mangledName: string;
 }
@@ -9,23 +15,28 @@ interface Ingredient {
   abv: number?;
 }
 
-interface IngredientInput {
+interface CreateIngredientInput {
   name: string;
   abv: number?;
 }
 
-type IngredientDBInput = IngredientInput & DBUniqueness;
+type EditIngredientInput = DeepPartial<CreateIngredientInput>;
+
+type CreateIngredientDBInput = CreateIngredientInput & DBUniqueness;
+type EditIngredientDBInput = EditIngredientInput & DeepPartial<DBUniqueness>;
 
 interface Glassware {
   id: UUID;
   name: string;
 }
 
-interface GlasswareInput {
+interface CreateGlasswareInput {
   name: string;
 }
+type EditGlasswareInput = DeepPartial<CreateGlasswareInput>;
 
-type GlasswareDBInput = GlasswareInput & DBUniqueness;
+type CreateGlasswareDBInput = CreateGlasswareInput & DBUniqueness;
+type EditGlasswareDBInput = EditGlasswareInput & DBUniqueness;
 
 interface Recipe {
   id: UUID;

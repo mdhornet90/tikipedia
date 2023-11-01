@@ -47,7 +47,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    createIngredient: async (_: any, { input }: { input: IngredientInput }) => {
+    createIngredient: async (_: any, { input }: { input: CreateIngredientInput }) => {
       try {
         return await insert({
           ...input,
