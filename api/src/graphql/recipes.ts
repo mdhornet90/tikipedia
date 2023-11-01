@@ -116,7 +116,7 @@ export const resolvers = {
     },
 
     editRecipe: async (_: any, { id, input }: { id: UUID; input: EditRecipeInput }) => {
-      if (Object.keys(input).length == 0) {
+      if (!validateRecipeUpdate(input)) {
         throw new GraphQLError('At least one field required!', {
           extensions: { code: ErrorCode.BAD_USER_INPUT },
         });
@@ -135,6 +135,10 @@ export const resolvers = {
     },
   },
 };
+
+function validateRecipeUpdate({ ingredientInputs, ...input }: EditRecipeInput): boolean {
+  return Object.keys(input).length > 0 || (ingredientInputs?.length ?? 0) > 0;
+}
 
 function handleDatabaseError(err: DatabaseError, action: string) {
   switch (err.code) {
