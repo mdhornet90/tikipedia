@@ -1,50 +1,34 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./Home.module.css";
 import CardArea from "../CardArea";
 import Loading from "../../common/Loading";
 import Card from "../Card";
 import TikiHeader from "../../common/TikiHeader";
-import { getRecipeCards, getRecipeDetail } from "../../../api";
+import { GetRecipeCards, GetRecipeDetail } from "../../../api";
 import RecipeDetail from "../RecipeDetail";
+import { useQuery } from "@apollo/client";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const ref = useRef(null);
-  const [cards, setCards] = useState<Main.RecipeCard[]>([]);
+  const { loading: cardsLoading, data: cardData } = useQuery<{
+    recipes: Main.RecipeCard[];
+  }>(GetRecipeCards);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [recipeDetail, setRecipeDetail] = useState<Main.RecipeDetail | null>(
-    null
+  const { data: recipeDetail } = useQuery<{ recipe: Main.RecipeDetail }>(
+    GetRecipeDetail,
+    { skip: !selectedId, variables: { id: selectedId } }
   );
-
-  useEffect(() => {
-    (async function () {
-      if (isLoading) {
-        setCards(await getRecipeCards());
-        setIsLoading(false);
-      }
-    })();
-  }, [isLoading]);
-
-  useEffect(() => {
-    if (selectedId) {
-      (async () => {
-        setRecipeDetail(await getRecipeDetail(selectedId));
-      })();
-    } else {
-      setRecipeDetail(null);
-    }
-  }, [selectedId]);
+  const ref = useRef(null);
 
   return (
     <div>
       <header className={styles.header}>
         <TikiHeader />
-        {isLoading ? (
+        {cardsLoading ? (
           <Loading indicatorStyle="dark" />
         ) : (
           <CardArea>
-            {cards.map((card) => {
+            {cardData?.recipes.map((card) => {
               const id = card.id;
               return (
                 <Card key={id} card={card} onTap={() => setSelectedId(id)} />
@@ -62,7 +46,7 @@ export default function Home() {
         >
           <RecipeDetail
             ref={ref}
-            recipe={recipeDetail}
+            recipe={recipeDetail?.recipe}
             onClose={() => setSelectedId(null)}
           />
         </CSSTransition>
