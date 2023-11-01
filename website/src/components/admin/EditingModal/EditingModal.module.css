@@ -1,21 +1,36 @@
+.modalBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease-in-out;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.modalBackground.show {
+  pointer-events: unset;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
 .editingModal {
   position: fixed;
   height: 100vh;
   top: 0;
   right: -75%;
-  background-color: #eeeeee9f;
+  background-color: #ffffff9f;
   backdrop-filter: blur(30px);
   box-shadow: 13px 0px 18px #333;
   width: 50%;
   transition: right 0.3s ease-in-out;
-  z-index: 2;
+  z-index: 3;
   padding: 16px;
 
   display: flex;
   flex-direction: column;
 }
 
-.show {
+.editingModal.show {
   right: 0;
 }
 

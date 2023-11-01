@@ -20,22 +20,24 @@ export default function EditingModal({
   onSave,
 }: EditingModalProps) {
   return (
-    <div className={`${styles.editingModal} ${open ? styles.show : ""}`}>
-      <CloseIcon
-        className={styles.closeButton}
-        fontSize="large"
-        onClick={onClose}
-      />
-      <div className={styles.content}>
-        <Title title={title} size="large" />
-        <div className={styles.inputArea}>{children}</div>
-        <button
-          className={styles.saveButton}
-          disabled={!formValid}
-          onClick={onSave}
-        >
-          Save
-        </button>
+    <div className={`${styles.modalBackground} ${open ? styles.show : ""}`}>
+      <div className={`${styles.editingModal} ${open ? styles.show : ""}`}>
+        <CloseIcon
+          className={styles.closeButton}
+          fontSize="large"
+          onClick={onClose}
+        />
+        <div className={styles.content}>
+          <Title title={title} size="large" />
+          <div className={styles.inputArea}>{children}</div>
+          <button
+            className={styles.saveButton}
+            disabled={!formValid}
+            onClick={onSave}
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   );
