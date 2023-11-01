@@ -10,6 +10,11 @@ export async function insert(ingredient: CreateIngredientDBInput) {
   return result;
 }
 
+export async function update(id: UUID, ingredient: EditIngredientDBInput) {
+  let [result] = await knex('ingredients').where({ id }).update(ingredient).returning('*');
+  return result;
+}
+
 export const findAllForRecipe = (recipeId: UUID) =>
   knex('ingredients')
     .leftJoin('recipes_ingredients AS ri', 'ri.ingredient_id', 'ingredients.id')
