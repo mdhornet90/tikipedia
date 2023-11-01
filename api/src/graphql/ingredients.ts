@@ -10,17 +10,19 @@ export const typeDef = `#graphql
     name: String!
     abv: Float
   }
-  input IngredientInput {
-    name: String!
-    abv: Float
-  }
 
   type Query {
     ingredients: [Ingredient!]!
     ingredient(id: ID): Ingredient
   }
+  
+  input CreateIngredientInput {
+    name: String!
+    abv: Float
+  }
+
   type Mutation {
-    createIngredient(input: IngredientInput!): Ingredient!
+    createIngredient(input: CreateIngredientInput!): Ingredient!
   }
 `;
 

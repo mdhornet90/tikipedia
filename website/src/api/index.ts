@@ -43,7 +43,7 @@ export const GetAllRecipes = gql`
 `;
 
 export const CreateRecipe = gql`
-  mutation createRecipe($input: RecipeInput!) {
+  mutation createRecipe($input: CreateRecipeInput!) {
     createRecipe(input: $input) {
       id
     }
@@ -61,7 +61,7 @@ export const GetAllIngredients = gql`
 `;
 
 export const CreateIngredient = gql`
-  mutation createIngredient($input: IngredientInput!) {
+  mutation createIngredient($input: CreateIngredientInput!) {
     createIngredient(input: $input) {
       id
     }
@@ -78,7 +78,7 @@ export const GetAllGlassware = gql`
 `;
 
 export const CreateGlassware = gql`
-  mutation createGlassware($input: GlasswareInput!) {
+  mutation createGlassware($input: CreateGlasswareInput!) {
     createGlassware(input: $input) {
       id
     }

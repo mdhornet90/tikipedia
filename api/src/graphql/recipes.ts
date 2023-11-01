@@ -7,50 +7,52 @@ import { isDatabaseError, isUUID } from '../utils';
 import { findAllForRecipe } from '../core/queries/ingredients';
 
 export const typeDef = `#graphql
-    type Recipe {
-        id: ID!
-        title: String!
-        imageUrl: String
-        instructions: String!
-        glassware: Glassware!
-        ingredients: [RecipeIngredient!]!
-    }
-    type RecipeIngredient {
-      name: String!
-      abv: Float!
-      quantity: Float!
-      unit: String!
-    }
-    input RecipeInput {
-      title: String!
-      imageUrl: String
-      instructions: String!
-      glasswareId: ID!
-      ingredientInputs: [RecipeIngredientInput!]!
-    }
-    input RecipeIngredientInput {
-      ingredientId: ID!
-      quantity: Float
-      unit: Unit
-    }
+  type Recipe {
+    id: ID!
+    title: String!
+    imageUrl: String
+    instructions: String!
+    glassware: Glassware!
+    ingredients: [RecipeIngredient!]!
+  }
+  
+  type RecipeIngredient {
+    name: String!
+    abv: Float!
+    quantity: Float!
+    unit: String!
+  }
 
-    enum Unit {
-      oz
-      tsp
-      tbsp
-      dash
-      drop
-      each
-    }
+  input CreateRecipeInput {
+    title: String!
+    imageUrl: String
+    instructions: String!
+    glasswareId: ID!
+    ingredientInputs: [CreateRecipeIngredientInput!]!
+  }
+  input CreateRecipeIngredientInput {
+    ingredientId: ID!
+    quantity: Float
+    unit: Unit
+  }
 
-    type Query {
-      recipes: [Recipe!]!
-      recipe(id: ID): Recipe
-    }
+  enum Unit {
+    oz
+    tsp
+    tbsp
+    dash
+    drop
+    each
+  }
 
-    type Mutation {
-      createRecipe(input: RecipeInput): Recipe!
-    }
+  type Query {
+    recipes: [Recipe!]!
+    recipe(id: ID): Recipe
+  }
+
+  type Mutation {
+    createRecipe(input: CreateRecipeInput): Recipe!
+  }
 `;
 
 export const resolvers = {

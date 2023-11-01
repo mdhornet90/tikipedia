@@ -9,17 +9,17 @@ export const typeDef = `#graphql
         id: ID!
         name: String!
     }
-    input GlasswareInput {
-        name: String!
-    }
 
     type Query {
       allGlassware: [Glassware!]!
       glassware(id: ID): Glassware
     }
 
+    input CreateGlasswareInput {
+        name: String!
+    }
     type Mutation {
-      createGlassware(input: GlasswareInput!): Glassware!
+      createGlassware(input: CreateGlasswareInput!): Glassware!
     }
 `;
 
