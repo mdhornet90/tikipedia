@@ -27,7 +27,7 @@ export default function RecipeFormModal({
   onClose,
 }: RecipeFormModalProps) {
   const { data } = useQuery<Input.Data.RecipeForm>(RecipeFormData);
-  const [mutation] = useMutation<Submit.Recipe>(CreateRecipe, {
+  const [mutation] = useMutation<Submit.CreateRecipe>(CreateRecipe, {
     refetchQueries: [GetAllRecipes],
   });
 
@@ -213,7 +213,7 @@ function transformForSubmission(
   form: Input.Recipe,
   ingredientLookup: Record<string, Input.Data.Ingredient>,
   glasswareLookup: Record<string, Input.Data.Glassware>
-): Submit.Recipe {
+): Submit.CreateRecipe {
   return {
     title: form.title,
     glasswareId: glasswareLookup[form.glassware].id,
