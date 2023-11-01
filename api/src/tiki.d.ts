@@ -46,15 +46,17 @@ interface Recipe {
   glasswareId: UUID;
 }
 
-interface RecipeInput {
+interface CreateRecipeInput {
   title: string;
   imageUrl?: string;
   instructions: string;
   glasswareId: UUID;
   ingredientInputs: RecipeIngredientInput[];
 }
+type CreateRecipeDBInput = CreateRecipeInput & DBUniqueness;
 
-type RecipeDBInput = RecipeInput & DBUniqueness;
+type EditRecipeInput = DeepPartial<CreateRecipeInput>;
+type EditRecipeDBInput = EditRecipeInput & DeepPartial<DBUniqueness>;
 
 interface RecipeIngredientInput {
   ingredientId: UUID;
