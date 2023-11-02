@@ -121,6 +121,13 @@ declare module Input {
 
 // Data types that define the shape of data submitted to the API (mutations)
 declare module Submit {
+  interface CreateGlassware {
+    name: string;
+  }
+  interface EditGlassware {
+    name: string;
+  }
+
   interface CreateRecipe {
     title: string;
     imageUrl?: string;

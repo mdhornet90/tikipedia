@@ -8,12 +8,14 @@ interface SpreadsheetProps {
   headers: string[];
   data: Spreadsheet.RowData[];
   onAdd: () => void;
+  onSelectItem: (id: string) => void;
 }
 
 export default function Spreadsheet({
   headers,
   data,
   onAdd,
+  onSelectItem,
 }: SpreadsheetProps) {
   return (
     <div className={styles.spreadsheet}>
@@ -27,7 +29,7 @@ export default function Spreadsheet({
         </thead>
         <tbody className={styles.spreadsheetBody}>
           {data.map((item, i) => (
-            <SpreadsheetRow key={i}>
+            <SpreadsheetRow key={i} onClick={() => onSelectItem(item.id)}>
               {item.data.map((name, i) => (
                 <SpreadsheetItem key={i} text={name?.toString() ?? ""} />
               ))}

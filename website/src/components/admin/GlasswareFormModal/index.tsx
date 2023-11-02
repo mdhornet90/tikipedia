@@ -1,41 +1,33 @@
-import { useState } from "react";
 import TextField from "../../form/TextField";
 import EditingModal from "../EditingModal";
-import { useMutation } from "@apollo/client";
-import { CreateGlassware, GetAllGlassware, RecipeFormData } from "../../../api";
+import useGlasswareState from "./useGlasswareState";
 
 interface GlasswareFormModalProps {
   open: boolean;
   onClose: () => void;
+  selectedId?: string;
 }
-
-const INITIAL_STATE: Input.Glassware = { name: "" };
 
 export default function GlasswareFormModal({
   open,
   onClose,
+  selectedId,
 }: GlasswareFormModalProps) {
-  const [form, setForm] = useState<Input.Glassware>(INITIAL_STATE);
-  const [mutation] = useMutation(CreateGlassware, {
-    refetchQueries: [GetAllGlassware, RecipeFormData],
-  });
+  const { form, updateForm, clearForm, validate, transform, mutation } =
+    useGlasswareState(selectedId);
 
   return (
     <EditingModal
       open={open}
       onClose={() => {
-        setForm(INITIAL_STATE);
+        clearForm();
         onClose();
       }}
-      title="Add Glassware"
-      formValid={form.name.length > 0}
+      title={selectedId ? "Edit Glassware" : "Add Glassware"}
+      formValid={validate(form)}
       onSave={() => {
-        mutation({
-          variables: {
-            input: { name: form.name },
-          },
-        });
-        setForm(INITIAL_STATE);
+        mutation({ variables: transform(form) });
+        clearForm();
         onClose();
       }}
     >
@@ -43,7 +35,7 @@ export default function GlasswareFormModal({
         name={"Name"}
         value={form.name}
         onUpdate={(newValue) => {
-          setForm({ ...form, name: newValue });
+          updateForm({ ...form, name: newValue });
         }}
       />{" "}
     </EditingModal>

@@ -77,9 +77,26 @@ export const GetAllGlassware = gql`
   }
 `;
 
+export const GetGlassware = gql`
+  query glassware($id: ID!) {
+    glassware(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
 export const CreateGlassware = gql`
   mutation createGlassware($input: CreateGlasswareInput!) {
     createGlassware(input: $input) {
+      id
+    }
+  }
+`;
+
+export const EditGlassware = gql`
+  mutation editGlassware($id: ID!, $input: EditGlasswareInput!) {
+    editGlassware(id: $id, input: $input) {
       id
     }
   }

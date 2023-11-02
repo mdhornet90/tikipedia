@@ -14,6 +14,7 @@ type ModalState = "closed" | "opening" | "open" | "closing";
 
 export default function Admin() {
   const { category, spreadsheet, updateCategory } = useAdminState("recipes");
+  const [selectedId, setSelectedId] = useState<string | undefined>();
   const [modalState, setModalState] = useState<ModalState>("closed");
 
   useEffect(() => {
@@ -36,6 +37,10 @@ export default function Admin() {
           headers={spreadsheet.headers}
           data={spreadsheet.data}
           onAdd={() => setModalState("opening")}
+          onSelectItem={(id) => {
+            setSelectedId(id);
+            setModalState("opening");
+          }}
         />
       </div>
       {(() => {
@@ -52,8 +57,10 @@ export default function Admin() {
           case "glassware":
             return (
               <GlasswareFormModal
+                selectedId={selectedId}
                 open={modalState === "open"}
                 onClose={() => {
+                  setSelectedId(undefined);
                   setModalState("closing");
                 }}
               />

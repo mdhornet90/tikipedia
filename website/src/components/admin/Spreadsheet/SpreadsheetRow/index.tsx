@@ -1,6 +1,17 @@
 import { PropsWithChildren } from "react";
 import styles from "./SpreadsheetRow.module.css";
 
-export default function SpreadsheetRow({ children }: PropsWithChildren) {
-  return <tr className={styles.spreadsheetRow}>{children}</tr>;
+interface SpreadsheetRowProps extends PropsWithChildren {
+  onClick?: () => void;
+}
+
+export default function SpreadsheetRow({
+  children,
+  onClick,
+}: SpreadsheetRowProps) {
+  return (
+    <tr className={styles.spreadsheetRow} onClick={onClick}>
+      {children}
+    </tr>
+  );
 }
