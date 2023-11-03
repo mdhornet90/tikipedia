@@ -33,7 +33,7 @@ export const typeDef = `#graphql
   }
   type Query {
     recipes: [Recipe!]!
-    recipe(id: ID): Recipe
+    recipe(id: ID!): Recipe
   }
 
   input CreateRecipeInput {

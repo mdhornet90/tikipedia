@@ -106,6 +106,7 @@ declare module Input {
   declare module Data {
     interface Ingredient {
       id: string;
+      abv: string;
       name: string;
     }
     interface Glassware {

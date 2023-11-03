@@ -14,7 +14,7 @@ export const typeDef = `#graphql
 
     type Query {
       allGlassware: [Glassware!]!
-      glassware(id: ID): Glassware
+      glassware(id: ID!): Glassware
     }
 
     input CreateGlasswareInput {

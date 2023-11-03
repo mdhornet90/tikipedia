@@ -60,9 +60,27 @@ export const GetAllIngredients = gql`
   }
 `;
 
+export const GetIngredient = gql`
+  query ingredient($id: ID!) {
+    ingredient(id: $id) {
+      id
+      name
+      abv
+    }
+  }
+`;
+
 export const CreateIngredient = gql`
   mutation createIngredient($input: CreateIngredientInput!) {
     createIngredient(input: $input) {
+      id
+    }
+  }
+`;
+
+export const EditIngredient = gql`
+  mutation editIngredient($id: ID!, $input: EditIngredientInput!) {
+    editIngredient(id: $id, input: $input) {
       id
     }
   }
@@ -110,6 +128,7 @@ export const RecipeFormData = gql`
     }
     ingredients {
       id
+      abv
       name
     }
   }

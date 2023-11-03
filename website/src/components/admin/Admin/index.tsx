@@ -25,6 +25,11 @@ export default function Admin() {
     }
   }, [modalState]);
 
+  const onClose = () => {
+    setSelectedId(undefined);
+    setModalState("closing");
+  };
+
   return (
     <div className={styles.content}>
       <TikiHeader />
@@ -48,10 +53,9 @@ export default function Admin() {
           case "ingredients":
             return (
               <IngredientFormModal
+                selectedId={selectedId}
                 open={modalState === "open"}
-                onClose={() => {
-                  setModalState("closing");
-                }}
+                onClose={onClose}
               />
             );
           case "glassware":
@@ -59,20 +63,12 @@ export default function Admin() {
               <GlasswareFormModal
                 selectedId={selectedId}
                 open={modalState === "open"}
-                onClose={() => {
-                  setSelectedId(undefined);
-                  setModalState("closing");
-                }}
+                onClose={onClose}
               />
             );
           case "recipes":
             return (
-              <RecipeFormModal
-                open={modalState === "open"}
-                onClose={() => {
-                  setModalState("closing");
-                }}
-              />
+              <RecipeFormModal open={modalState === "open"} onClose={onClose} />
             );
         }
       })()}

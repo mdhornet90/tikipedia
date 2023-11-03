@@ -15,7 +15,7 @@ export const typeDef = `#graphql
 
   type Query {
     ingredients: [Ingredient!]!
-    ingredient(id: ID): Ingredient
+    ingredient(id: ID!): Ingredient
   }
   
   input CreateIngredientInput {
