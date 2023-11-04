@@ -29,7 +29,9 @@ export default function useIngredientState(id?: string | null) {
     if (data) {
       const initialForm = {
         name: data.ingredient.name,
-        abv: (parseFloat(data.ingredient.abv) * 100).toPrecision(2),
+        abv:
+          data.ingredient.abv &&
+          (parseFloat(data.ingredient.abv) * 100).toPrecision(2),
       };
       updateForm({ ...initialForm });
       setInitialForm(initialForm);
