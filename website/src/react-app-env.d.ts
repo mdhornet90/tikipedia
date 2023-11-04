@@ -113,6 +113,18 @@ declare module Input {
       id: string;
       name: string;
     }
+    interface Recipe {
+      id: string;
+      title: string;
+      imageUrl?: string | null;
+      instructions: string;
+      glassware: { name: string };
+      ingredients: {
+        name: string;
+        quantity: string;
+        unit: string;
+      }[];
+    }
     interface RecipeForm {
       ingredients: Ingredient[];
       allGlassware: Glassware[];

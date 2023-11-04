@@ -42,6 +42,25 @@ export const GetAllRecipes = gql`
   }
 `;
 
+export const GetRecipe = gql`
+  query recipe($id: ID!) {
+    recipe(id: $id) {
+      id
+      title
+      imageUrl
+      instructions
+      glassware {
+        name
+      }
+      ingredients {
+        name
+        unit
+        quantity
+      }
+    }
+  }
+`;
+
 export const CreateRecipe = gql`
   mutation createRecipe($input: CreateRecipeInput!) {
     createRecipe(input: $input) {

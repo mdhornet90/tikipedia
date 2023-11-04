@@ -68,7 +68,11 @@ export default function Admin() {
             );
           case "recipes":
             return (
-              <RecipeFormModal open={modalState === "open"} onClose={onClose} />
+              <RecipeFormModal
+                selectedId={selectedId}
+                open={modalState === "open"}
+                onClose={onClose}
+              />
             );
         }
       })()}

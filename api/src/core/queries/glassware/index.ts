@@ -1,7 +1,7 @@
 import { UUID } from 'crypto';
 import { knex } from '../../db';
 
-export const findAll = () => knex('glassware');
+export const findAll = () => knex('glassware').orderBy('name');
 
 export const findOne = (id: UUID) => knex('glassware').where('id', id).first();
 

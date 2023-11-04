@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./DropdownField.module.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -16,6 +16,11 @@ export default function DropdownField({
   onSelect,
 }: DropdownFieldProps) {
   const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(text === defaultValue);
+  }, [text, defaultValue]);
+
   return (
     <div className={styles.inputContainer}>
       <select
