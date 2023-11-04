@@ -101,10 +101,10 @@
   align-items: center;
   font-size: 18px;
   font-weight: 500;
+  background: inherit;
   border-radius: 4px;
-  background: #ef1a1a;
-  border: none;
-  color: #eee;
+  border: 2px solid #ef1a1a;
+  color: #ef1a1a;
   outline: inherit;
   cursor: pointer;
 }
