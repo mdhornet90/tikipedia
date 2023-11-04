@@ -3,6 +3,7 @@ import {
   CreateGlassware,
   EditGlassware,
   GetAllGlassware,
+  GetAllRecipes,
   GetGlassware,
   RecipeFormData,
 } from "../../../api";
@@ -12,7 +13,7 @@ const EMPTY_STATE: Input.Glassware = { name: "" };
 
 export default function useGlasswareState(id?: string | null) {
   const [mutation] = useMutation(id ? EditGlassware : CreateGlassware, {
-    refetchQueries: [GetAllGlassware, RecipeFormData],
+    refetchQueries: [GetAllGlassware, RecipeFormData, GetAllRecipes],
   });
   const [initialForm, setInitialForm] = useState<Input.Glassware>(EMPTY_STATE);
   const [workingForm, updateForm] = useState<Input.Glassware>(EMPTY_STATE);

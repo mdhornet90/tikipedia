@@ -3,6 +3,7 @@ import {
   CreateIngredient,
   EditIngredient,
   GetAllIngredients,
+  GetAllRecipes,
   GetIngredient,
   RecipeFormData,
 } from "../../../api";
@@ -12,7 +13,7 @@ const EMPTY_STATE: Input.Ingredient = { name: "", abv: "" };
 
 export default function useIngredientState(id?: string | null) {
   const [mutation] = useMutation(id ? EditIngredient : CreateIngredient, {
-    refetchQueries: [GetAllIngredients, RecipeFormData],
+    refetchQueries: [GetAllIngredients, RecipeFormData, GetAllRecipes],
   });
   const [initialForm, setInitialForm] = useState<Input.Ingredient>(EMPTY_STATE);
   const [workingForm, updateForm] = useState<Input.Ingredient>(EMPTY_STATE);
