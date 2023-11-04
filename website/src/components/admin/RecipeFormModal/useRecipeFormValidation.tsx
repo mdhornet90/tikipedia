@@ -29,7 +29,7 @@ export default function useRecipeFormValidation({
   const [ingredientSectionValid, setIngredientSectionValid] = useState(false);
 
   useEffect(() => {
-    setFormValid(formValidator.formValid(form));
+    setFormValid(formValidator.validate(form));
     setIngredientSectionValid(
       form.ingredients.every((ingredient) =>
         recipeIngredientValid(units, ingredient)
@@ -41,7 +41,7 @@ export default function useRecipeFormValidation({
 }
 
 interface FormValidator {
-  formValid(form: Input.Recipe): boolean;
+  validate(form: Input.Recipe): boolean;
 }
 
 class ExistingFormValidator implements FormValidator {
@@ -55,7 +55,7 @@ class ExistingFormValidator implements FormValidator {
     this.underlyingFormValidator = underlyingFormValidator;
   }
 
-  formValid(form: Input.Recipe) {
+  validate(form: Input.Recipe) {
     return true;
   }
 }
@@ -72,7 +72,7 @@ class NewFormValidator implements FormValidator {
     this.glasswareLookup = glasswareLookup;
   }
 
-  formValid(form: Input.Recipe) {
+  validate(form: Input.Recipe) {
     return Object.keys(form).every((key) =>
       this.newValueValidationFns[key as keyof Input.Recipe](form)
     );

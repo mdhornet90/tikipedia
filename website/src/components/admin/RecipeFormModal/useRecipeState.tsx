@@ -18,7 +18,7 @@ export default function useRecipeState(id?: string | null) {
   const [mutation] = useMutation(id ? EditIngredient : CreateRecipe, {
     refetchQueries: [GetAllRecipes],
   });
-  const initialForm = useRecipeData(EMPTY_STATE, id);
+  const initialForm = useRecipeData(id);
   const [workingForm, updateForm] = useState<Input.Recipe>(EMPTY_STATE);
   const { ingredientLookup, glasswareLookup } = useRecipeFormData();
   const { formValid, ingredientSectionValid } = useRecipeFormValidation({
@@ -29,7 +29,11 @@ export default function useRecipeState(id?: string | null) {
   });
 
   useEffect(() => {
-    updateForm({ ...initialForm });
+    if (initialForm) {
+      updateForm({ ...initialForm });
+    } else {
+      updateForm({ ...EMPTY_STATE });
+    }
   }, [initialForm]);
 
   return {
@@ -41,7 +45,8 @@ export default function useRecipeState(id?: string | null) {
     updateForm,
     clearForm: () => updateForm(EMPTY_STATE),
     transform: id
-      ? (input: Input.Recipe) => transformEdit(id, input, initialForm)
+      ? (input: Input.Recipe) =>
+          transformEdit(id, input, initialForm ?? EMPTY_STATE)
       : transformAdd,
     mutation,
   };
