@@ -56,6 +56,7 @@ export const typeDef = `#graphql
     glasswareId: ID
     ingredientInputs: [EditRecipeIngredientInput!]
   }
+
   input EditRecipeIngredientInput {
     ingredientId: ID!
     quantity: Float!
@@ -122,14 +123,18 @@ export const resolvers = {
         });
       }
       try {
-        const dbUpdate = {
+        const dbUpdate: EditRecipeDBInput = {
           ...input,
-          mangledName: input.title ? mangledName(input.title) : undefined,
         };
+        if (input.title) {
+          dbUpdate['mangledName'] = input.title ? mangledName(input.title) : undefined;
+        }
         return await update(id, dbUpdate);
       } catch (err) {
         if (isDatabaseError(err)) {
           handleDatabaseError(err, 'updating');
+        } else {
+          throw err;
         }
       }
     },

@@ -11,7 +11,7 @@ export const GetRecipeCards = gql`
 `;
 
 export const GetRecipeDetail = gql`
-  query recipe($id: ID) {
+  query recipe($id: ID!) {
     recipe(id: $id) {
       title
       ingredients {
@@ -64,6 +64,14 @@ export const GetRecipe = gql`
 export const CreateRecipe = gql`
   mutation createRecipe($input: CreateRecipeInput!) {
     createRecipe(input: $input) {
+      id
+    }
+  }
+`;
+
+export const EditRecipe = gql`
+  mutation editRecipe($id: ID!, $input: EditRecipeInput!) {
+    editRecipe(id: $id, input: $input) {
       id
     }
   }

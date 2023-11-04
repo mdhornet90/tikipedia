@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { existingValueValidationFns } from "./utils";
 
 interface FormValidationProps {
   initialForm?: Input.Recipe;
@@ -6,11 +7,6 @@ interface FormValidationProps {
   units: Set<string>;
   glasswareLookup: Record<string, Input.Data.Glassware>;
 }
-
-type ExistingFormValidationFnLookup = Record<
-  keyof Input.Recipe,
-  (oldForm: Input.Recipe, newForm: Input.Recipe) => boolean
->;
 
 type NewFormValidationFnLookup = Record<
   keyof Input.Recipe,
@@ -63,35 +59,12 @@ class ExistingFormValidator implements FormValidator {
   validate(form: Input.Recipe) {
     return (
       Object.keys(form).some((key) =>
-        this.valueValidationFns[key as keyof Input.Recipe](
+        existingValueValidationFns[key as keyof Input.Recipe](
           this.initialForm,
           form
         )
       ) && this.underlyingFormValidator.validate(form)
     );
-  }
-
-  private valueValidationFns: ExistingFormValidationFnLookup = {
-    title: (oldForm, newForm) => oldForm.title !== newForm.title,
-    imageUrl: (oldForm, newForm) => oldForm.imageUrl !== newForm.imageUrl,
-    ingredients: (oldForm, newForm) =>
-      oldForm.ingredients.length !== newForm.ingredients.length ||
-      !oldForm.ingredients.every((oldIngredient, i) =>
-        this.isIngredientEqual(oldIngredient, newForm.ingredients[i])
-      ),
-    glassware: (oldForm, newForm) => oldForm.glassware !== newForm.glassware,
-    instructions: (oldForm, newForm) =>
-      oldForm.instructions !== newForm.instructions,
-  };
-
-  private isIngredientEqual(
-    oldIngredient: Input.RecipeIngredient,
-    newIngredient: Input.RecipeIngredient
-  ): boolean {
-    return Object.keys(oldIngredient).every((key) => {
-      const tKey = key as keyof Input.RecipeIngredient;
-      return oldIngredient[tKey] === newIngredient[tKey];
-    });
   }
 }
 

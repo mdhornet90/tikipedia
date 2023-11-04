@@ -1,9 +1,10 @@
 import { OperationVariables, useMutation } from "@apollo/client";
-import { CreateRecipe, EditIngredient, GetAllRecipes } from "../../../api";
+import { CreateRecipe, EditRecipe, GetAllRecipes } from "../../../api";
 import { useEffect, useState } from "react";
 import useRecipeData from "./useRecipeData";
 import useRecipeFormData from "./useRecipeFormData";
 import useRecipeFormValidation from "./useRecipeFormValidation";
+import { existingValueValidationFns } from "./utils";
 
 const EMPTY_STATE: Input.Recipe = {
   title: "",
@@ -15,7 +16,7 @@ const EMPTY_STATE: Input.Recipe = {
 const allUnits = new Set(["dash", "drop", "each", "oz", "tbsp", "tsp"]);
 
 export default function useRecipeState(id?: string | null) {
-  const [mutation] = useMutation(id ? EditIngredient : CreateRecipe, {
+  const [mutation] = useMutation(id ? EditRecipe : CreateRecipe, {
     refetchQueries: [GetAllRecipes],
   });
   const initialForm = useRecipeData(id);
@@ -44,41 +45,91 @@ export default function useRecipeState(id?: string | null) {
     glasswareLookup,
     updateForm,
     clearForm: () => updateForm(EMPTY_STATE),
-    transform: id
-      ? (input: Input.Recipe) =>
-          transformEdit(id, input, initialForm ?? EMPTY_STATE)
-      : transformAdd,
-    mutation,
+    commitChanges: () => {
+      const transformFn = id
+        ? (
+            input: Input.Recipe,
+            glasswareLookup: Record<string, Input.Data.Glassware>,
+            ingredientLookup: Record<string, Input.Data.Ingredient>
+          ) =>
+            transformEdit(
+              id,
+              input,
+              initialForm ?? EMPTY_STATE,
+              glasswareLookup,
+              ingredientLookup
+            )
+        : transformAdd;
+      mutation({
+        variables: transformFn(workingForm, glasswareLookup, ingredientLookup),
+      });
+    },
   };
 }
 
-function transformAdd(input: Input.Recipe): OperationVariables {
+function transformAdd(
+  input: Input.Recipe,
+  glasswareLookup: Record<string, Input.Data.Glassware>,
+  ingredientLookup: Record<string, Input.Data.Ingredient>
+): OperationVariables {
   return {
-    input: {
-      ...input,
-      // abv: input.abv.length > 0 ? parseFloat(input.abv) / 100 : null,
-    },
+    title: input.title,
+    glasswareId: glasswareLookup[input.glassware].id,
+    imageUrl: !!input.imageUrl ? input.imageUrl : undefined,
+    instructions: input.instructions,
+    ingredientInputs: input.ingredients.map(({ name, quantity, unit }) => ({
+      ingredientId: ingredientLookup[name].id,
+      quantity: Number(quantity),
+      unit,
+    })),
   };
 }
 
 function transformEdit(
   id: string,
   input: Input.Recipe,
-  original: Input.Recipe
+  original: Input.Recipe,
+  glasswareLookup: Record<string, Input.Data.Glassware>,
+  ingredientLookup: Record<string, Input.Data.Ingredient>
 ): OperationVariables {
   return {
     id,
     input: Object.keys(input)
-      // .filter((key) =>
-      //   updatedValueValidationFns[key as keyof Input.Recipe](input, original)
-      // )
+      .filter((key) =>
+        existingValueValidationFns[key as keyof Input.Recipe](input, original)
+      )
       .reduce((acc, key) => {
-        // const propName = key as keyof Input.Ingredient;
-        // if (propName === "abv") {
-        //   acc[propName] = parseFloat(input[propName]) / 100;
-        // } else {
-        //   acc[propName] = input[propName];
-        // }
+        const tKey = key as keyof Input.Recipe;
+        switch (tKey) {
+          case "title":
+            acc[tKey] = input.title;
+            break;
+          case "imageUrl":
+            acc[tKey] = !!input.imageUrl ? input.imageUrl : null;
+            break;
+          case "glassware":
+            acc["glasswareId"] = glasswareLookup[input.glassware].id;
+            break;
+          case "ingredients":
+            console.log(
+              input.ingredients.map(({ name, quantity, unit }) => ({
+                ingredientId: ingredientLookup[name].id,
+                quantity: Number(quantity),
+                unit,
+              }))
+            );
+            acc["ingredientInputs"] = input.ingredients.map(
+              ({ name, quantity, unit }) => ({
+                ingredientId: ingredientLookup[name].id,
+                quantity: Number(quantity),
+                unit,
+              })
+            );
+            break;
+          case "instructions":
+            acc[tKey] = input.instructions;
+            break;
+        }
         return acc;
       }, {} as { [key: string]: any }),
   };

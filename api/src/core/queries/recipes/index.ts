@@ -22,13 +22,18 @@ export async function insert({ ingredientInputs, ...recipeInput }: CreateRecipeD
 
 export async function update(id: UUID, { ingredientInputs, ...recipeInput }: EditRecipeDBInput) {
   return knex.transaction(async trx => {
-    const [recipe] = await knex('recipes')
-      .where({ id })
-      .update(recipeInput)
-      .returning('*')
-      .transacting(trx);
+    let recipe: any;
+    if (Object.keys(recipeInput).length > 0) {
+      [recipe] = await knex('recipes')
+        .where({ id })
+        .update(recipeInput)
+        .returning('*')
+        .transacting(trx);
+    } else {
+      [recipe] = await knex('recipes').where({ id }).transacting(trx);
+    }
     if (ingredientInputs) {
-      await knex('recipes_ingredients').where({ recipeId: id }).delete();
+      await knex('recipes_ingredients').where({ recipeId: id }).delete().transacting(trx);
       await Promise.all(
         ingredientInputs.map((ingredientInput, i) =>
           knex('recipes_ingredients')

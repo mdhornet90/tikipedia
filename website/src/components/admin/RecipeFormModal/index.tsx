@@ -27,8 +27,7 @@ export default function RecipeFormModal({
     glasswareLookup,
     updateForm,
     clearForm,
-    transform,
-    mutation,
+    commitChanges,
   } = useRecipeState(selectedId);
 
   return (
@@ -38,20 +37,12 @@ export default function RecipeFormModal({
         clearForm();
         onClose();
       }}
-      title="Add Recipe"
+      title={selectedId ? "Edit Recipe" : "Add Recipe"}
       formValid={formValid}
       onSave={() => {
-        // mutation({
-        //   variables: {
-        //     input: transformForSubmission(
-        //       form,
-        //       ingredientLookup,
-        //       glasswareLookup
-        //     ),
-        //   },
-        // });
-        // setForm(INITIAL_STATE);
-        // onClose();
+        commitChanges();
+        clearForm();
+        onClose();
       }}
     >
       <TextField
