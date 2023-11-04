@@ -19,7 +19,11 @@ export default function useRecipeData(id?: string | null) {
         imageUrl: recipe.imageUrl,
         glassware: recipe.glassware.name,
         instructions: recipe.instructions,
-        ingredients: recipe.ingredients,
+        ingredients: recipe.ingredients.map(({ name, quantity, unit }) => ({
+          name,
+          quantity: quantity.toString(),
+          unit,
+        })),
       };
       setInitialRecipe(initialForm);
     }

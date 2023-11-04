@@ -121,7 +121,7 @@ declare module Input {
       glassware: { name: string };
       ingredients: {
         name: string;
-        quantity: string;
+        quantity: number;
         unit: string;
       }[];
     }
