@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { ApolloServerErrorCode as ErrorCode } from '@apollo/server/errors';
 
-import { findAll, findOne, insert, update } from '../core/queries/recipes';
+import { findAll, findOne, insert, remove, update } from '../core/queries/recipes';
 import { findOne as findGlassware } from '../core/queries/glassware';
 import { isDatabaseError, isUUID } from '../utils';
 import { findAllForRecipe } from '../core/queries/ingredients';
@@ -66,6 +66,7 @@ export const typeDef = `#graphql
   type Mutation {
     createRecipe(input: CreateRecipeInput!): Recipe!
     editRecipe(id: ID!, input: EditRecipeInput!): Recipe!
+    deleteRecipe(id: ID!): ID!
   }
 `;
 
@@ -135,6 +136,17 @@ export const resolvers = {
           handleDatabaseError(err, 'updating');
         } else {
           throw err;
+        }
+      }
+    },
+
+    deleteRecipe: async (_: any, { id }: { id: UUID }) => {
+      try {
+        await remove(id);
+        return id;
+      } catch (err) {
+        if (isDatabaseError(err)) {
+          handleDatabaseError(err, 'removing');
         }
       }
     },

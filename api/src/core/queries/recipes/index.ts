@@ -46,3 +46,7 @@ export async function update(id: UUID, { ingredientInputs, ...recipeInput }: Edi
     return recipe;
   });
 }
+
+export async function remove(id: UUID) {
+  await knex('recipes').where({ id }).delete();
+}

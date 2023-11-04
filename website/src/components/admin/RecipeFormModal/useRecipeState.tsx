@@ -6,13 +6,13 @@ import useRecipeFormData from "./useRecipeFormData";
 import useRecipeFormValidation from "./useRecipeFormValidation";
 import { existingValueValidationFns } from "./utils";
 
-const EMPTY_STATE: Input.Recipe = {
+const EMPTY_STATE: () => Input.Recipe = () => ({
   title: "",
   glassware: "Glassware",
   imageUrl: null,
   instructions: "",
   ingredients: [{ name: "", quantity: "", unit: "Unit" }],
-};
+});
 const allUnits = new Set(["dash", "drop", "each", "oz", "tbsp", "tsp"]);
 
 export default function useRecipeState(id?: string | null) {
@@ -33,7 +33,7 @@ export default function useRecipeState(id?: string | null) {
     if (initialForm) {
       updateForm({ ...initialForm });
     } else {
-      updateForm({ ...EMPTY_STATE });
+      updateForm(EMPTY_STATE());
     }
   }, [initialForm]);
 
@@ -44,7 +44,7 @@ export default function useRecipeState(id?: string | null) {
     ingredientLookup,
     glasswareLookup,
     updateForm,
-    clearForm: () => updateForm(EMPTY_STATE),
+    clearForm: () => updateForm(EMPTY_STATE()),
     commitChanges: () => {
       const transformFn = id
         ? (
@@ -55,7 +55,7 @@ export default function useRecipeState(id?: string | null) {
             transformEdit(
               id,
               input,
-              initialForm ?? EMPTY_STATE,
+              initialForm ?? EMPTY_STATE(),
               glasswareLookup,
               ingredientLookup
             )
@@ -73,15 +73,17 @@ function transformAdd(
   ingredientLookup: Record<string, Input.Data.Ingredient>
 ): OperationVariables {
   return {
-    title: input.title,
-    glasswareId: glasswareLookup[input.glassware].id,
-    imageUrl: !!input.imageUrl ? input.imageUrl : undefined,
-    instructions: input.instructions,
-    ingredientInputs: input.ingredients.map(({ name, quantity, unit }) => ({
-      ingredientId: ingredientLookup[name].id,
-      quantity: Number(quantity),
-      unit,
-    })),
+    input: {
+      title: input.title,
+      glasswareId: glasswareLookup[input.glassware].id,
+      imageUrl: !!input.imageUrl ? input.imageUrl : undefined,
+      instructions: input.instructions,
+      ingredientInputs: input.ingredients.map(({ name, quantity, unit }) => ({
+        ingredientId: ingredientLookup[name].id,
+        quantity: Number(quantity),
+        unit,
+      })),
+    },
   };
 }
 
@@ -111,13 +113,6 @@ function transformEdit(
             acc["glasswareId"] = glasswareLookup[input.glassware].id;
             break;
           case "ingredients":
-            console.log(
-              input.ingredients.map(({ name, quantity, unit }) => ({
-                ingredientId: ingredientLookup[name].id,
-                quantity: Number(quantity),
-                unit,
-              }))
-            );
             acc["ingredientInputs"] = input.ingredients.map(
               ({ name, quantity, unit }) => ({
                 ingredientId: ingredientLookup[name].id,

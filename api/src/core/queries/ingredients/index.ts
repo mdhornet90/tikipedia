@@ -15,6 +15,10 @@ export async function update(id: UUID, ingredient: EditIngredientDBInput) {
   return result;
 }
 
+export async function remove(id: UUID) {
+  await knex('ingredients').where({ id }).delete();
+}
+
 export const findAllForRecipe = (recipeId: UUID) =>
   knex('ingredients')
     .leftJoin('recipes_ingredients AS ri', 'ri.ingredient_id', 'ingredients.id')
