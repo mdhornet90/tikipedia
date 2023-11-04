@@ -1,6 +1,7 @@
 import { OperationVariables, useMutation, useQuery } from "@apollo/client";
 import {
   CreateGlassware,
+  DeleteGlassware,
   EditGlassware,
   GetAllGlassware,
   GetAllRecipes,
@@ -12,8 +13,12 @@ import { useEffect, useState } from "react";
 const EMPTY_STATE: Input.Glassware = { name: "" };
 
 export default function useGlasswareState(id?: string | null) {
-  const [mutation] = useMutation(id ? EditGlassware : CreateGlassware, {
+  const [createOrUpdate] = useMutation(id ? EditGlassware : CreateGlassware, {
     refetchQueries: [GetAllGlassware, RecipeFormData, GetAllRecipes],
+  });
+  const [deleteGlassware] = useMutation(DeleteGlassware, {
+    refetchQueries: [GetAllGlassware, RecipeFormData, GetAllRecipes],
+    variables: { id },
   });
   const [initialForm, setInitialForm] = useState<Input.Glassware>(EMPTY_STATE);
   const [workingForm, updateForm] = useState<Input.Glassware>(EMPTY_STATE);
@@ -43,10 +48,11 @@ export default function useGlasswareState(id?: string | null) {
       let transformFn = id
         ? (input: Input.Glassware) => transformEdit(id, input)
         : transformAdd;
-      mutation({
+      createOrUpdate({
         variables: transformFn(workingForm),
       });
     },
+    deleteGlassware,
   };
 }
 

@@ -28,6 +28,7 @@ export default function RecipeFormModal({
     updateForm,
     clearForm,
     commitChanges,
+    deleteRecipe,
   } = useRecipeState(selectedId);
 
   return (
@@ -46,7 +47,9 @@ export default function RecipeFormModal({
       }}
       showDelete={!!selectedId}
       onDelete={() => {
-        console.log("deleting...");
+        deleteRecipe();
+        clearForm();
+        onClose();
       }}
     >
       <TextField

@@ -13,8 +13,14 @@ export default function IngredientFormModal({
   onClose,
   selectedId,
 }: IngredientFormModalProps) {
-  const { form, updateForm, clearForm, validate, commitChanges } =
-    useIngredientState(selectedId);
+  const {
+    form,
+    updateForm,
+    clearForm,
+    validate,
+    commitChanges,
+    deleteIngredient,
+  } = useIngredientState(selectedId);
 
   return (
     <EditingModal
@@ -32,7 +38,9 @@ export default function IngredientFormModal({
       }}
       showDelete={!!selectedId}
       onDelete={() => {
-        console.log("deleting...");
+        deleteIngredient();
+        clearForm();
+        onClose();
       }}
     >
       <TextField

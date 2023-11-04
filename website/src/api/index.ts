@@ -69,19 +69,17 @@ export const CreateRecipe = gql`
   }
 `;
 
-export const DeleteRecipe = gql`
-  mutation deleteRecipe($id: ID!) {
-    deleteRecipe(id: $id) {
-      id
-    }
-  }
-`;
-
 export const EditRecipe = gql`
   mutation editRecipe($id: ID!, $input: EditRecipeInput!) {
     editRecipe(id: $id, input: $input) {
       id
     }
+  }
+`;
+
+export const DeleteRecipe = gql`
+  mutation deleteRecipe($id: ID!) {
+    deleteRecipe(id: $id)
   }
 `;
 
@@ -123,9 +121,7 @@ export const EditIngredient = gql`
 
 export const DeleteIngredient = gql`
   mutation deleteIngredient($id: ID!) {
-    deleteRecipe(id: $id) {
-      id
-    }
+    deleteIngredient(id: $id)
   }
 `;
 
@@ -165,9 +161,7 @@ export const EditGlassware = gql`
 
 export const DeleteGlassware = gql`
   mutation deleteGlassware($id: ID!) {
-    deleteRecipe(id: $id) {
-      id
-    }
+    deleteGlassware(id: $id)
   }
 `;
 

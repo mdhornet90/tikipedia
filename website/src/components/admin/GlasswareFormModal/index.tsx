@@ -13,8 +13,14 @@ export default function GlasswareFormModal({
   onClose,
   selectedId,
 }: GlasswareFormModalProps) {
-  const { form, updateForm, clearForm, validate, commitChanges } =
-    useGlasswareState(selectedId);
+  const {
+    form,
+    updateForm,
+    clearForm,
+    validate,
+    commitChanges,
+    deleteGlassware,
+  } = useGlasswareState(selectedId);
 
   return (
     <EditingModal
@@ -32,7 +38,9 @@ export default function GlasswareFormModal({
       }}
       showDelete={!!selectedId}
       onDelete={() => {
-        console.log("deleting...");
+        deleteGlassware();
+        clearForm();
+        onClose();
       }}
     >
       <TextField

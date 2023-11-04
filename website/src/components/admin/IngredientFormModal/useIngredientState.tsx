@@ -1,6 +1,7 @@
 import { OperationVariables, useMutation, useQuery } from "@apollo/client";
 import {
   CreateIngredient,
+  DeleteIngredient,
   EditIngredient,
   GetAllIngredients,
   GetAllRecipes,
@@ -12,8 +13,12 @@ import { useEffect, useState } from "react";
 const EMPTY_STATE: Input.Ingredient = { name: "", abv: "" };
 
 export default function useIngredientState(id?: string | null) {
-  const [mutation] = useMutation(id ? EditIngredient : CreateIngredient, {
+  const [createOrUpdate] = useMutation(id ? EditIngredient : CreateIngredient, {
     refetchQueries: [GetAllIngredients, RecipeFormData, GetAllRecipes],
+  });
+  const [deleteIngredient] = useMutation(DeleteIngredient, {
+    refetchQueries: [GetAllIngredients, RecipeFormData, GetAllRecipes],
+    variables: { id },
   });
   const [initialForm, setInitialForm] = useState<Input.Ingredient>(EMPTY_STATE);
   const [workingForm, updateForm] = useState<Input.Ingredient>(EMPTY_STATE);
@@ -49,10 +54,11 @@ export default function useIngredientState(id?: string | null) {
       let transformFn = id
         ? (input: Input.Ingredient) => transformEdit(id, input, initialForm)
         : transformAdd;
-      mutation({
+      createOrUpdate({
         variables: transformFn(workingForm),
       });
     },
+    deleteIngredient,
   };
 }
 

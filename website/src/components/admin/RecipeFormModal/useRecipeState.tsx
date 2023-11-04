@@ -1,5 +1,10 @@
 import { OperationVariables, useMutation } from "@apollo/client";
-import { CreateRecipe, EditRecipe, GetAllRecipes } from "../../../api";
+import {
+  CreateRecipe,
+  DeleteRecipe,
+  EditRecipe,
+  GetAllRecipes,
+} from "../../../api";
 import { useEffect, useState } from "react";
 import useRecipeData from "./useRecipeData";
 import useRecipeFormData from "./useRecipeFormData";
@@ -16,8 +21,12 @@ const EMPTY_STATE: () => Input.Recipe = () => ({
 const allUnits = new Set(["dash", "drop", "each", "oz", "tbsp", "tsp"]);
 
 export default function useRecipeState(id?: string | null) {
-  const [mutation] = useMutation(id ? EditRecipe : CreateRecipe, {
+  const [createOrUpdate] = useMutation(id ? EditRecipe : CreateRecipe, {
     refetchQueries: [GetAllRecipes],
+  });
+  const [deleteRecipe] = useMutation(DeleteRecipe, {
+    refetchQueries: [GetAllRecipes],
+    variables: { id },
   });
   const initialForm = useRecipeData(id);
   const [workingForm, updateForm] = useState<Input.Recipe>(EMPTY_STATE);
@@ -60,10 +69,11 @@ export default function useRecipeState(id?: string | null) {
               ingredientLookup
             )
         : transformAdd;
-      mutation({
+      createOrUpdate({
         variables: transformFn(workingForm, glasswareLookup, ingredientLookup),
       });
     },
+    deleteRecipe,
   };
 }
 

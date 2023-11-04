@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import styles from "./EditingModal.module.css";
 import Title from "../../common/Title";
@@ -26,6 +26,12 @@ export default function EditingModal({
   onDelete,
 }: EditingModalProps) {
   const [deleteState, setDeleteState] = useState<DeleteState | null>(null);
+  useEffect(() => {
+    if (deleteState === "deleting") {
+      setDeleteState(null);
+      onDelete();
+    }
+  }, [deleteState, onDelete]);
 
   return (
     <div className={`${styles.modalBackground} ${open ? styles.show : ""}`}>
@@ -40,7 +46,7 @@ export default function EditingModal({
           <div className={styles.inputArea}>{children}</div>
           <div className={styles.actionArea}>
             <button
-              className={styles.saveButton}
+              className={`${styles.button} ${styles.save}`}
               disabled={!formValid}
               onClick={onSave}
             >
@@ -48,12 +54,39 @@ export default function EditingModal({
             </button>
             {showDelete && (
               <button
-                className={styles.deleteButton}
+                className={`${styles.button} ${styles.delete}`}
                 onClick={() => setDeleteState("confirming")}
               >
                 Delete
               </button>
             )}
+          </div>
+        </div>
+        <div
+          className={`${styles.deletePopup} ${
+            deleteState === "confirming" ? styles.show : ""
+          }`}
+        >
+          <div
+            className={`${styles.deleteModal} ${
+              deleteState === "confirming" ? styles.show : ""
+            }`}
+          >
+            <Title size="large" title="Confirm Deletion" />
+            <div className={styles.actionArea}>
+              <button
+                className={`${styles.button} ${styles.cancel}`}
+                onClick={() => setDeleteState(null)}
+              >
+                Cancel
+              </button>
+              <button
+                className={`${styles.button} ${styles.destroy}`}
+                onClick={() => setDeleteState("deleting")}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
