@@ -13,7 +13,7 @@ export default function IngredientFormModal({
   onClose,
   selectedId,
 }: IngredientFormModalProps) {
-  const { form, updateForm, clearForm, validate, transform, mutation } =
+  const { form, updateForm, clearForm, validate, commitChanges } =
     useIngredientState(selectedId);
 
   return (
@@ -26,7 +26,7 @@ export default function IngredientFormModal({
       title={selectedId ? "Edit Ingredient" : "Add Ingredient"}
       formValid={validate(form)}
       onSave={() => {
-        mutation({ variables: transform(form) });
+        commitChanges();
         clearForm();
         onClose();
       }}

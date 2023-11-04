@@ -42,10 +42,14 @@ export default function useIngredientState(id?: string | null) {
     validate: id
       ? (input: Input.Ingredient) => isFormValid(initialForm, input)
       : isNewFormValid,
-    transform: id
-      ? (input: Input.Ingredient) => transformEdit(id, input, initialForm)
-      : transformAdd,
-    mutation,
+    commitChanges: () => {
+      let transformFn = id
+        ? (input: Input.Ingredient) => transformEdit(id, input, initialForm)
+        : transformAdd;
+      mutation({
+        variables: transformFn(workingForm),
+      });
+    },
   };
 }
 

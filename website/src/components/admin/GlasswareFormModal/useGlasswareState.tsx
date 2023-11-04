@@ -38,10 +38,14 @@ export default function useGlasswareState(id?: string | null) {
     validate: id
       ? (input: Input.Glassware) => isFormValid(initialForm, input)
       : isNewFormValid,
-    transform: id
-      ? (input: Input.Glassware) => transformEdit(id, input)
-      : transformAdd,
-    mutation,
+    commitChanges: () => {
+      let transformFn = id
+        ? (input: Input.Glassware) => transformEdit(id, input)
+        : transformAdd;
+      mutation({
+        variables: transformFn(workingForm),
+      });
+    },
   };
 }
 

@@ -13,7 +13,7 @@ export default function GlasswareFormModal({
   onClose,
   selectedId,
 }: GlasswareFormModalProps) {
-  const { form, updateForm, clearForm, validate, transform, mutation } =
+  const { form, updateForm, clearForm, validate, commitChanges } =
     useGlasswareState(selectedId);
 
   return (
@@ -26,7 +26,7 @@ export default function GlasswareFormModal({
       title={selectedId ? "Edit Glassware" : "Add Glassware"}
       formValid={validate(form)}
       onSave={() => {
-        mutation({ variables: transform(form) });
+        commitChanges();
         clearForm();
         onClose();
       }}
