@@ -44,6 +44,10 @@ export default function RecipeFormModal({
         clearForm();
         onClose();
       }}
+      showDelete={!!selectedId}
+      onDelete={() => {
+        console.log("deleting...");
+      }}
     >
       <TextField
         name="Title"

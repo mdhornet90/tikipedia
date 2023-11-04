@@ -30,6 +30,10 @@ export default function IngredientFormModal({
         clearForm();
         onClose();
       }}
+      showDelete={!!selectedId}
+      onDelete={() => {
+        console.log("deleting...");
+      }}
     >
       <TextField
         name={"Name"}

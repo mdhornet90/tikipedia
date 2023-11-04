@@ -30,6 +30,10 @@ export default function GlasswareFormModal({
         clearForm();
         onClose();
       }}
+      showDelete={!!selectedId}
+      onDelete={() => {
+        console.log("deleting...");
+      }}
     >
       <TextField
         name={"Name"}

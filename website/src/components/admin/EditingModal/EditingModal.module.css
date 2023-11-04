@@ -56,6 +56,14 @@
   overflow-y: scroll;
 }
 
+.actionArea {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+}
+
 .saveButton {
   height: 60px;
   width: 33%;
@@ -71,6 +79,7 @@
   border: none;
   color: inherit;
   outline: inherit;
+  cursor: pointer;
 }
 
 .saveButton:disabled {
@@ -79,6 +88,27 @@
 }
 
 .saveButton:enabled:hover {
+  opacity: 0.8;
+}
+
+.deleteButton {
+  height: 60px;
+  width: 33%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 4px;
+  background: #ef1a1a;
+  border: none;
+  color: #eee;
+  outline: inherit;
   cursor: pointer;
+}
+
+.deleteButton:hover {
   opacity: 0.8;
 }

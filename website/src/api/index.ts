@@ -69,6 +69,14 @@ export const CreateRecipe = gql`
   }
 `;
 
+export const DeleteRecipe = gql`
+  mutation deleteRecipe($id: ID!) {
+    deleteRecipe(id: $id) {
+      id
+    }
+  }
+`;
+
 export const EditRecipe = gql`
   mutation editRecipe($id: ID!, $input: EditRecipeInput!) {
     editRecipe(id: $id, input: $input) {
@@ -113,6 +121,14 @@ export const EditIngredient = gql`
   }
 `;
 
+export const DeleteIngredient = gql`
+  mutation deleteIngredient($id: ID!) {
+    deleteRecipe(id: $id) {
+      id
+    }
+  }
+`;
+
 export const GetAllGlassware = gql`
   query glassware {
     allGlassware {
@@ -142,6 +158,14 @@ export const CreateGlassware = gql`
 export const EditGlassware = gql`
   mutation editGlassware($id: ID!, $input: EditGlasswareInput!) {
     editGlassware(id: $id, input: $input) {
+      id
+    }
+  }
+`;
+
+export const DeleteGlassware = gql`
+  mutation deleteGlassware($id: ID!) {
+    deleteRecipe(id: $id) {
       id
     }
   }
