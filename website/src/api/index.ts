@@ -173,14 +173,47 @@ export module Glassware {
   `;
 }
 
+export module Garnish {
+  export const Create = gql`
+    mutation createGarnish($input: CreateGarnish!) {
+      createGarnish(input: $input) {
+        id
+      }
     }
+  `;
 
+  export const GetAll = gql`
+    query garnishes {
+      garnishes {
+        id
+        name
+      }
     }
+  `;
 
+  export const GetOne = gql`
+    query garnish($id: ID!) {
+      garnish(id: $id) {
+        id
+        name
+      }
     }
+  `;
 
+  export const Edit = gql`
+    mutation editGarnish($id: ID!, $input: EditGarnishInput!) {
+      editGarnish(id: $id, input: $input) {
+        id
+      }
     }
+  `;
 
+  export const Delete = gql`
+    mutation deleteGarnish($id: ID!) {
+      deleteGarnish(id: $id)
+    }
+  `;
+}
 
 export const RecipeFormData = gql`
   query recipeFormData {
