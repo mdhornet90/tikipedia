@@ -1,0 +1,64 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.fields {
+  background: #eee;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #333;
+  border-radius: 4px;
+
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1px 3fr;
+}
+
+.spacer {
+  background-color: #666;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.deleteButton {
+  color: #ef1a1a;
+  cursor: pointer;
+}
+
+.addButton {
+  background: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+
+  align-self: center;
+  padding: 12px 16px;
+
+  border: 2px solid #ea9514;
+  border-radius: 4px;
+  color: #ea9514;
+  font-weight: bold;
+}
+
+.addButton:hover {
+  opacity: 0.8;
+}
+
+.addButton:disabled {
+  cursor: unset;
+  border: 2px solid #999;
+  color: #999;
+}
+
+.addButton:disabled:hover {
+  opacity: 1;
+}

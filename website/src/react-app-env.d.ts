@@ -119,6 +119,11 @@ declare module Input {
     unit: string;
   }
 
+  interface RecipeGarnish {
+    quantity: string;
+    name: string;
+  }
+
   // Data types that define the shape of API objects used in form interaction
   declare module Data {
     interface Ingredient {
