@@ -1,4 +1,4 @@
-import { OperationVariables, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Ingredient, Recipe, RecipeFormData } from "../../../api";
 import { useEffect, useState } from "react";
 
