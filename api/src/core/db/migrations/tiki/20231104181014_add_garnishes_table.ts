@@ -4,6 +4,7 @@ export async function up(knex: Knex): Promise<void | void[]> {
   await knex.schema.createTable('garnishes', table => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.string('name');
+    table.string('mangled_name').unique();
   });
 
   await knex.schema.createTable('recipes_garnishes', table => {

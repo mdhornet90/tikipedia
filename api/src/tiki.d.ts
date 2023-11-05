@@ -83,6 +83,25 @@ declare module Glassware {
   }
 }
 
+declare module Garnish {
+  interface Self {
+    id: UUID;
+    name: string;
+  }
+
+  module API {
+    interface Create {
+      name: string;
+    }
+    type Edit = Create;
+  }
+
+  module DB {
+    type Create = API.Create & DBUniqueness;
+    type Edit = API.Edit & DBUniqueness;
+  }
+}
+
 enum Unit {
   OZ = 'oz',
   TSP = 'tsp',
