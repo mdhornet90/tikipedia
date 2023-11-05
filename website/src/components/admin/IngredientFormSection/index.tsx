@@ -1,7 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
-import Title from "../../common/Title";
 import IngredientFormField from "../../form/IngredientFormField";
 import styles from "./IngredientFormSection.module.css";
+import FormFieldWrapper from "../../form/FormFieldWrapper";
 
 interface IngredientFormSectionProps {
   allIngredients: string[];
@@ -23,8 +23,7 @@ export default function IngredientFormSection({
   onUpdate,
 }: IngredientFormSectionProps) {
   return (
-    <div className={styles.container}>
-      <Title size="medium" title="Ingredients" alignment="left" />
+    <FormFieldWrapper title="Ingredients">
       <div className={styles.inputContainer}>
         {ingredientInputs.map((ingredient, i) => (
           <div key={i} className={styles.ingredientContainer}>
@@ -47,6 +46,6 @@ export default function IngredientFormSection({
           Add Ingredient
         </button>
       </div>
-    </div>
+    </FormFieldWrapper>
   );
 }
