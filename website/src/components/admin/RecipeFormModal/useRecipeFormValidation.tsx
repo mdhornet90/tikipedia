@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { existingValueValidationFns } from "./utils";
+import {
+  existingValueValidationFns,
+  recipeGarnishValid,
+  recipeIngredientValid,
+} from "./utils";
 
 interface FormValidationProps {
   initialForm?: Input.Recipe;
@@ -24,8 +28,8 @@ export default function useRecipeFormValidation({
   const formValidator = useMemo(() => {
     const newFormValidator = new NewFormValidator(
       units,
-      new Set(Object.keys(garnishLookup)),
-      glasswareLookup
+      glasswareLookup,
+      garnishLookup
     );
     return initialForm
       ? new ExistingFormValidator(initialForm, newFormValidator)
@@ -33,18 +37,12 @@ export default function useRecipeFormValidation({
   }, [initialForm, units, garnishLookup, glasswareLookup]);
 
   const [formValid, setFormValid] = useState(false);
-  const [ingredientSectionValid, setIngredientSectionValid] = useState(false);
 
   useEffect(() => {
     setFormValid(formValidator.validate(form));
-    setIngredientSectionValid(
-      form.ingredients.every((ingredient) =>
-        recipeIngredientValid(units, ingredient)
-      )
-    );
   }, [units, form, formValidator]);
 
-  return { formValid, ingredientSectionValid };
+  return formValid;
 }
 
 interface FormValidator {
@@ -76,17 +74,17 @@ class ExistingFormValidator implements FormValidator {
 
 class NewFormValidator implements FormValidator {
   private allUnits: Set<string>;
-  private allGarnishes: Set<string>;
+  private allGarnishes: Record<string, Input.Data.Garnish>;
   private glasswareLookup: Record<string, Input.Data.Glassware>;
 
   constructor(
     allUnits: Set<string>,
-    allGarnishes: Set<string>,
-    glasswareLookup: Record<string, Input.Data.Glassware>
+    glasswareLookup: Record<string, Input.Data.Glassware>,
+    allGarnishes: Record<string, Input.Data.Garnish>
   ) {
     this.allUnits = allUnits;
-    this.allGarnishes = allGarnishes;
     this.glasswareLookup = glasswareLookup;
+    this.allGarnishes = allGarnishes;
   }
 
   validate(form: Input.Recipe) {
@@ -120,36 +118,4 @@ class NewFormValidator implements FormValidator {
       garnishes.every((g) => recipeGarnishValid(this.allGarnishes, g)),
     instructions: ({ instructions }) => instructions.length > 0,
   };
-}
-
-function recipeIngredientValid(
-  allUnits: Set<string>,
-  { name, quantity, unit }: Input.RecipeIngredient
-) {
-  if (name.length <= 0 || !allUnits.has(unit)) {
-    return false;
-  }
-
-  try {
-    const normalizedNumber = Number(quantity);
-    return !isNaN(normalizedNumber) && normalizedNumber > 0;
-  } catch {
-    return false;
-  }
-}
-
-function recipeGarnishValid(
-  allGarnishes: Set<string>,
-  { name, quantity }: Input.RecipeGarnish
-) {
-  if (!allGarnishes.has(name)) {
-    return false;
-  }
-
-  try {
-    const normalizedNumber = Number(quantity);
-    return !isNaN(normalizedNumber) && normalizedNumber > 0;
-  } catch {
-    return false;
-  }
 }

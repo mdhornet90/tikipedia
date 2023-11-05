@@ -5,6 +5,7 @@ import FormFieldWrapper from "../../form/FormFieldWrapper";
 import DropdownField from "../../form/DropdownField";
 import TextAreaField from "../../form/TextAreaField";
 import useRecipeState from "./useRecipeState";
+import GarnishFormSection from "../GarnishFormSection";
 
 const allUnits = new Set(["dash", "drop", "each", "oz", "tbsp", "tsp"]);
 
@@ -16,9 +17,9 @@ export default function RecipeFormModal({
   const {
     form,
     formValid,
-    ingredientSectionValid,
     ingredientLookup,
     glasswareLookup,
+    garnishLookup,
     updateForm,
     clearForm,
     commitChanges,
@@ -60,7 +61,6 @@ export default function RecipeFormModal({
         allIngredients={Object.keys(ingredientLookup)}
         allUnits={Array.from(allUnits)}
         ingredientInputs={form.ingredients}
-        valid={ingredientSectionValid}
         onAdd={() => {
           updateForm({
             ...form,
@@ -89,6 +89,29 @@ export default function RecipeFormModal({
           onSelect={(glassware) => updateForm({ ...form, glassware })}
         />
       </FormFieldWrapper>
+      <GarnishFormSection
+        garnishLookup={garnishLookup}
+        garnishInputs={form.garnishes}
+        onAdd={() => {
+          updateForm({
+            ...form,
+            ingredients: [
+              ...form.ingredients,
+              { name: "", quantity: "", unit: "Unit" },
+            ],
+          });
+        }}
+        onUpdate={(i, updatedGarnish) => {
+          const updatedGarnishes = [...form.garnishes];
+          updatedGarnishes[i] = updatedGarnish;
+          updateForm({ ...form, garnishes: updatedGarnishes });
+        }}
+        onRemove={(i) => {
+          const updatedGarnishes = [...form.garnishes];
+          updatedGarnishes.splice(i, 1);
+          updateForm({ ...form, garnishes: updatedGarnishes });
+        }}
+      />
       <FormFieldWrapper title="Instructions">
         <TextAreaField
           text={form.instructions}

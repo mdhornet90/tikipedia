@@ -28,7 +28,7 @@ export default function useRecipeState(id?: string | null) {
   const [workingForm, updateForm] = useState<Input.Recipe>(EMPTY_STATE);
   const { ingredientLookup, glasswareLookup, garnishLookup } =
     useRecipeFormData();
-  const { formValid, ingredientSectionValid } = useRecipeFormValidation({
+  const formValid = useRecipeFormValidation({
     initialForm,
     form: workingForm,
     units: allUnits,
@@ -47,9 +47,9 @@ export default function useRecipeState(id?: string | null) {
   return {
     form: workingForm,
     formValid,
-    ingredientSectionValid,
     ingredientLookup,
     glasswareLookup,
+    garnishLookup,
     updateForm,
     clearForm: () => updateForm(EMPTY_STATE()),
     commitChanges: () => {

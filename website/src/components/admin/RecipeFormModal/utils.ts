@@ -56,3 +56,35 @@ export function isGarnishEqual(
     return oldIngredient[tKey] === newIngredient[tKey];
   });
 }
+
+export function recipeIngredientValid(
+  allUnits: Set<string>,
+  { name, quantity, unit }: Input.RecipeIngredient
+) {
+  if (name.length <= 0 || !allUnits.has(unit)) {
+    return false;
+  }
+
+  try {
+    const normalizedNumber = Number(quantity);
+    return !isNaN(normalizedNumber) && normalizedNumber > 0;
+  } catch {
+    return false;
+  }
+}
+
+export function recipeGarnishValid(
+  allGarnishes: Record<string, Input.Data.Garnish>,
+  { name, quantity }: Input.RecipeGarnish
+) {
+  if (!(name in allGarnishes)) {
+    return false;
+  }
+
+  try {
+    const normalizedNumber = Number(quantity);
+    return !isNaN(normalizedNumber) && normalizedNumber > 0;
+  } catch {
+    return false;
+  }
+}

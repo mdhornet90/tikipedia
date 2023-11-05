@@ -2,11 +2,12 @@ import ClearIcon from "@mui/icons-material/Clear";
 import styles from "./GarnishFormSection.module.css";
 import OptionSearchField from "../../form/OptionSearchField";
 import FormFieldWrapper from "../../form/FormFieldWrapper";
+import { useEffect, useMemo, useState } from "react";
+import { recipeGarnishValid } from "../RecipeFormModal/utils";
 
 interface GarnishFormSectionProps {
   garnishInputs: Input.RecipeGarnish[];
-  allGarnishes: string[];
-  valid: boolean;
+  garnishLookup: Record<string, Input.Data.Garnish>;
   onAdd: () => void;
   onRemove: (index: number) => void;
   onUpdate: (index: number, updatedValue: Input.RecipeGarnish) => void;
@@ -14,12 +15,25 @@ interface GarnishFormSectionProps {
 
 export default function GarnishFormSection({
   garnishInputs,
-  allGarnishes,
-  valid,
+  garnishLookup,
   onAdd,
   onRemove,
   onUpdate,
 }: GarnishFormSectionProps) {
+  const allGarnishes = useMemo(
+    () => Object.keys(garnishLookup),
+    [garnishLookup]
+  );
+
+  const [addEnabled, setAddEnabled] = useState(false);
+  useEffect(() => {
+    setAddEnabled(
+      garnishInputs.every((garnish) =>
+        recipeGarnishValid(garnishLookup, garnish)
+      )
+    );
+  }, [garnishInputs, garnishLookup]);
+
   return (
     <FormFieldWrapper title="Garnishes">
       <div className={styles.inputContainer}>
@@ -50,7 +64,11 @@ export default function GarnishFormSection({
             </div>
           </div>
         ))}
-        <button className={styles.addButton} disabled={!valid} onClick={onAdd}>
+        <button
+          className={styles.addButton}
+          disabled={!addEnabled}
+          onClick={onAdd}
+        >
           Add Garnish
         </button>
       </div>

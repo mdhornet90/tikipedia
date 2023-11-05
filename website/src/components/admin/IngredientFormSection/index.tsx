@@ -2,12 +2,13 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IngredientFormField from "../../form/IngredientFormField";
 import styles from "./IngredientFormSection.module.css";
 import FormFieldWrapper from "../../form/FormFieldWrapper";
+import { useEffect, useMemo, useState } from "react";
+import { recipeIngredientValid } from "../RecipeFormModal/utils";
 
 interface IngredientFormSectionProps {
   allIngredients: string[];
   allUnits: string[];
   ingredientInputs: Input.RecipeIngredient[];
-  valid: boolean;
   onAdd: () => void;
   onRemove: (index: number) => void;
   onUpdate: (index: number, updatedValue: Input.RecipeIngredient) => void;
@@ -17,11 +18,20 @@ export default function IngredientFormSection({
   allIngredients,
   allUnits,
   ingredientInputs,
-  valid,
   onAdd,
   onRemove,
   onUpdate,
 }: IngredientFormSectionProps) {
+  const units = useMemo(() => new Set(allUnits), [allUnits]);
+  const [addEnabled, setAddEnabled] = useState(false);
+  useEffect(() => {
+    setAddEnabled(
+      ingredientInputs.every((ingredient) =>
+        recipeIngredientValid(units, ingredient)
+      )
+    );
+  }, [ingredientInputs, units]);
+
   return (
     <FormFieldWrapper title="Ingredients">
       <div className={styles.inputContainer}>
@@ -42,7 +52,11 @@ export default function IngredientFormSection({
             </div>
           </div>
         ))}
-        <button className={styles.addButton} disabled={!valid} onClick={onAdd}>
+        <button
+          className={styles.addButton}
+          disabled={!addEnabled}
+          onClick={onAdd}
+        >
           Add Ingredient
         </button>
       </div>
