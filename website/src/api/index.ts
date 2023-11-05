@@ -175,7 +175,7 @@ export module Glassware {
 
 export module Garnish {
   export const Create = gql`
-    mutation createGarnish($input: CreateGarnish!) {
+    mutation createGarnish($input: CreateGarnishInput!) {
       createGarnish(input: $input) {
         id
       }

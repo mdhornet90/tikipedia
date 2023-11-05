@@ -101,6 +101,10 @@ declare module Input {
     name: string;
   }
 
+  interface Garnish {
+    name: string;
+  }
+
   interface Recipe {
     title: string;
     imageUrl?: string | null;
@@ -123,6 +127,10 @@ declare module Input {
       name: string;
     }
     interface Glassware {
+      id: string;
+      name: string;
+    }
+    interface Garnish {
       id: string;
       name: string;
     }
