@@ -5,17 +5,17 @@ import CardArea from "../CardArea";
 import Loading from "../../common/Loading";
 import Card from "../Card";
 import TikiHeader from "../../common/TikiHeader";
-import { GetRecipeCards, GetRecipeDetail } from "../../../api";
+import { Display } from "../../../api";
 import RecipeDetail from "../RecipeDetail";
 import { useQuery } from "@apollo/client";
 
 export default function Home() {
   const { loading: cardsLoading, data: cardData } = useQuery<{
     recipes: Main.RecipeCard[];
-  }>(GetRecipeCards);
+  }>(Display.Cards);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: recipeDetail } = useQuery<{ recipe: Main.RecipeDetail }>(
-    GetRecipeDetail,
+    Display.Detail,
     { skip: !selectedId, variables: { id: selectedId } }
   );
   const ref = useRef(null);

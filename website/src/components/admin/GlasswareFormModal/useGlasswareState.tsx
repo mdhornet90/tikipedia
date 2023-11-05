@@ -1,29 +1,21 @@
 import { OperationVariables, useMutation, useQuery } from "@apollo/client";
-import {
-  CreateGlassware,
-  DeleteGlassware,
-  EditGlassware,
-  GetAllGlassware,
-  GetAllRecipes,
-  GetGlassware,
-  RecipeFormData,
-} from "../../../api";
+import { Glassware, Recipe, RecipeFormData } from "../../../api";
 import { useEffect, useState } from "react";
 
 const EMPTY_STATE: Input.Glassware = { name: "" };
 
 export default function useGlasswareState(id?: string | null) {
-  const [createOrUpdate] = useMutation(id ? EditGlassware : CreateGlassware, {
-    refetchQueries: [GetAllGlassware, RecipeFormData, GetAllRecipes],
+  const [createOrUpdate] = useMutation(id ? Glassware.Edit : Glassware.Create, {
+    refetchQueries: [Glassware.GetAll, RecipeFormData, Recipe.GetAll],
   });
-  const [deleteGlassware] = useMutation(DeleteGlassware, {
-    refetchQueries: [GetAllGlassware, RecipeFormData, GetAllRecipes],
+  const [deleteGlassware] = useMutation(Glassware.Delete, {
+    refetchQueries: [Glassware.GetAll, RecipeFormData, Recipe.GetAll],
     variables: { id },
   });
   const [initialForm, setInitialForm] = useState<Input.Glassware>(EMPTY_STATE);
   const [workingForm, updateForm] = useState<Input.Glassware>(EMPTY_STATE);
   const { loading, data } = useQuery<{ glassware: Input.Data.Glassware }>(
-    GetGlassware,
+    Glassware.GetOne,
     { variables: { id }, skip: !id }
   );
 

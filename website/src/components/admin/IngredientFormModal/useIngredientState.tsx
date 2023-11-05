@@ -1,29 +1,24 @@
 import { OperationVariables, useMutation, useQuery } from "@apollo/client";
-import {
-  CreateIngredient,
-  DeleteIngredient,
-  EditIngredient,
-  GetAllIngredients,
-  GetAllRecipes,
-  GetIngredient,
-  RecipeFormData,
-} from "../../../api";
+import { Ingredient, Recipe, RecipeFormData } from "../../../api";
 import { useEffect, useState } from "react";
 
 const EMPTY_STATE: Input.Ingredient = { name: "", abv: "" };
 
 export default function useIngredientState(id?: string | null) {
-  const [createOrUpdate] = useMutation(id ? EditIngredient : CreateIngredient, {
-    refetchQueries: [GetAllIngredients, RecipeFormData, GetAllRecipes],
-  });
-  const [deleteIngredient] = useMutation(DeleteIngredient, {
-    refetchQueries: [GetAllIngredients, RecipeFormData, GetAllRecipes],
+  const [createOrUpdate] = useMutation(
+    id ? Ingredient.Edit : Ingredient.Create,
+    {
+      refetchQueries: [Ingredient.GetAll, RecipeFormData, Recipe.GetAll],
+    }
+  );
+  const [deleteIngredient] = useMutation(Ingredient.Delete, {
+    refetchQueries: [Ingredient.GetAll, RecipeFormData, Recipe.GetAll],
     variables: { id },
   });
   const [initialForm, setInitialForm] = useState<Input.Ingredient>(EMPTY_STATE);
   const [workingForm, updateForm] = useState<Input.Ingredient>(EMPTY_STATE);
   const { loading, data } = useQuery<{ ingredient: Input.Data.Ingredient }>(
-    GetIngredient,
+    Ingredient.GetOne,
     { variables: { id }, skip: !id }
   );
 

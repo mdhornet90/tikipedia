@@ -1,6 +1,6 @@
 import { QueryResult } from "@apollo/client";
 import { useState, useEffect } from "react";
-import { GetAllGlassware, GetAllIngredients, GetAllRecipes } from "../api";
+import { Glassware, Ingredient, Recipe } from "../api";
 import { useQuery } from "@apollo/client";
 
 const transforms: Record<Category, Spreadsheet.DataTransformFn> = {
@@ -58,13 +58,13 @@ export default function useAdminState(initialId: Category): Admin.Interaction {
 }
 
 function useAdminQuery(category: Category): QueryResult {
-  const recipesQuery = useQuery(GetAllRecipes, {
+  const recipesQuery = useQuery(Recipe.GetAll, {
     skip: category !== "recipes",
   });
-  const ingredientsQuery = useQuery(GetAllIngredients, {
+  const ingredientsQuery = useQuery(Ingredient.GetAll, {
     skip: category !== "ingredients",
   });
-  const glasswareQuery = useQuery(GetAllGlassware, {
+  const glasswareQuery = useQuery(Glassware.GetAll, {
     skip: category !== "glassware",
   });
 

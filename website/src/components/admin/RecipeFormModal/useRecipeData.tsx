@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { GetRecipe } from "../../../api";
+import { Recipe } from "../../../api";
 
 export default function useRecipeData(id?: string | null) {
   const { loading: recipeLoading, data: recipeData } = useQuery<{
     recipe: Input.Data.Recipe;
-  }>(GetRecipe, { variables: { id }, skip: !id });
+  }>(Recipe.GetOne, { variables: { id }, skip: !id });
   const [initialRecipe, setInitialRecipe] = useState<Input.Recipe>();
 
   useEffect(() => {
