@@ -5,12 +5,13 @@ import { useQuery } from "@apollo/client";
 
 const transforms: Record<Category, Spreadsheet.DataTransformFn> = {
   recipes: (data: Spreadsheet.Data.Recipes) =>
-    data.recipes.map(({ id, title, ingredients, glassware }) => ({
+    data.recipes.map(({ id, title, ingredients, glassware, garnishes }) => ({
       id,
       data: [
         title,
         ingredients.map(({ name }) => name).join(", "),
         glassware.name,
+        garnishes.map(({ name }) => name).join(", "),
       ],
     })),
   ingredients: (data: Spreadsheet.Data.Ingredients) =>
@@ -39,7 +40,7 @@ export default function useAdminState(initialId: Category): Admin.Interaction {
     let headers: string[];
     switch (category) {
       case "recipes":
-        headers = ["Title", "Ingredients", "Glassware"];
+        headers = ["Title", "Ingredients", "Glassware", "Garnishes"];
         break;
       case "ingredients":
         headers = ["Name", "Abv (%)"];

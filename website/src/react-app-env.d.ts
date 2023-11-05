@@ -69,6 +69,7 @@ declare module Spreadsheet {
         title: string;
         ingredients: { name: string }[];
         glassware: { name: string };
+        garnishes: { name: string }[];
       }[];
     }
     interface Ingredients {

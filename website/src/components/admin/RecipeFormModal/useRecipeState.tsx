@@ -146,7 +146,7 @@ function transformEdit(
             acc["garnishInputs"] = input.garnishes.map(
               ({ name, quantity }) => ({
                 garnishId: garnishLookup[name].id,
-                quanity: Number(quantity),
+                quantity: Number(quantity),
               })
             );
             break;

@@ -175,11 +175,7 @@ function validateRecipeUpdate({
   garnishInputs,
   ...input
 }: Recipe.API.Edit): boolean {
-  return (
-    Object.keys(input).length > 0 ||
-    (ingredientInputs?.length ?? 0) > 0 ||
-    (garnishInputs?.length ?? 0) > 0
-  );
+  return Object.keys(input).length > 0 || (ingredientInputs?.length ?? 0) > 0 || !!garnishInputs;
 }
 
 function handleDatabaseError(err: DatabaseError, action: string) {
