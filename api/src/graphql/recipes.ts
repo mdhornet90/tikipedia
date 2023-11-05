@@ -51,7 +51,7 @@ export const typeDef = `#graphql
     instructions: String!
     glasswareId: ID!
     ingredientInputs: [CreateRecipeIngredientInput!]!
-    garnishInputs: [CreateRecipeIngredientInput!]
+    garnishInputs: [CreateRecipeGarnishInput!]
   }
   input CreateRecipeIngredientInput {
     ingredientId: ID!
@@ -91,7 +91,17 @@ export const typeDef = `#graphql
   }
 `;
 
+enum Unit {
+  OZ = 'oz',
+  TSP = 'tsp',
+  TBSP = 'tbsp',
+  DASH = 'dash',
+  DROP = 'drop',
+  EACH = 'each',
+}
+
 export const resolvers = {
+  Unit,
   Query: {
     recipes: () => findAll(),
 

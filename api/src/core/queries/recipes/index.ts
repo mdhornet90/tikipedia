@@ -21,7 +21,7 @@ export async function insert({
     );
     if (garnishInputs && garnishInputs.length > 0) {
       await Promise.all(
-        ingredientInputs.map((garnishInput, i) =>
+        garnishInputs.map((garnishInput, i) =>
           knex('recipes_garnishes')
             .insert({ ...garnishInput, index: i, recipeId: recipe.id })
             .transacting(trx),

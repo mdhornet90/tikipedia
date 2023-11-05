@@ -95,10 +95,7 @@ export default function RecipeFormModal({
         onAdd={() => {
           updateForm({
             ...form,
-            ingredients: [
-              ...form.ingredients,
-              { name: "", quantity: "", unit: "Unit" },
-            ],
+            garnishes: [...form.garnishes, { name: "", quantity: "" }],
           });
         }}
         onUpdate={(i, updatedGarnish) => {

@@ -29,6 +29,19 @@
   margin-bottom: 3px;
 }
 
+.amountInput {
+  outline: none;
+  background: none;
+  border: none;
+  font-size: 18px;
+  padding: 12px 8px;
+}
+
+.amountInput::placeholder {
+  color: #666;
+  opacity: 1;
+}
+
 .deleteButton {
   color: #ef1a1a;
   cursor: pointer;

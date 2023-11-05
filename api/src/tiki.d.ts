@@ -25,13 +25,11 @@ declare module Recipe {
       imageUrl?: string;
       instructions: string;
       glasswareId: UUID;
-      garnishInputs?:
-        | {
-            garnishId: UUID;
-            index: number;
-            quanitity: number;
-          }[]
-        | null;
+      garnishInputs: {
+        garnishId: UUID;
+        index: number;
+        quanitity: number;
+      }[];
       ingredientInputs: {
         ingredientId: UUID;
         index: number;
@@ -107,15 +105,6 @@ declare module Garnish {
     type Create = API.Create & DBUniqueness;
     type Edit = API.Edit & DBUniqueness;
   }
-}
-
-enum Unit {
-  OZ = 'oz',
-  TSP = 'tsp',
-  TBSP = 'tbsp',
-  DASH = 'dash',
-  DROP = 'drop',
-  EACH = 'each',
 }
 
 interface DatabaseError {
