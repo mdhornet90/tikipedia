@@ -5,7 +5,11 @@ export const findAll = () => knex('recipes').orderBy('title');
 
 export const findOne = (id: UUID) => knex('recipes').where({ id }).first();
 
-export async function insert({ ingredientInputs, ...recipeInput }: Recipe.DB.Create) {
+export async function insert({
+  ingredientInputs,
+  garnishInputs,
+  ...recipeInput
+}: Recipe.DB.Create) {
   return knex.transaction(async trx => {
     const [recipe] = await knex('recipes').insert(recipeInput).returning('*').transacting(trx);
     await Promise.all(
@@ -15,12 +19,24 @@ export async function insert({ ingredientInputs, ...recipeInput }: Recipe.DB.Cre
           .transacting(trx),
       ),
     );
+    if (garnishInputs && garnishInputs.length > 0) {
+      await Promise.all(
+        ingredientInputs.map((garnishInput, i) =>
+          knex('recipes_garnishes')
+            .insert({ ...garnishInput, index: i, recipeId: recipe.id })
+            .transacting(trx),
+        ),
+      );
+    }
 
     return recipe;
   });
 }
 
-export async function update(id: UUID, { ingredientInputs, ...recipeInput }: Recipe.DB.Edit) {
+export async function update(
+  id: UUID,
+  { ingredientInputs, garnishInputs, ...recipeInput }: Recipe.DB.Edit,
+) {
   return knex.transaction(async trx => {
     let recipe: any;
     if (Object.keys(recipeInput).length > 0) {
@@ -41,6 +57,18 @@ export async function update(id: UUID, { ingredientInputs, ...recipeInput }: Rec
             .transacting(trx),
         ),
       );
+    }
+    if (garnishInputs) {
+      await knex('recipes_garnishes').where({ recipeId: id }).delete().transacting(trx);
+      if (garnishInputs.length > 0) {
+        await Promise.all(
+          garnishInputs.map((garnishInput, i) =>
+            knex('recipes_garnishes')
+              .insert({ ...garnishInput, index: i, recipeId: recipe.id })
+              .transacting(trx),
+          ),
+        );
+      }
     }
 
     return recipe;

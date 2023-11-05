@@ -25,6 +25,13 @@ declare module Recipe {
       imageUrl?: string;
       instructions: string;
       glasswareId: UUID;
+      garnishInputs?:
+        | {
+            garnishId: UUID;
+            index: number;
+            quanitity: number;
+          }[]
+        | null;
       ingredientInputs: {
         ingredientId: UUID;
         index: number;
@@ -36,7 +43,7 @@ declare module Recipe {
     type Edit = DeepPartial<Create>;
   }
 
-  declare module DB {
+  module DB {
     type Create = API.Create & DBUniqueness;
     type Edit = API.Edit & DeepPartial<DBUniqueness>;
   }

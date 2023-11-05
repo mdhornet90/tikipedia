@@ -18,3 +18,10 @@ export async function update(id: UUID, garnish: Garnish.DB.Edit) {
 export async function remove(id: UUID) {
   await knex('garnishes').where({ id }).delete();
 }
+
+export const findAllForRecipe = (recipeId: UUID) =>
+  knex('garnishes')
+    .leftJoin('recipes_garnishes AS rg', 'rg.garnish_id', 'garnishes.id')
+    .select('garnishes.name', 'rg.quantity')
+    .where('rg.recipe_id', '=', recipeId)
+    .orderBy('rg.index');

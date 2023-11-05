@@ -4,7 +4,8 @@ import { ApolloServerErrorCode as ErrorCode } from '@apollo/server/errors';
 import { findAll, findOne, insert, remove, update } from '../core/queries/recipes';
 import { findOne as findGlassware } from '../core/queries/glassware';
 import { isDatabaseError, isUUID } from '../utils';
-import { findAllForRecipe } from '../core/queries/ingredients';
+import { findAllForRecipe as findRecipeIngredients } from '../core/queries/ingredients';
+import { findAllForRecipe as findRecipeGarnishes } from '../core/queries/garnishes';
 import mangledName from '../core/mangledName';
 import { UUID } from 'crypto';
 
@@ -16,12 +17,18 @@ export const typeDef = `#graphql
     instructions: String!
     glassware: Glassware!
     ingredients: [RecipeIngredient!]!
+    garnishes: [RecipeGarnish!]!
   }
   type RecipeIngredient {
     name: String!
     abv: Float!
     quantity: Float!
     unit: Unit!
+  }
+
+  type RecipeGarnish {
+    name: String!
+    quantity: Int!
   }
 
   enum Unit {
@@ -44,11 +51,17 @@ export const typeDef = `#graphql
     instructions: String!
     glasswareId: ID!
     ingredientInputs: [CreateRecipeIngredientInput!]!
+    garnishInputs: [CreateRecipeIngredientInput!]
   }
   input CreateRecipeIngredientInput {
     ingredientId: ID!
     quantity: Float!
     unit: Unit!
+  }
+
+  input CreateRecipeGarnishInput {
+    garnishId: ID!
+    quantity: Int!
   }
 
   input EditRecipeInput {
@@ -57,12 +70,18 @@ export const typeDef = `#graphql
     instructions: String
     glasswareId: ID
     ingredientInputs: [EditRecipeIngredientInput!]
+    garnishInputs: [EditRecipeGarnishInput!]
   }
 
   input EditRecipeIngredientInput {
     ingredientId: ID!
     quantity: Float!
     unit: Unit!
+  }
+
+  input EditRecipeGarnishInput {
+    garnishId: ID!
+    quantity: Int!
   }
 
   type Mutation {
@@ -93,13 +112,9 @@ export const resolvers = {
   },
 
   Recipe: {
-    glassware: (recipe: Recipe.Self) => {
-      return findGlassware(recipe.glasswareId);
-    },
-    ingredients: async (recipe: Recipe.Self) => {
-      const rawIngredients = await findAllForRecipe(recipe.id);
-      return rawIngredients;
-    },
+    glassware: async (recipe: Recipe.Self) => findGlassware(recipe.glasswareId),
+    ingredients: async (recipe: Recipe.Self) => findRecipeIngredients(recipe.id),
+    garnishes: async (recipe: Recipe.Self) => findRecipeGarnishes(recipe.id),
   },
 
   Mutation: {
@@ -145,8 +160,16 @@ export const resolvers = {
   },
 };
 
-function validateRecipeUpdate({ ingredientInputs, ...input }: Recipe.API.Edit): boolean {
-  return Object.keys(input).length > 0 || (ingredientInputs?.length ?? 0) > 0;
+function validateRecipeUpdate({
+  ingredientInputs,
+  garnishInputs,
+  ...input
+}: Recipe.API.Edit): boolean {
+  return (
+    Object.keys(input).length > 0 ||
+    (ingredientInputs?.length ?? 0) > 0 ||
+    (garnishInputs?.length ?? 0) > 0
+  );
 }
 
 function handleDatabaseError(err: DatabaseError, action: string) {
