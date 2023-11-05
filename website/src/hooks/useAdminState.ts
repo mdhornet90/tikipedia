@@ -1,6 +1,6 @@
 import { QueryResult } from "@apollo/client";
 import { useState, useEffect } from "react";
-import { Glassware, Ingredient, Recipe } from "../api";
+import { Garnish, Glassware, Ingredient, Recipe } from "../api";
 import { useQuery } from "@apollo/client";
 
 const transforms: Record<Category, Spreadsheet.DataTransformFn> = {
@@ -20,6 +20,8 @@ const transforms: Record<Category, Spreadsheet.DataTransformFn> = {
     })),
   glassware: (data: Spreadsheet.Data.Glassware) =>
     data.allGlassware.map(({ id, name }) => ({ id, data: [name] })),
+  garnishes: (data: Spreadsheet.Data.Garnishes) =>
+    data.garnishes.map(({ id, name }) => ({ id, data: [name] })),
 };
 
 export default function useAdminState(initialId: Category): Admin.Interaction {
@@ -43,6 +45,7 @@ export default function useAdminState(initialId: Category): Admin.Interaction {
         headers = ["Name", "Abv (%)"];
         break;
       case "glassware":
+      case "garnishes":
         headers = ["Name"];
         break;
     }
@@ -67,6 +70,9 @@ function useAdminQuery(category: Category): QueryResult {
   const glasswareQuery = useQuery(Glassware.GetAll, {
     skip: category !== "glassware",
   });
+  const garnishesQuery = useQuery(Garnish.GetAll, {
+    skip: category !== "garnishes",
+  });
 
   switch (category) {
     case "recipes":
@@ -75,5 +81,7 @@ function useAdminQuery(category: Category): QueryResult {
       return ingredientsQuery;
     case "glassware":
       return glasswareQuery;
+    case "garnishes":
+      return garnishesQuery;
   }
 }

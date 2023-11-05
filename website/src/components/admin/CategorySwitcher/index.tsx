@@ -15,6 +15,7 @@ export default function CategorySwitcher({
     { id: "recipes", name: "Recipes" },
     { id: "ingredients", name: "Ingredients" },
     { id: "glassware", name: "Glassware" },
+    { id: "garnishes", name: "Garnishes" },
   ];
 
   const [selectedId, setSelectedId] = useState(defaultTab);

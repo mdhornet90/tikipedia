@@ -1,6 +1,6 @@
 /// <reference types="react-scripts" />
 
-type Category = "recipes" | "ingredients" | "glassware";
+type Category = "recipes" | "ingredients" | "glassware" | "garnishes";
 
 // Data types that define the shape of API objects used in populating the cards and detail views on the home page
 declare module Main {
@@ -70,6 +70,13 @@ declare module Spreadsheet {
     }
     interface Glassware {
       allGlassware: {
+        id: string;
+        name: string;
+      }[];
+    }
+
+    interface Garnishes {
+      garnishes: {
         id: string;
         name: string;
       }[];
