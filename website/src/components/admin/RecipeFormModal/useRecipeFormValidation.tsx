@@ -5,6 +5,7 @@ interface FormValidationProps {
   initialForm?: Input.Recipe;
   form: Input.Recipe;
   units: Set<string>;
+  garnishLookup: Record<string, Input.Data.Garnish>;
   glasswareLookup: Record<string, Input.Data.Glassware>;
 }
 
@@ -17,14 +18,19 @@ export default function useRecipeFormValidation({
   initialForm,
   form,
   units,
+  garnishLookup,
   glasswareLookup,
 }: FormValidationProps) {
   const formValidator = useMemo(() => {
-    const newFormValidator = new NewFormValidator(units, glasswareLookup);
+    const newFormValidator = new NewFormValidator(
+      units,
+      new Set(Object.keys(garnishLookup)),
+      glasswareLookup
+    );
     return initialForm
       ? new ExistingFormValidator(initialForm, newFormValidator)
       : newFormValidator;
-  }, [initialForm, units, glasswareLookup]);
+  }, [initialForm, units, garnishLookup, glasswareLookup]);
 
   const [formValid, setFormValid] = useState(false);
   const [ingredientSectionValid, setIngredientSectionValid] = useState(false);
@@ -70,13 +76,16 @@ class ExistingFormValidator implements FormValidator {
 
 class NewFormValidator implements FormValidator {
   private allUnits: Set<string>;
+  private allGarnishes: Set<string>;
   private glasswareLookup: Record<string, Input.Data.Glassware>;
 
   constructor(
     allUnits: Set<string>,
+    allGarnishes: Set<string>,
     glasswareLookup: Record<string, Input.Data.Glassware>
   ) {
     this.allUnits = allUnits;
+    this.allGarnishes = allGarnishes;
     this.glasswareLookup = glasswareLookup;
   }
 
@@ -106,6 +115,9 @@ class NewFormValidator implements FormValidator {
         recipeIngredientValid(this.allUnits, ingredient)
       ),
     glassware: ({ glassware }) => glassware in this.glasswareLookup,
+    garnishes: ({ garnishes }) =>
+      garnishes.length === 0 ||
+      garnishes.every((g) => recipeGarnishValid(this.allGarnishes, g)),
     instructions: ({ instructions }) => instructions.length > 0,
   };
 }
@@ -115,6 +127,22 @@ function recipeIngredientValid(
   { name, quantity, unit }: Input.RecipeIngredient
 ) {
   if (name.length <= 0 || !allUnits.has(unit)) {
+    return false;
+  }
+
+  try {
+    const normalizedNumber = Number(quantity);
+    return !isNaN(normalizedNumber) && normalizedNumber > 0;
+  } catch {
+    return false;
+  }
+}
+
+function recipeGarnishValid(
+  allGarnishes: Set<string>,
+  { name, quantity }: Input.RecipeGarnish
+) {
+  if (!allGarnishes.has(name)) {
     return false;
   }
 

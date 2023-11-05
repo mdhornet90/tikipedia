@@ -24,6 +24,10 @@ export default function useRecipeData(id?: string | null) {
           quantity: quantity.toString(),
           unit,
         })),
+        garnishes: recipe.garnishes.map(({ name, quantity }) => ({
+          name,
+          quantity: quantity.toString(),
+        })),
       };
       setInitialRecipe(initialForm);
     }

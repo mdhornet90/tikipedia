@@ -10,12 +10,15 @@ export default function useRecipeFormData() {
   const [glasswareLookup, setGlasswareLookup] = useState<
     Record<string, Input.Data.Glassware>
   >({});
+  const [garnishLookup, setGarnishLookup] = useState<
+    Record<string, Input.Data.Garnish>
+  >({});
 
   useEffect(() => {
     if (loading || !data) {
       return;
     }
-    const { ingredients, allGlassware } = data;
+    const { ingredients, allGlassware, garnishes } = data;
 
     setIngredientLookup(
       ingredients
@@ -31,7 +34,13 @@ export default function useRecipeFormData() {
         return acc;
       }, {} as Record<string, Input.Data.Glassware>)
     );
+    setGarnishLookup(
+      garnishes.reduce((acc, garnish) => {
+        acc[garnish.name] = garnish;
+        return acc;
+      }, {} as Record<string, Input.Data.Garnish>)
+    );
   }, [loading, data]);
 
-  return { ingredientLookup, glasswareLookup };
+  return { ingredientLookup, glasswareLookup, garnishLookup };
 }

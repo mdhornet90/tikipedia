@@ -1,4 +1,4 @@
-import { OperationVariables, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Recipe } from "../../../api";
 import { useEffect, useState } from "react";
 import useRecipeData from "./useRecipeData";
@@ -12,6 +12,7 @@ const EMPTY_STATE: () => Input.Recipe = () => ({
   imageUrl: null,
   instructions: "",
   ingredients: [{ name: "", quantity: "", unit: "Unit" }],
+  garnishes: [],
 });
 const allUnits = new Set(["dash", "drop", "each", "oz", "tbsp", "tsp"]);
 
@@ -25,12 +26,14 @@ export default function useRecipeState(id?: string | null) {
   });
   const initialForm = useRecipeData(id);
   const [workingForm, updateForm] = useState<Input.Recipe>(EMPTY_STATE);
-  const { ingredientLookup, glasswareLookup } = useRecipeFormData();
+  const { ingredientLookup, glasswareLookup, garnishLookup } =
+    useRecipeFormData();
   const { formValid, ingredientSectionValid } = useRecipeFormValidation({
     initialForm,
     form: workingForm,
     units: allUnits,
     glasswareLookup,
+    garnishLookup,
   });
 
   useEffect(() => {
@@ -54,18 +57,25 @@ export default function useRecipeState(id?: string | null) {
         ? (
             input: Input.Recipe,
             glasswareLookup: Record<string, Input.Data.Glassware>,
-            ingredientLookup: Record<string, Input.Data.Ingredient>
+            ingredientLookup: Record<string, Input.Data.Ingredient>,
+            garnishLookup: Record<string, Input.Data.Garnish>
           ) =>
             transformEdit(
               id,
               input,
               initialForm ?? EMPTY_STATE(),
               glasswareLookup,
-              ingredientLookup
+              ingredientLookup,
+              garnishLookup
             )
         : transformAdd;
       createOrUpdate({
-        variables: transformFn(workingForm, glasswareLookup, ingredientLookup),
+        variables: transformFn(
+          workingForm,
+          glasswareLookup,
+          ingredientLookup,
+          garnishLookup
+        ),
       });
     },
     deleteRecipe,
@@ -75,8 +85,9 @@ export default function useRecipeState(id?: string | null) {
 function transformAdd(
   input: Input.Recipe,
   glasswareLookup: Record<string, Input.Data.Glassware>,
-  ingredientLookup: Record<string, Input.Data.Ingredient>
-): OperationVariables {
+  ingredientLookup: Record<string, Input.Data.Ingredient>,
+  garnishLookup: Record<string, Input.Data.Garnish>
+): Submit.CreateData<Submit.CreateRecipe> {
   return {
     input: {
       title: input.title,
@@ -88,6 +99,10 @@ function transformAdd(
         quantity: Number(quantity),
         unit: unit.toUpperCase(),
       })),
+      garnishInputs: input.garnishes.map(({ name, quantity }) => ({
+        garnishId: garnishLookup[name].id,
+        quantity: Number(quantity),
+      })),
     },
   };
 }
@@ -97,8 +112,9 @@ function transformEdit(
   input: Input.Recipe,
   original: Input.Recipe,
   glasswareLookup: Record<string, Input.Data.Glassware>,
-  ingredientLookup: Record<string, Input.Data.Ingredient>
-): OperationVariables {
+  ingredientLookup: Record<string, Input.Data.Ingredient>,
+  garnishLookup: Record<string, Input.Data.Garnish>
+): Submit.EditData<Submit.EditRecipe> {
   return {
     id,
     input: Object.keys(input)
@@ -123,6 +139,14 @@ function transformEdit(
                 ingredientId: ingredientLookup[name].id,
                 quantity: Number(quantity),
                 unit: unit.toUpperCase(),
+              })
+            );
+            break;
+          case "garnishes":
+            acc["garnishInputs"] = input.garnishes.map(
+              ({ name, quantity }) => ({
+                garnishId: garnishLookup[name].id,
+                quanity: Number(quantity),
               })
             );
             break;

@@ -59,10 +59,15 @@ function isNewFormValid(updatedForm: Input.Glassware): boolean {
   return updatedForm.name.length > 0;
 }
 
-function transformAdd(input: Input.Glassware): OperationVariables {
+function transformAdd(
+  input: Input.Glassware
+): Submit.CreateData<Submit.CreateGlassware> {
   return { input: { name: input.name } };
 }
 
-function transformEdit(id: string, input: Input.Glassware): OperationVariables {
+function transformEdit(
+  id: string,
+  input: Input.Glassware
+): Submit.EditData<Submit.EditGlassware> {
   return { id, input: { name: input.name } };
 }

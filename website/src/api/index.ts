@@ -226,5 +226,9 @@ export const RecipeFormData = gql`
       abv
       name
     }
+    garnishes {
+      id
+      name
+    }
   }
 `;

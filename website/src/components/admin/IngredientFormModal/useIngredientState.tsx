@@ -106,7 +106,9 @@ function isNewFormValid(input: Input.Ingredient): boolean {
   );
 }
 
-function transformAdd(input: Input.Ingredient): OperationVariables {
+function transformAdd(
+  input: Input.Ingredient
+): Submit.CreateData<Submit.CreateIngredient> {
   return {
     input: {
       ...input,
@@ -119,7 +121,7 @@ function transformEdit(
   id: string,
   input: Input.Ingredient,
   original: Input.Ingredient
-): OperationVariables {
+): Submit.EditData<Submit.EditIngredient> {
   return {
     id,
     input: Object.keys(input)

@@ -1,4 +1,4 @@
-import { OperationVariables, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Garnish, Recipe, RecipeFormData } from "../../../api";
 import { useEffect, useState } from "react";
 
@@ -59,10 +59,15 @@ function isNewFormValid(updatedForm: Input.Garnish): boolean {
   return updatedForm.name.length > 0;
 }
 
-function transformAdd(input: Input.Garnish): OperationVariables {
+function transformAdd(
+  input: Input.Garnish
+): Submit.CreateData<Submit.CreateGarnish> {
   return { input: { name: input.name } };
 }
 
-function transformEdit(id: string, input: Input.Garnish): OperationVariables {
+function transformEdit(
+  id: string,
+  input: Input.Garnish
+): Submit.EditData<Submit.EditGarnish> {
   return { id, input: { name: input.name } };
 }

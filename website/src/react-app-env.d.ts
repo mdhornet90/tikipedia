@@ -1,5 +1,10 @@
 /// <reference types="react-scripts" />
 
+type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 type Category = "recipes" | "ingredients" | "glassware" | "garnishes";
 
 // Data types that define the shape of API objects used in populating the cards and detail views on the home page
@@ -110,6 +115,7 @@ declare module Input {
     imageUrl?: string | null;
     instructions: string;
     glassware: string;
+    garnishes: RecipeGarnish[];
     ingredients: RecipeIngredient[];
   }
 
@@ -145,6 +151,7 @@ declare module Input {
       imageUrl?: string | null;
       instructions: string;
       glassware: { name: string };
+      garnishes: { name: string; quantity: number }[];
       ingredients: {
         name: string;
         quantity: number;
@@ -154,18 +161,42 @@ declare module Input {
     interface RecipeForm {
       ingredients: Ingredient[];
       allGlassware: Glassware[];
+      garnishes: Garnish[];
     }
   }
 }
 
 // Data types that define the shape of data submitted to the API (mutations)
 declare module Submit {
+  interface CreateData<T> {
+    input: T;
+  }
+
+  interface EditData<T> {
+    id: string;
+    input: T;
+  }
+
+  interface CreateGarnish {
+    name: string;
+  }
+  interface EditGarnish {
+    name: string;
+  }
+
   interface CreateGlassware {
     name: string;
   }
   interface EditGlassware {
     name: string;
   }
+
+  interface CreateIngredient {
+    name: string;
+    abv: number | null;
+  }
+
+  type EditIngredient = DeepPartial<CreateIngredient>;
 
   interface CreateRecipe {
     title: string;
@@ -177,5 +208,11 @@ declare module Submit {
       quantity: number;
       unit: string;
     }[];
+    garnishInputs: {
+      garnishId: string;
+      quantity: number;
+    }[];
   }
+
+  type EditRecipe = DeepPartial<CreateRecipe>;
 }
