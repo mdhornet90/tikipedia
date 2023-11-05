@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
-import styles from "./IngredientNameField.module.css";
+import styles from "./OptionSearchField.module.css";
 
-interface IngredientNameFieldProps {
-  ingredients: string[];
+interface OptionSearchFieldProps {
+  placeholder: string;
   text: string;
+  options: string[];
   onSelect: (name: string) => void;
 }
 
-export default function IngredientNameFieldmodule({
+export default function OptionSearchField({
+  placeholder,
   text,
-  ingredients,
+  options,
   onSelect,
-}: IngredientNameFieldProps) {
+}: OptionSearchFieldProps) {
   const [searching, setSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredList, setFilteredList] = useState<string[]>([]);
 
   useEffect(() => {
     if (searchTerm.length > 1) {
-      setFilteredList(ingredients.filter((text) => text.includes(searchTerm)));
+      setFilteredList(options.filter((text) => text.includes(searchTerm)));
     } else {
       setFilteredList([]);
     }
-  }, [searchTerm, ingredients, setFilteredList]);
+  }, [searchTerm, options, setFilteredList]);
 
   useEffect(() => {
     if (!searching) {
@@ -31,7 +33,7 @@ export default function IngredientNameFieldmodule({
   }, [searching]);
 
   return (
-    <div className={styles.ingredientContainer}>
+    <div className={styles.container}>
       <input
         onFocus={() => {
           setSearching(true);
@@ -39,7 +41,7 @@ export default function IngredientNameFieldmodule({
         size={1}
         className={styles.input}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Ingredient"
+        placeholder={placeholder}
         onBlur={() => {
           setSearching(false);
         }}

@@ -1,6 +1,7 @@
 import styles from "./IngredientFormField.module.css";
-import IngredientNameField from "../IngredientNameField";
+import IngredientNameField from "../OptionSearchField";
 import DropdownField from "../DropdownField";
+import OptionSearchField from "../OptionSearchField";
 
 interface IngredientFormFieldProps {
   ingredients: string[];
@@ -20,8 +21,9 @@ export default function IngredientFormField({
 }: IngredientFormFieldProps) {
   return (
     <div className={styles.container}>
-      <IngredientNameField
-        ingredients={ingredients}
+      <OptionSearchField
+        placeholder="Ingredient"
+        options={ingredients}
         text={selectedIngredient}
         onSelect={(newIngredient) => onUpdate("name", newIngredient)}
       />

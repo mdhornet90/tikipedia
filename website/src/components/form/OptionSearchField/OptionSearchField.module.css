@@ -1,9 +1,9 @@
-.ingredientContainer {
+.container {
   position: relative;
   padding: 12px 8px;
 }
 
-.ingredientContainer > input {
+.container > input {
   width: 100%;
   outline: none;
   background: none;
@@ -11,7 +11,7 @@
   font-size: 18px;
 }
 
-.ingredientContainer > input::placeholder {
+.container > input::placeholder {
   color: #666;
   opacity: 1;
 }
