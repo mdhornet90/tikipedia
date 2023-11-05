@@ -86,6 +86,12 @@ declare module Spreadsheet {
 
 // Data types that define the shape of data the user enters when populating a form
 declare module Input {
+  interface Props {
+    open: boolean;
+    onClose: () => void;
+    selectedId?: string;
+  }
+
   interface Ingredient {
     abv: string;
     name: string;

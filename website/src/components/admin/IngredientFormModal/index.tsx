@@ -2,17 +2,11 @@ import TextField from "../../form/TextField";
 import EditingModal from "../EditingModal";
 import useIngredientState from "./useIngredientState";
 
-interface IngredientFormModalProps {
-  open: boolean;
-  onClose: () => void;
-  selectedId?: string;
-}
-
 export default function IngredientFormModal({
   open,
   onClose,
   selectedId,
-}: IngredientFormModalProps) {
+}: Input.Props) {
   const {
     form,
     updateForm,

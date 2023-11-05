@@ -9,6 +9,7 @@ import useAdminState from "../../../hooks/useAdminState";
 import IngredientFormModal from "../IngredientFormModal";
 import GlasswareFormModal from "../GlasswareFormModal";
 import RecipeFormModal from "../RecipeFormModal";
+import GarnishFormModal from "../GarnishFormModal";
 
 type ModalState = "closed" | "opening" | "open" | "closing";
 
@@ -49,32 +50,28 @@ export default function Admin() {
         />
       </div>
       {(() => {
+        let CurrentFormType: (props: Input.Props) => JSX.Element;
         switch (category) {
           case "ingredients":
-            return (
-              <IngredientFormModal
-                selectedId={selectedId}
-                open={modalState === "open"}
-                onClose={onClose}
-              />
-            );
+            CurrentFormType = IngredientFormModal;
+            break;
           case "glassware":
-            return (
-              <GlasswareFormModal
-                selectedId={selectedId}
-                open={modalState === "open"}
-                onClose={onClose}
-              />
-            );
+            CurrentFormType = GlasswareFormModal;
+            break;
           case "recipes":
-            return (
-              <RecipeFormModal
-                selectedId={selectedId}
-                open={modalState === "open"}
-                onClose={onClose}
-              />
-            );
+            CurrentFormType = RecipeFormModal;
+            break;
+          case "garnishes":
+            CurrentFormType = GarnishFormModal;
         }
+
+        return (
+          <CurrentFormType
+            selectedId={selectedId}
+            open={modalState === "open"}
+            onClose={onClose}
+          />
+        );
       })()}
     </div>
   );

@@ -6,19 +6,13 @@ import DropdownField from "../../form/DropdownField";
 import TextAreaField from "../../form/TextAreaField";
 import useRecipeState from "./useRecipeState";
 
-interface RecipeFormModalProps {
-  open: boolean;
-  onClose: () => void;
-  selectedId?: string;
-}
-
 const allUnits = new Set(["dash", "drop", "each", "oz", "tbsp", "tsp"]);
 
 export default function RecipeFormModal({
   open,
   onClose,
   selectedId,
-}: RecipeFormModalProps) {
+}: Input.Props) {
   const {
     form,
     formValid,

@@ -2,17 +2,11 @@ import TextField from "../../form/TextField";
 import EditingModal from "../EditingModal";
 import useGlasswareState from "./useGlasswareState";
 
-interface GlasswareFormModalProps {
-  open: boolean;
-  onClose: () => void;
-  selectedId?: string;
-}
-
 export default function GlasswareFormModal({
   open,
   onClose,
   selectedId,
-}: GlasswareFormModalProps) {
+}: Input.Props) {
   const {
     form,
     updateForm,
