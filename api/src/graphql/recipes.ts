@@ -23,7 +23,7 @@ export const typeDef = `#graphql
     name: String!
     abv: Float!
     quantity: Float!
-    unit: Unit!
+    unit: String!
   }
 
   type RecipeGarnish {
