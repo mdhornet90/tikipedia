@@ -19,7 +19,7 @@ declare module Main {
   interface RecipeDetail {
     title: string;
     ingredients: RecipeIngredient[];
-    garnishes?: string[];
+    garnishes: RecipeGarnish[];
     glassware: { name: string };
     instructions: string;
   }
@@ -27,6 +27,11 @@ declare module Main {
   interface RecipeIngredient {
     quantity: string;
     unit: string;
+    name: string;
+  }
+
+  interface RecipeGarnish {
+    quantity: string;
     name: string;
   }
 

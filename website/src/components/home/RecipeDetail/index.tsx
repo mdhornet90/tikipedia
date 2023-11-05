@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState, forwardRef, Ref } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  Ref,
+  PropsWithChildren,
+} from "react";
 import { CSSTransition } from "react-transition-group";
 import Title from "../../common/Title";
 import styles from "./RecipeDetail.module.css";
@@ -75,38 +82,53 @@ const RecipeSection = forwardRef(function (
     >
       <CloseIcon className={styles.closeButton} onClick={onClose} />
       <Title title={recipe.title} size="large" />
-      <Title title={"Ingredients"} size="medium" alignment="left" />
-      <div className={styles.ingredients}>
-        {recipe.ingredients.map((ingredient, i) => (
-          <React.Fragment key={i}>
-            <span key={`amount-${i}`} className={styles.amount}>
-              {ingredient.quantity}
-            </span>
-            <span key={`unit-${i}`} className={styles.unit}>
-              {ingredient.unit}
-            </span>
-            <span key={`name-${i}`} className={styles.ingredientName}>
-              {ingredient.name}
-            </span>
-          </React.Fragment>
-        ))}
-      </div>
+      <RecipeDetailSection title={"Ingredients"}>
+        <div className={styles.ingredients}>
+          {recipe.ingredients.map((ingredient, i) => (
+            <React.Fragment key={i}>
+              <span key={`amount-${i}`} className={styles.amount}>
+                {ingredient.quantity}
+              </span>
+              <span key={`unit-${i}`} className={styles.unit}>
+                {ingredient.unit}
+              </span>
+              <span key={`name-${i}`} className={styles.ingredientName}>
+                {ingredient.name}
+              </span>
+            </React.Fragment>
+          ))}
+        </div>
+      </RecipeDetailSection>
+      <RecipeDetailSection title="Glassware">
+        <div className={styles.glassware}>{recipe.glassware.name}</div>
+      </RecipeDetailSection>
       {recipe.garnishes && recipe.garnishes.length > 0 && (
-        <>
-          <Title title={"Garnishes"} size="medium" alignment="left" />
+        <RecipeDetailSection title="Garnishes">
           <div className={styles.garnishes}>
-            {recipe.garnishes.map((g, i) => (
-              <div key={i}>{g}</div>
+            {recipe.garnishes.map(({ name }, i) => (
+              <div key={i}>{name}</div>
             ))}
           </div>
-        </>
+        </RecipeDetailSection>
       )}
-      <Title title={"Glassware"} size="medium" alignment="left" />
-      <div className={styles.glassware}>{recipe.glassware.name}</div>
-      <Title title={"Preparation"} size="medium" alignment="left" />
-      <div className={styles.instructions}>{recipe.instructions}</div>
+      <RecipeDetailSection title={"Preparation"}>
+        <div className={styles.instructions}>{recipe.instructions}</div>
+      </RecipeDetailSection>
     </div>
   ) : (
     <></>
   );
 });
+
+interface RecipeSectionProps extends PropsWithChildren {
+  title: string;
+}
+
+function RecipeDetailSection({ title, children }: RecipeSectionProps) {
+  return (
+    <div className={styles.detailSection}>
+      <Title title={title} size="medium" alignment="left" />
+      {children}
+    </div>
+  );
+}

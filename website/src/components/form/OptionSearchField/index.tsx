@@ -20,7 +20,11 @@ export default function OptionSearchField({
 
   useEffect(() => {
     if (searchTerm.length > 1) {
-      setFilteredList(options.filter((text) => text.includes(searchTerm)));
+      setFilteredList(
+        options.filter((text) =>
+          text.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
     } else {
       setFilteredList([]);
     }
@@ -50,17 +54,21 @@ export default function OptionSearchField({
 
       {filteredList.length > 0 && (
         <div className={styles.options}>
-          {filteredList.map((text, i) => (
-            <SearchOption
-              key={i}
-              text={text}
-              matchingText={searchTerm}
-              onSelect={() => {
-                onSelect(text);
-                setSearching(false);
-              }}
-            />
-          ))}
+          {filteredList.map((text, i) => {
+            console.log(text);
+            return (
+              <SearchOption
+                key={i}
+                text={text}
+                matchingText={searchTerm}
+                onSelect={() => {
+                  console.log(text);
+                  onSelect(text);
+                  setSearching(false);
+                }}
+              />
+            );
+          })}
         </div>
       )}
     </div>
@@ -74,7 +82,7 @@ interface SearchOptionProps {
 }
 
 function SearchOption({ text, matchingText, onSelect }: SearchOptionProps) {
-  const start = text.indexOf(matchingText);
+  const start = text.toLowerCase().indexOf(matchingText.toLowerCase());
   if (start < 0) {
     return <div className={styles.searchOption}>{text}</div>;
   }

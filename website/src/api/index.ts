@@ -23,6 +23,9 @@ export module Display {
         glassware {
           name
         }
+        garnishes {
+          name
+        }
         instructions
       }
     }
