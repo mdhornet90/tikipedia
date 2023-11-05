@@ -52,6 +52,9 @@ export module Recipe {
         glassware {
           name
         }
+        garnishes {
+          name
+        }
       }
     }
   `;
@@ -70,6 +73,10 @@ export module Recipe {
           name
           unit
           quantity
+        }
+        garnishes {
+          quantity
+          name
         }
       }
     }
