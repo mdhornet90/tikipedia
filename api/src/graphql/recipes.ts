@@ -23,14 +23,16 @@ export const typeDef = `#graphql
     quantity: Float!
     unit: Unit!
   }
+
   enum Unit {
-    oz
-    tsp
-    tbsp
-    dash
-    drop
-    each
+    OZ
+    TSP
+    TBSP
+    DASH
+    DROP
+    EACH
   }
+
   type Query {
     recipes: [Recipe!]!
     recipe(id: ID!): Recipe

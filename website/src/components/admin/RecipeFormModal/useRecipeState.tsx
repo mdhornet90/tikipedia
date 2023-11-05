@@ -91,7 +91,7 @@ function transformAdd(
       ingredientInputs: input.ingredients.map(({ name, quantity, unit }) => ({
         ingredientId: ingredientLookup[name].id,
         quantity: Number(quantity),
-        unit,
+        unit: unit.toUpperCase(),
       })),
     },
   };
@@ -127,7 +127,7 @@ function transformEdit(
               ({ name, quantity, unit }) => ({
                 ingredientId: ingredientLookup[name].id,
                 quantity: Number(quantity),
-                unit,
+                unit: unit.toUpperCase(),
               })
             );
             break;
