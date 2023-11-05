@@ -51,7 +51,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    createGlassware: async (_: any, { input }: { input: CreateGlasswareInput }) => {
+    createGlassware: async (_: any, { input }: { input: Glassware.API.Create }) => {
       try {
         return await insert({
           ...input,
@@ -64,7 +64,7 @@ export const resolvers = {
       }
     },
 
-    editGlassware: async (_: any, { id, input }: { id: UUID; input: EditGlasswareInput }) => {
+    editGlassware: async (_: any, { id, input }: { id: UUID; input: Glassware.API.Edit }) => {
       try {
         return await update(id, {
           ...input,

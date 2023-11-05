@@ -55,7 +55,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    createIngredient: async (_: any, { input }: { input: CreateIngredientInput }) => {
+    createIngredient: async (_: any, { input }: { input: Ingredient.API.Create }) => {
       try {
         return await insert({
           ...input,
@@ -68,7 +68,7 @@ export const resolvers = {
       }
     },
 
-    editIngredient: async (_: any, { id, input }: { id: UUID; input: EditIngredientInput }) => {
+    editIngredient: async (_: any, { id, input }: { id: UUID; input: Ingredient.API.Edit }) => {
       if (Object.keys(input).length == 0) {
         throw new GraphQLError('At least one field required!', {
           extensions: { code: ErrorCode.BAD_USER_INPUT },

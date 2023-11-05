@@ -91,40 +91,30 @@ export const resolvers = {
   },
 
   Recipe: {
-    glassware: (recipe: Recipe) => {
+    glassware: (recipe: Recipe.Self) => {
       return findGlassware(recipe.glasswareId);
     },
-    ingredients: async (recipe: Recipe) => {
+    ingredients: async (recipe: Recipe.Self) => {
       const rawIngredients = await findAllForRecipe(recipe.id);
       return rawIngredients;
     },
   },
 
   Mutation: {
-    createRecipe: async (
-      _: any,
-      { input: { ingredientInputs: rawIngredientInputs, ...input } }: { input: CreateRecipeInput },
-    ) => {
-      const ingredientInputs = rawIngredientInputs.map(({ unit, ...input }, i) => ({
+    createRecipe: async (_: any, { input }: { input: Recipe.API.Create }) =>
+      insert({
         ...input,
-        index: i,
-        unit: unit.toLowerCase(),
-      }));
-      return insert({
-        ...input,
-        ingredientInputs,
         mangledName: mangledName(input.title),
-      });
-    },
+      }),
 
-    editRecipe: async (_: any, { id, input }: { id: UUID; input: EditRecipeInput }) => {
+    editRecipe: async (_: any, { id, input }: { id: UUID; input: Recipe.API.Edit }) => {
       if (!validateRecipeUpdate(input)) {
         throw new GraphQLError('At least one field required!', {
           extensions: { code: ErrorCode.BAD_USER_INPUT },
         });
       }
       try {
-        const dbUpdate: EditRecipeDBInput = {
+        const dbUpdate: Recipe.DB.Edit = {
           ...input,
         };
         if (input.title) {
@@ -153,7 +143,7 @@ export const resolvers = {
   },
 };
 
-function validateRecipeUpdate({ ingredientInputs, ...input }: EditRecipeInput): boolean {
+function validateRecipeUpdate({ ingredientInputs, ...input }: Recipe.API.Edit): boolean {
   return Object.keys(input).length > 0 || (ingredientInputs?.length ?? 0) > 0;
 }
 

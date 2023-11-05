@@ -9,60 +9,78 @@ type DeepPartial<T> = T extends object
 interface DBUniqueness {
   mangledName: string;
 }
-interface Ingredient {
-  id: UUID;
-  name: string;
-  abv: number?;
+
+declare module Recipe {
+  interface Self {
+    id: UUID;
+    imageUrl?: string;
+    title: string;
+    instructions: string;
+    glasswareId: UUID;
+  }
+
+  module API {
+    interface Create {
+      title: string;
+      imageUrl?: string;
+      instructions: string;
+      glasswareId: UUID;
+      ingredientInputs: {
+        ingredientId: UUID;
+        index: number;
+        quantity: number;
+        unit: Unit;
+      }[];
+    }
+
+    type Edit = DeepPartial<Create>;
+  }
+
+  declare module DB {
+    type Create = API.Create & DBUniqueness;
+    type Edit = API.Edit & DeepPartial<DBUniqueness>;
+  }
 }
 
-interface CreateIngredientInput {
-  name: string;
-  abv: number?;
+declare module Ingredient {
+  interface Self {
+    id: UUID;
+    name: string;
+    abv: number?;
+  }
+
+  module API {
+    interface Create {
+      name: string;
+      abv: number?;
+    }
+
+    type Edit = DeepPartial<Create>;
+  }
+
+  module DB {
+    type Create = API.Create & DBUniqueness;
+    type Edit = API.Edit & DeepPartial<DBUniqueness>;
+  }
 }
 
-type EditIngredientInput = DeepPartial<CreateIngredientInput>;
+declare module Glassware {
+  interface Self {
+    id: UUID;
+    name: string;
+  }
 
-type CreateIngredientDBInput = CreateIngredientInput & DBUniqueness;
-type EditIngredientDBInput = EditIngredientInput & DeepPartial<DBUniqueness>;
+  module API {
+    interface Create {
+      name: string;
+    }
+    type Edit = Create;
+  }
 
-interface Glassware {
-  id: UUID;
-  name: string;
-}
-
-interface CreateGlasswareInput {
-  name: string;
-}
-type EditGlasswareInput = CreateGlasswareInput;
-
-type CreateGlasswareDBInput = CreateGlasswareInput & DBUniqueness;
-type EditGlasswareDBInput = EditGlasswareInput & DBUniqueness;
-
-interface Recipe {
-  id: UUID;
-  imageUrl?: string;
-  title: string;
-  instructions: string;
-  glasswareId: UUID;
-}
-
-interface CreateRecipeInput {
-  title: string;
-  imageUrl?: string;
-  instructions: string;
-  glasswareId: UUID;
-  ingredientInputs: RecipeIngredientInput[];
-}
-type CreateRecipeDBInput = CreateRecipeInput & DBUniqueness;
-
-type EditRecipeInput = DeepPartial<CreateRecipeInput>;
-type EditRecipeDBInput = EditRecipeInput & DeepPartial<DBUniqueness>;
-
-interface RecipeIngredientInput {
-  ingredientId: UUID;
-  index: number;
-  quantity: number;
-  unit: string;
+  module DB {
+    type Create = API.Create & DBUniqueness;
+    type Edit = API.Edit & DBUniqueness;
+  }
 }
 
 enum Unit {

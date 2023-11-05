@@ -5,12 +5,12 @@ export const findAll = () => knex('ingredients').orderBy('name');
 
 export const findOne = (id: UUID) => knex('ingredients').where('id', id).first();
 
-export async function insert(ingredient: CreateIngredientDBInput) {
+export async function insert(ingredient: Ingredient.DB.Create) {
   const [result] = await knex('ingredients').insert(ingredient).returning('*');
   return result;
 }
 
-export async function update(id: UUID, ingredient: EditIngredientDBInput) {
+export async function update(id: UUID, ingredient: Ingredient.DB.Edit) {
   const [result] = await knex('ingredients').where({ id }).update(ingredient).returning('*');
   return result;
 }

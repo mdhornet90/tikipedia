@@ -5,7 +5,7 @@ export const findAll = () => knex('recipes').orderBy('title');
 
 export const findOne = (id: UUID) => knex('recipes').where({ id }).first();
 
-export async function insert({ ingredientInputs, ...recipeInput }: CreateRecipeDBInput) {
+export async function insert({ ingredientInputs, ...recipeInput }: Recipe.DB.Create) {
   return knex.transaction(async trx => {
     const [recipe] = await knex('recipes').insert(recipeInput).returning('*').transacting(trx);
     await Promise.all(
@@ -20,7 +20,7 @@ export async function insert({ ingredientInputs, ...recipeInput }: CreateRecipeD
   });
 }
 
-export async function update(id: UUID, { ingredientInputs, ...recipeInput }: EditRecipeDBInput) {
+export async function update(id: UUID, { ingredientInputs, ...recipeInput }: Recipe.DB.Edit) {
   return knex.transaction(async trx => {
     let recipe: any;
     if (Object.keys(recipeInput).length > 0) {
