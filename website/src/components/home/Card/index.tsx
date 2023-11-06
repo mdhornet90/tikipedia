@@ -17,11 +17,13 @@ export default function Card({ card, onTap }: CardProps) {
         />
       )}
       <div className={styles.cardTitle}>{card.title}</div>
-      <div className={styles.tagContainer}>
-        {card.tags?.map((tag, i) => (
-          <Tag {...tag} key={`card-${card.id}-tag-${i}`} />
-        ))}
-      </div>
+      {card.tags && (
+        <div className={styles.tagContainer}>
+          {card.tags.map((tag, i) => (
+            <Tag {...tag} key={`card-${card.id}-tag-${i}`} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
