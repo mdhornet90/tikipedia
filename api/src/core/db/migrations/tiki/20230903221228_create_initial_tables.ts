@@ -5,14 +5,16 @@ export async function up(knex: Knex): Promise<void | void[]> {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.string('name');
     table.string('mangled_name').unique();
+    table.timestamps(true, true);
   });
   await knex.schema.createTable('recipes', table => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v1mc()'));
     table.string('title');
-    table.string('image_url');
+    table.text('image_url');
     table.string('mangled_name').unique();
-    table.string('instructions');
+    table.text('instructions');
     table.uuid('glassware_id').references('glassware.id').onDelete('CASCADE');
+    table.timestamps(true, true);
   });
   await knex.schema.createTable('ingredients', table => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v1mc()'));
@@ -20,6 +22,7 @@ export async function up(knex: Knex): Promise<void | void[]> {
     table.string('mangled_name').unique();
     table.decimal('abv').defaultTo(0);
     table.uuid('recipe_id').references('recipes.id').nullable();
+    table.timestamps(true, true);
   });
   await knex.schema.createTable('recipes_ingredients', table => {
     table.uuid('recipe_id').references('recipes.id').onDelete('CASCADE');
