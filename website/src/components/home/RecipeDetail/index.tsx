@@ -86,11 +86,8 @@ const RecipeSection = forwardRef(function (
         <div className={styles.ingredients}>
           {recipe.ingredients.map((ingredient, i) => (
             <React.Fragment key={i}>
-              <span key={`amount-${i}`} className={styles.amount}>
-                {ingredient.quantity}
-              </span>
-              <span key={`unit-${i}`} className={styles.unit}>
-                {ingredient.unit}
+              <span key={`amount-unit-${i}`} className={styles.amountUnit}>
+                {`${ingredient.quantity} ${ingredient.unit}`}
               </span>
               <span key={`name-${i}`} className={styles.ingredientName}>
                 {ingredient.name}

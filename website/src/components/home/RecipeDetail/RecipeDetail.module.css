@@ -44,17 +44,13 @@
 
 .ingredients {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   justify-content: flex-start;
   width: 100%;
 }
 
-.amount {
-  margin-right: 2px;
+.amountUnit {
   justify-self: end;
-}
-
-.unit {
   margin-right: 8px;
 }
 
