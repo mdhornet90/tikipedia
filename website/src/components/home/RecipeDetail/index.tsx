@@ -7,6 +7,8 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { CSSTransition } from "react-transition-group";
+import Fraction from "fraction.js";
+
 import Title from "../../common/Title";
 import styles from "./RecipeDetail.module.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -87,7 +89,9 @@ const RecipeSection = forwardRef(function (
           {recipe.ingredients.map((ingredient, i) => (
             <React.Fragment key={i}>
               <span key={`amount-unit-${i}`} className={styles.amountUnit}>
-                {`${ingredient.quantity} ${ingredient.unit}`}
+                {`${new Fraction(ingredient.quantity).toFraction(true)} ${
+                  ingredient.unit
+                }`}
               </span>
               <span key={`name-${i}`} className={styles.ingredientName}>
                 {ingredient.name}
