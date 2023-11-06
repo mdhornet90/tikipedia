@@ -1,6 +1,6 @@
 .spreadsheet {
   height: calc(100vh - 220px);
-  overflow: scroll;
+  overflow-y: auto;
   border: 2px solid #f3b85f;
 }
 

@@ -8,7 +8,8 @@ export async function up(knex: Knex): Promise<void | void[]> {
   });
   await knex.schema.createTable('recipes', table => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v1mc()'));
-    table.string('name');
+    table.string('title');
+    table.string('image_url');
     table.string('mangled_name').unique();
     table.string('instructions');
     table.uuid('glassware_id').references('glassware.id').onDelete('CASCADE');
@@ -25,17 +26,14 @@ export async function up(knex: Knex): Promise<void | void[]> {
     table.uuid('ingredient_id').references('ingredients.id').onDelete('CASCADE');
     table.integer('index');
     table.decimal('quantity');
-    table.enu('unit', ['oz', 'tsp', 'tbsp', 'dash', 'drop', 'each'], {
-      useNative: true,
-      enumName: 'unit',
-    });
+    table.string('unit');
     table.unique(['recipe_id', 'ingredient_id']);
     table.index(['recipe_id', 'ingredient_id', 'index']);
   });
 }
 
 export async function down(knex: Knex): Promise<void | void[]> {
-  await knex.schema.dropTable('recipes_ingredients').raw('DROP TYPE unit');
+  await knex.schema.dropTable('recipes_ingredients');
   await knex.schema.dropTable('ingredients');
   await knex.schema.dropTable('recipes');
   await knex.schema.dropTable('glassware');

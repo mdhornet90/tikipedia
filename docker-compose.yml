@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile
       target: dev
     ports:
-      - 3001:3000
-      - 9228:9229
+      - ${WEB_PORT:-3001}:3000
+      - ${WEB_DEBUG_PORT:-9228}:9229
     volumes:
       - ./website:/app
       - /app/node_modules
@@ -23,8 +23,8 @@ services:
       dockerfile: Dockerfile
       target: dev
     ports:
-      - 3000:3000
-      - 9229:9229
+      - ${API_PORT:-3000}:3000
+      - ${API_DEBUG_PORT:-9229}:9229
     volumes:
       - ./api/src:/app/src
     env_file: ./api/.env
@@ -32,7 +32,7 @@ services:
     container_name: tiki_db
     image: postgres:12
     ports:
-      - 5432:5432
+      - ${DB_PORT:-5432}:5432
     volumes:
       - ./db/init-local-db.sql:/docker-entrypoint-initdb.d/docker-postgres-init.sql
       - ./db/tikidata:/var/lib/postgresql/data
