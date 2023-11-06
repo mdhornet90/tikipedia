@@ -1,8 +1,8 @@
 .card {
   border-radius: 8px;
   background-image: linear-gradient(to bottom, #f3b85f, #eee);
-  height: 300px;
-  width: 200px;
+  max-width: 300px;
+  aspect-ratio: 2/3;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
   padding: 8px;
   display: flex;
@@ -17,9 +17,8 @@
 }
 
 .cardImage {
-  height: 66%;
-  max-height: 400px;
-  max-width: 200px;
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
   opacity: 0.75;
 }
