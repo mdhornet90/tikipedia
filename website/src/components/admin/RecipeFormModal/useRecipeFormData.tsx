@@ -21,7 +21,7 @@ export default function useRecipeFormData() {
     const { ingredients, allGlassware, garnishes } = data;
 
     setIngredientLookup(
-      ingredients
+      [...ingredients]
         .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
         .reduce((acc, ingredient) => {
           acc[ingredient.name] = ingredient;
@@ -29,16 +29,20 @@ export default function useRecipeFormData() {
         }, {} as Record<string, Input.Data.Ingredient>)
     );
     setGlasswareLookup(
-      allGlassware.reduce((acc, glassware) => {
-        acc[glassware.name] = glassware;
-        return acc;
-      }, {} as Record<string, Input.Data.Glassware>)
+      [...allGlassware]
+        .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
+        .reduce((acc, glassware) => {
+          acc[glassware.name] = glassware;
+          return acc;
+        }, {} as Record<string, Input.Data.Glassware>)
     );
     setGarnishLookup(
-      garnishes.reduce((acc, garnish) => {
-        acc[garnish.name] = garnish;
-        return acc;
-      }, {} as Record<string, Input.Data.Garnish>)
+      [...garnishes]
+        .sort(({ name: aName }, { name: bName }) => aName.localeCompare(bName))
+        .reduce((acc, garnish) => {
+          acc[garnish.name] = garnish;
+          return acc;
+        }, {} as Record<string, Input.Data.Garnish>)
     );
   }, [loading, data]);
 
