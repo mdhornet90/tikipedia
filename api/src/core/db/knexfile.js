@@ -5,7 +5,7 @@ const common = {
     port: process.env.DB_PORT || 5432,
     database: 'tiki',
     user: 'tiki_admin',
-    password: 'tiki',
+    password: process.env.DB_ADMIN_PASSWORD || 'tiki',
   },
   migrations: {
     tableName: 'knex_migrations',
