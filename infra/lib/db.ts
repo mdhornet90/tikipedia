@@ -4,6 +4,7 @@ import { Construct } from "constructs";
 import {
   DatabaseInstance,
   DatabaseInstanceEngine,
+  ParameterGroup,
   PostgresEngineVersion,
 } from "aws-cdk-lib/aws-rds";
 import {
@@ -33,15 +34,29 @@ export class DatabaseStack extends cdk.Stack {
     );
     dbSecurityGroup.connections.allowFromAnyIpv4(Port.tcp(5432));
 
+    const engine = DatabaseInstanceEngine.postgres({
+      version: PostgresEngineVersion.VER_15,
+    });
+
+    const parameterGroup = new ParameterGroup(
+      this,
+      "tiki-database-parameter-group",
+      {
+        engine,
+        parameters: {
+          "rds.force_ssl": "0",
+        },
+      }
+    );
+
     this.database = new DatabaseInstance(this, "tiki-database", {
       credentials: {
         username: "tiki_admin",
         password: SecretValue.ssmSecure("DB_ADMIN_PASSWORD", "1"),
       },
       databaseName: "tiki",
-      engine: DatabaseInstanceEngine.postgres({
-        version: PostgresEngineVersion.VER_15,
-      }),
+      engine,
+      parameterGroup,
       allocatedStorage: 20,
       instanceIdentifier: "tiki-database",
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MICRO),
