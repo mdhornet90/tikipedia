@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { ApolloServerErrorCode as ErrorCode } from '@apollo/server/errors';
 
-import { findAll, findOne, insert, remove, update } from '../core/queries/recipes';
+import { findAll, findBySlug, findOne, insert, remove, update } from '../core/queries/recipes';
 import { findOne as findGlassware } from '../core/queries/glassware';
 import { isDatabaseError, isUUID } from '../utils';
 import { findAllForRecipe as findRecipeIngredients } from '../core/queries/ingredients';
@@ -43,6 +43,7 @@ export const typeDef = `#graphql
   type Query {
     recipes: [Recipe!]!
     recipe(id: ID!): Recipe
+    recipeBySlug(id: String): Recipe
   }
 
   input CreateRecipeInput {
@@ -116,6 +117,16 @@ export const resolvers = {
       } catch (err) {
         if (isDatabaseError(err)) {
           handleDatabaseError(err, 'retrieving');
+        }
+      }
+    },
+
+    recipeBySlug: async (_: any, { slug }: { slug: string }) => {
+      try {
+        return await findBySlug(slug);
+      } catch (err) {
+        if (isDatabaseError(err)) {
+          handleDatabaseError(err, 'retrieving by slug');
         }
       }
     },

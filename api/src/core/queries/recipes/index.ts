@@ -5,6 +5,8 @@ export const findAll = () => knex('recipes').orderBy('title');
 
 export const findOne = (id: UUID) => knex('recipes').where({ id }).first();
 
+export const findBySlug = (slug: string) => knex('recipes').where({ slug }).first();
+
 export async function insert({
   ingredientInputs,
   garnishInputs,
