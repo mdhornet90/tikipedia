@@ -3,7 +3,7 @@ import { ApolloServerErrorCode as ErrorCode } from '@apollo/server/errors';
 
 import { findAll, findOne, insert, remove, update } from '../core/queries/ingredients';
 import { isDatabaseError, isUUID } from '../utils';
-import mangledName from '../core/mangledName';
+import { mangledName } from '../core/mangledName';
 import { UUID } from 'crypto';
 
 export const typeDef = `#graphql

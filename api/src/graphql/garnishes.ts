@@ -4,7 +4,7 @@ import { ApolloServerErrorCode as ErrorCode } from '@apollo/server/errors';
 import { findAll, findOne, insert, remove, update } from '../core/queries/garnishes';
 import { isDatabaseError, isUUID } from '../utils';
 import { UUID } from 'crypto';
-import mangledName from '../core/mangledName';
+import { mangledName } from '../core/mangledName';
 
 export const typeDef = `#graphql
     type Garnish {

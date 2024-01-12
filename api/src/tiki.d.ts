@@ -10,6 +10,10 @@ interface DBUniqueness {
   mangledName: string;
 }
 
+interface HumanReadable {
+  slug: string;
+}
+
 declare module Recipe {
   interface Self {
     id: UUID;
@@ -42,8 +46,8 @@ declare module Recipe {
   }
 
   module DB {
-    type Create = API.Create & DBUniqueness;
-    type Edit = API.Edit & DeepPartial<DBUniqueness>;
+    type Create = API.Create & DBUniqueness & HumanReadable;
+    type Edit = API.Edit & DeepPartial<DBUniqueness> & DeepPartial<HumanReadable>;
   }
 }
 

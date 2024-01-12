@@ -6,7 +6,7 @@ import { findOne as findGlassware } from '../core/queries/glassware';
 import { isDatabaseError, isUUID } from '../utils';
 import { findAllForRecipe as findRecipeIngredients } from '../core/queries/ingredients';
 import { findAllForRecipe as findRecipeGarnishes } from '../core/queries/garnishes';
-import mangledName from '../core/mangledName';
+import { mangledName, slug } from '../core/mangledName';
 import { UUID } from 'crypto';
 
 export const typeDef = `#graphql
@@ -132,6 +132,7 @@ export const resolvers = {
       insert({
         ...input,
         mangledName: mangledName(input.title),
+        slug: slug(input.title),
       }),
 
     editRecipe: async (_: any, { id, input }: { id: UUID; input: Recipe.API.Edit }) => {
@@ -146,6 +147,7 @@ export const resolvers = {
         };
         if (input.title) {
           dbUpdate['mangledName'] = input.title ? mangledName(input.title) : undefined;
+          dbUpdate['slug'] = input.title ? slug(input.title) : undefined;
         }
         return await update(id, dbUpdate);
       } catch (err) {
