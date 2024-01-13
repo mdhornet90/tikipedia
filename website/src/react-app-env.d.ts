@@ -12,6 +12,7 @@ declare module Main {
   interface RecipeCard {
     id: string;
     title: string;
+    slug: string;
     imageUrl?: string;
     tags?: Tag[];
   }

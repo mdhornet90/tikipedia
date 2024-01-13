@@ -7,13 +7,14 @@ export module Display {
         id
         title
         imageUrl
+        slug
       }
     }
   `;
 
   export const Detail = gql`
-    query recipe($id: ID!) {
-      recipe(id: $id) {
+    query recipe($slug: String!) {
+      recipeBySlug(slug: $slug) {
         title
         ingredients {
           quantity

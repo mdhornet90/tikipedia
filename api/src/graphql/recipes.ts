@@ -13,6 +13,7 @@ export const typeDef = `#graphql
   type Recipe {
     id: ID!
     title: String!
+    slug: String!
     imageUrl: String
     instructions: String!
     glassware: Glassware!
@@ -43,7 +44,7 @@ export const typeDef = `#graphql
   type Query {
     recipes: [Recipe!]!
     recipe(id: ID!): Recipe
-    recipeBySlug(id: String): Recipe
+    recipeBySlug(slug: String): Recipe
   }
 
   input CreateRecipeInput {

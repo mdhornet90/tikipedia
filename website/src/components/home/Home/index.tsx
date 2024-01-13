@@ -1,24 +1,16 @@
-import { useRef, useState } from "react";
-import { CSSTransition } from "react-transition-group";
 import styles from "./Home.module.css";
 import CardArea from "../CardArea";
 import Loading from "../../common/Loading";
 import Card from "../Card";
 import TikiHeader from "../../common/TikiHeader";
 import { Display } from "../../../api";
-import RecipeDetail from "../RecipeDetail";
 import { useQuery } from "@apollo/client";
+import { Link, Outlet } from "react-router-dom";
 
 export default function Home() {
   const { loading: cardsLoading, data: cardData } = useQuery<{
     recipes: Main.RecipeCard[];
   }>(Display.Cards);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const { data: recipeDetail } = useQuery<{ recipe: Main.RecipeDetail }>(
-    Display.Detail,
-    { skip: !selectedId, variables: { id: selectedId } }
-  );
-  const ref = useRef(null);
 
   return (
     <div>
@@ -28,28 +20,22 @@ export default function Home() {
           <Loading indicatorStyle="dark" />
         ) : (
           <CardArea>
-            {cardData?.recipes.map((card) => {
-              const id = card.id;
-              return (
-                <Card key={id} card={card} onTap={() => setSelectedId(id)} />
-              );
-            })}
+            {cardData?.recipes.map((card) => (
+              <Link
+                key={card.id}
+                to={`${card.slug}`}
+                style={{
+                  textDecoration: "inherit",
+                  color: "inherit",
+                  cursor: "inherit",
+                }}
+              >
+                <Card card={card} onTap={() => {}} />
+              </Link>
+            ))}
           </CardArea>
         )}
-        <CSSTransition
-          nodeRef={ref}
-          in={selectedId !== null}
-          timeout={300}
-          classNames={"fade"}
-          mountOnEnter={true}
-          unmountOnExit={true}
-        >
-          <RecipeDetail
-            ref={ref}
-            recipe={recipeDetail?.recipe}
-            onClose={() => setSelectedId(null)}
-          />
-        </CSSTransition>
+        <Outlet />
       </header>
     </div>
   );

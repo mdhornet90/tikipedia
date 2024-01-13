@@ -13,23 +13,24 @@ import Title from "../../common/Title";
 import styles from "./RecipeDetail.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import Loading from "../../common/Loading";
+import { useQuery } from "@apollo/client";
+import { useNavigate, useParams } from "react-router-dom";
+import { Display } from "../../../api";
 
-interface RecipeDetailProps {
-  recipe?: Main.RecipeDetail | null;
-  onClose: () => void;
-}
-
-export default forwardRef(function (
-  { recipe, onClose }: RecipeDetailProps,
-  ref: Ref<HTMLDivElement>
-) {
+export default forwardRef(function () {
+  const { recipeSlug } = useParams();
   const [showRecipe, setShowRecipe] = useState(false);
-  const innerRef = useRef(null);
+  const ref = useRef(null);
+  const { data: recipe } = useQuery<{ recipeBySlug: Main.RecipeDetail }>(
+    Display.Detail,
+    { variables: { slug: recipeSlug } }
+  );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        navigate("..");
       }
     };
     window.addEventListener("keydown", handleEsc);
@@ -37,7 +38,7 @@ export default forwardRef(function (
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
-  }, [onClose]);
+  }, [navigate]);
 
   useEffect(() => {
     if (!showRecipe && recipe) {
@@ -46,10 +47,10 @@ export default forwardRef(function (
   }, [showRecipe, recipe]);
 
   return (
-    <div ref={ref} className={styles.recipeOverlay} onClick={onClose}>
+    <div className={styles.recipeOverlay} onClick={() => navigate("..")}>
       {!showRecipe && <Loading indicatorStyle="light" />}
       <CSSTransition
-        nodeRef={innerRef}
+        nodeRef={ref}
         in={showRecipe}
         timeout={300}
         classNames={"fade"}
@@ -57,7 +58,11 @@ export default forwardRef(function (
         unmountOnExit={true}
       >
         {showRecipe ? (
-          <RecipeSection ref={innerRef} onClose={onClose} recipe={recipe} />
+          <RecipeSection
+            ref={ref}
+            recipe={recipe?.recipeBySlug}
+            onClose={() => navigate("..")}
+          />
         ) : (
           <></>
         )}
@@ -66,14 +71,12 @@ export default forwardRef(function (
   );
 });
 
+interface RecipeSectionProps {
+  recipe?: Main.RecipeDetail | null;
+  onClose: () => void;
+}
 const RecipeSection = forwardRef(function (
-  {
-    onClose,
-    recipe,
-  }: {
-    onClose: () => void;
-    recipe?: Main.RecipeDetail | null;
-  },
+  { recipe, onClose }: RecipeSectionProps,
   ref: Ref<HTMLDivElement>
 ) {
   return recipe ? (
@@ -121,11 +124,11 @@ const RecipeSection = forwardRef(function (
   );
 });
 
-interface RecipeSectionProps extends PropsWithChildren {
+interface RecipeDetailSectionProps extends PropsWithChildren {
   title: string;
 }
 
-function RecipeDetailSection({ title, children }: RecipeSectionProps) {
+function RecipeDetailSection({ title, children }: RecipeDetailSectionProps) {
   return (
     <div className={styles.detailSection}>
       <Title title={title} size="medium" alignment="left" />
